@@ -1,10 +1,13 @@
 import './App.css';
 import './index.css';
+import Layout from "./layout";
+import ModuleRoutes from "./routes";
+
 function App() {
   return (
-    <div className="">
-      Start!!
-    </div>
+    <Layout>
+    <ModuleRoutes />
+  </Layout>
   );
 }
 

@@ -5,15 +5,17 @@
    darkMode: false,
    theme: {
     colors: { // t = text, b = button, s = select
-      ligth_green: '#CCFFCB',
-      s_green: '#36C667',
-      t_green: '#06AC5D',
-      b_green: '#1CB56B',
-      ligth_red: '#FFB8B8',
-      b_red:'#D30000', //button
-      t_red:'#B51C1C', //text
+      ligthgreen: '#00CC55',
+      mediumgreen: '#00C476',
+      darkgreen: '#00A976',
+      
+      ligthred: '#FFB8B8',
+      mediumred:'#D30000', //button
+      darkred:'#B51C1C', //text
+      
       b_ligth_gray: '#A1A1A1',
       ligth_gray: '#F5F6F8',
+      gray:'#EEF0F4',
       icon_gray: '#C2CFE0',
       white: '#FFFFFF',
       black: '#000000'

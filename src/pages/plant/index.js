@@ -4,7 +4,7 @@ import HeaderBar from '../../component/headerbar'
 export default function Plant() {
     return (
         <div>
-            <HeaderBar module="Plantas" name= "Agregar plantas" isHidden={false}/>
+            <HeaderBar module="Plantas" name= "Agregar planta" isHidden={false} route="/plants/create"/>
         </div>
     )
 }

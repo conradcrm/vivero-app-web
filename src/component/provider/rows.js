@@ -15,7 +15,7 @@ export default function ItemProvider({razon_social, imagen, telefono, direccion,
         <p className="col-span-4 py-3 text-gray-600">{direccion}</p>
         <p className="col-span-2 py-3 text-gray-600">{telefono}</p>
         <div className="col-span-2 text-gray-600 mx-4">
-            { estado == 2 ? 
+            { estado === 2 ? 
               <div className="relative">
                 <p className="bg-ligthred opacity-30 mr-5 py-4 rounded"></p>
                   <span className="text-darkred font-semibold text-center absolute -mt-7 ml-6"> Inactivo</span>

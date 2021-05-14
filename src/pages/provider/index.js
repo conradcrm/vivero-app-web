@@ -4,9 +4,9 @@ import ProviderList from '../../component/provider/table'
 
 export default function Provider() {
     return (
-        <div>
+        <div className="h-full">
             <HeaderBar module="Proveedores" name= "Agregar proveedor" isHidden={false} route="/provider/create"/>
-            <div className="h-full flex justify-center items-center pt-8">
+            <div className="h-full flex justify-center pt-8">
                 <ProviderList/>
             </div>
         </div>

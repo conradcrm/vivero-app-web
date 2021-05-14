@@ -3,23 +3,8 @@ import ItemProvider from "./rows";
 import { useQuery } from "../../hooks";
 
 export default function ProviderList() {
-    const { status, error, data } = useQuery("api/providers");
-    console.log(status)
-    console.log(data)
-    /*async function fetchResponse() {
-        const url = "http://127.0.0.1:8000/api/login";
-        const response = await fetch(url, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-          body: JSON.stringify(userData),
-        });
-        const res = await response.json();
-        console.log(res);
-    }*/
-
+  const { status, data } = useQuery("api/providers");
+    
   return (
     <>
       <div className="bg-gray w-full rounded-md">

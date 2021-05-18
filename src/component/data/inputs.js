@@ -1,12 +1,12 @@
 export default function Inputs(module, mode) {
-    const url = "http://127.0.0.1:8000/";
+    const url = "http://127.0.0.1:8000";
     let endpoint = "";
-    let data= undefined;
+    let datos= undefined;
     switch (module) {
       case "plat":
         if (mode === "create") {
           endpoint = "/api/create-plant";
-          data = {
+          datos = {
             nombre: "",
             descripcion: "",
             precio_v: "",
@@ -17,10 +17,10 @@ export default function Inputs(module, mode) {
         } 
         break;
   
-      case "cateogry":
+      case "category":
         if (mode === "CREATE") {
           endpoint = "/api/create-category";
-          data = {
+          datos = {
               nombre: "",
               imagen: "",
           };
@@ -28,10 +28,13 @@ export default function Inputs(module, mode) {
         break;
   
       case "provider":
-          if (mode === "CREATE") {
+          if (mode === "create") {
             endpoint = "/api/create-provider";
-            data = {
+            datos = {
                 nombre: "",
+                direccion: "",
+                telefono: "",
+                correo: "",
                 imagen: "",
             };
           }
@@ -41,6 +44,6 @@ export default function Inputs(module, mode) {
     }
     
     let query = `${url}${endpoint}`;
-    return {data,query}
+    return {datos,query}
   }
   

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SubmitButton from '../../buttons/submit';
 import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
@@ -8,6 +9,7 @@ export default function CategoryForm() {
     const [changeImage, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
+    const [isLoading, setIsLoading] = useState(false);
 
     const sendData = (event) => {
         event.preventDefault();
@@ -22,6 +24,7 @@ export default function CategoryForm() {
     };
 
     async function mutation() {
+        setIsLoading(true)
         await fetch(query, {
             method: "POST",
             headers: {
@@ -35,6 +38,7 @@ export default function CategoryForm() {
             })
             .catch((err) => {
             });
+        setIsLoading(false)
     }
 
 
@@ -80,9 +84,10 @@ export default function CategoryForm() {
 
                             </div>
                         </div>
-                        <button className="bg-mediumgreen block text-lg w-full mt-8 py-2 rounded text-white font-semibold hover:bg-darkgreen">
-                            Registrar
-                        </button>
+                        <SubmitButton
+                            isLoading={isLoading}
+                            mode= "create"
+                        />
                     </form>
                 </div>
             </div>

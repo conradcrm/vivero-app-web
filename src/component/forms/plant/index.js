@@ -4,16 +4,20 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import { useQuery } from '../../../hooks';
+import SubmitButton from '../../buttons/submit';
 
 export default function PlantForm() {
     const { dataCategories, statusCategories } = useQuery("api/categories", true, "Categories");
     const { dataProviders, statusProviders } = useQuery("api/providers", true, "Providers");
     const { datos, query } = Inputs("plant", "create");
+    const [isLoading, setIsLoading] = useState(false);
     const [changeImage, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
+    const mode = "create"
     let dataC = []
     let dataP = []
+
     if (statusCategories === "fetched" && dataCategories.data.length > 0) {
         dataC = dataCategories.data
     }
@@ -36,6 +40,7 @@ export default function PlantForm() {
     };
 
     async function mutation() {
+        setIsLoading(true);
         await fetch(query, {
             method: "POST",
             headers: {
@@ -49,8 +54,8 @@ export default function PlantForm() {
             })
             .catch((err) => {
             });
+        setIsLoading(false);
     }
-
 
     return (
         <div className="flex w-full justify-center">
@@ -66,7 +71,7 @@ export default function PlantForm() {
                         }}
                     />
                 </div>
-                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "30em" }}>
+                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32.5em" }}>
                     <p className="w-full absolute bg-white mx-28 h-8" style={{ width: "21.5rem" }}></p>
                     <form className="my-7 mx-28" onSubmit={sendData}>
                         <div>
@@ -174,9 +179,10 @@ export default function PlantForm() {
                                     placeholder="Es una de las plantas crasas más bonitas y fáciles de cuidar del mundo" />
                             </div>
                         </div>
-                        <button className="bg-mediumgreen block text-lg w-full mt-8 py-2 rounded text-white font-semibold hover:bg-darkgreen">
-                            Registrar
-                        </button>
+                        <SubmitButton
+                            isLoading={isLoading}
+                            mode= "create"
+                        />
                     </form>
                 </div>
             </div>

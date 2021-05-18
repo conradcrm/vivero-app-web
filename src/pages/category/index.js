@@ -1,10 +1,8 @@
 import React from 'react'
 import Categories from '../../component/category'
 import HeaderBar from '../../component/headerbar'
-import { useQuery } from '../../hooks';
 
 export default function Category() {
-    
     return (
         <div className="h-full">
             <HeaderBar module="Categoría" name= "Agregar categoría" isHidden={false} route="/category/create"/>

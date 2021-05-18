@@ -18,10 +18,11 @@ export default function Inputs(module, mode) {
         break;
   
       case "category":
-        if (mode === "CREATE") {
+        if (mode === "create") {
           endpoint = "/api/create-category";
           datos = {
               nombre: "",
+              descripcion: "",
               imagen: "",
           };
         }

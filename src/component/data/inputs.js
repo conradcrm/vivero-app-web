@@ -3,16 +3,18 @@ export default function Inputs(module, mode) {
     let endpoint = "";
     let datos= undefined;
     switch (module) {
-      case "plat":
+      case "plant":
         if (mode === "create") {
           endpoint = "/api/create-plant";
           datos = {
             nombre: "",
             descripcion: "",
-            precio_v: "",
-            precio_c: "",
+            precio_venta: "",
+            precio_compra: "",
             imagen: "",
+            existencia: "",
             id_categoria: undefined,
+            id_proveedor: undefined,
           };
         } 
         break;

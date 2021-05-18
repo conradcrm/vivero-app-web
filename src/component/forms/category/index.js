@@ -11,9 +11,8 @@ export default function CategoryForm() {
 
     const sendData = (event) => {
         event.preventDefault();
-        console.log(data)
         mutation()
-    };
+    }; 
 
     const handleChange = (event) => {
         setData({

@@ -11,7 +11,6 @@ export default function ProviderForm() {
 
     const sendData = (event) => {
         event.preventDefault();
-        console.log(data)
         mutation()
     };
 

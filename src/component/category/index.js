@@ -4,7 +4,6 @@ import CategoryItem from "./item";
 
 export default function Categories() {
   const { status, data } = useQuery("api/categories");
-  console.log(data);
   return (
     <div className="grid grid-cols-12 gap-1 bg-gray w-full">
       <div className="col-span-9 bg-white p-6">

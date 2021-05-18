@@ -7,10 +7,10 @@ export default function LayoutAction(props) {
 
   return (
     <div className="bg-ligth_gray h-screen">
-      <div className= "w-full h-14 flex">
-        <ButtonGoBack goBack={history.goBack}/>
+      <div className=" px-4 pb-3 pt-6">
+        <ButtonGoBack goBack={history.goBack} />
       </div>
-      <div className="flex justify-center items-center m-2 h-full">
+      <div className="flex justify-center items-center" style={{ height: "89%", maxHeight: "90%" }}>
         {props.children}
       </div>
     </div>

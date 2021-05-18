@@ -6,10 +6,10 @@ export default function ButtonGoBack({goBack}) {
   return (
     <button
       onClick={goBack}
-      className="flex self-center ml-8 px-4 py-1 rounded text-sm hover:underline"
+      className="focus:outline-none border-0 flex self-center ml-8 rounded text-lg hover:underline"
     >
       <IoIosArrowBack className="self-center mr-1" />
-      <p>regresar</p>
+      <p>Regresar</p>
     </button>
   );
 }

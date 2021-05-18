@@ -3,7 +3,7 @@ import React from 'react'
 export default function CategoryForm() {
     return (
         <div className="">
-            categoria
+            hola
         </div>
     )
 }

@@ -5,7 +5,8 @@ export default function SubmitButton({ mode, isLoading }) {
     return (
         <button
             type="submit"
-            className="bg-mediumgreen block text-lg w-full mt-8 py-2 rounded text-white font-semibold hover:bg-darkgreen"
+            className={`bg-mediumgreen block text-lg w-full mt-8 py-2 rounded text-white font-semibold
+            ${isLoading ? "opacity-50 cursor-not-allowed ":" hover:bg-darkgreen "}`}
             disabled={isLoading}
         >
             {isLoading ?

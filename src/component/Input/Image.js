@@ -5,8 +5,8 @@ export default function ImageInput({ value, onChange, disabled }) {
   const inputRef = useRef();
 
   return (
-    <div className="h-96 w-full flex justify-center items-center">
-      <div className="mb-6">
+    <div className="h-96 w-full grid justify-center items-center">
+      <div className="mb-20">
         <div
           className="w-48 h-32 bg-ligth_gray flex items-center justify-center rounded-xl bg-center bg-no-repeat bg-cover cursor-pointer"
           style={{

@@ -3,6 +3,7 @@ import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
+import {notify} from '../../notification';
 
 export default function ProviderForm() {
     const { datos, query } = Inputs("provider", "create");
@@ -11,10 +12,6 @@ export default function ProviderForm() {
     const [data, setData] = useState(datos);
     const [isLoading, setIsLoading] = useState(false);
 
-    const sendData = (event) => {
-        event.preventDefault();
-        mutation()
-    };
 
     const handleChange = (event) => {
         setData({
@@ -23,9 +20,10 @@ export default function ProviderForm() {
         });
     };
 
-    async function mutation() {
+    async function mutation(event) {
+        event.preventDefault();
         setIsLoading(true)
-        await fetch(query, {
+        const response = await fetch(query, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -33,14 +31,17 @@ export default function ProviderForm() {
             },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                response.json();
-            })
-            .catch((err) => {
-            });
+        
+        if(response.status > 300){
+            notify("error", "Ha ocurrido un error al intentar agregar el proveedor.")
+        }
+        if(response.status < 300){
+            notify("success", "El proveedor ha sido agregado correctamente.")
+        }
+        
+        console.log(response.status)
         setIsLoading(false)
     }
-
 
     return (
         <div className="flex w-full justify-center">
@@ -57,7 +58,7 @@ export default function ProviderForm() {
                     />
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
-                    <form className="m-auto my-7 mx-28" onSubmit={sendData}>
+                    <form className="m-auto my-7 mx-28" onSubmit={mutation}>
                         <div>
                             <InputText
                                 width="21.5rem"

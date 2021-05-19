@@ -5,6 +5,7 @@ import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import { useQuery } from '../../../hooks';
 import SubmitButton from '../../buttons/submit';
+import {notify} from '../../notification';
 
 export default function PlantForm() {
     const { dataCategories, statusCategories } = useQuery("api/categories", true, "Categories");
@@ -26,12 +27,6 @@ export default function PlantForm() {
         dataP = dataProviders.data
     }
 
-    const sendData = (event) => {
-        event.preventDefault();
-        console.log(data)
-        mutation()
-    };
-
     const handleChange = (event) => {
         setData({
             ...data,
@@ -39,9 +34,10 @@ export default function PlantForm() {
         });
     };
 
-    async function mutation() {
-        setIsLoading(true);
-        await fetch(query, {
+    async function mutation(event) {
+        event.preventDefault();
+        setIsLoading(true)
+        const response = await fetch(query, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -49,18 +45,21 @@ export default function PlantForm() {
             },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                response.json();
-            })
-            .catch((err) => {
-            });
-        setIsLoading(false);
+        
+        if(response.status > 300){
+            notify("error", "Ha ocurrido un error al intentar agregar la planta.")
+        }
+        if(response.status < 300){
+            notify("success", "La planta ha sido agregada correctamente.")
+        }
+        console.log(response.status)
+        setIsLoading(false)
     }
 
     return (
         <div className="flex w-full justify-center">
             <div className="h-full flex grid-cols-6 shadow-2xl">
-                <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
+                <div className=" bg-mediumgreen col-span-2 rounded-l-xl px-8">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Modulo planta</h3>
                     <ImageInput
                         value={previewImage}
@@ -73,7 +72,7 @@ export default function PlantForm() {
                 </div>
                 <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32.5em" }}>
                     <p className="w-full absolute bg-white mx-28 h-8" style={{ width: "21.5rem" }}></p>
-                    <form className="my-7 mx-28" onSubmit={sendData}>
+                    <form className="my-7 mx-28" onSubmit={mutation}>
                         <div>
                             <InputText
                                 width="21.5rem"
@@ -171,7 +170,7 @@ export default function PlantForm() {
                                     Decripción<span className={`ml-1 text-mediumred`}>*</span>
                                 </label>
                                 <textarea
-                                    className="rounded border-icon_gray py-1 px-4 text-sm bg-gray w-full"
+                                    className="rounded resize-none border-icon_gray py-1 px-4 text-sm bg-gray w-full"
                                     rows="4"
                                     value={data.descripcion}
                                     onChange={handleChange}

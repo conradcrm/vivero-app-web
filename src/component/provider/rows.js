@@ -30,7 +30,7 @@ export default function ItemProvider({ nombre, imagen, telefono, direccion, esta
 
         </div>
       </div>
-      <div className="col-span-2 gap-2 flex justify-end items-center mr-8 text-sm">
+      <div className="col-span-2 gap-2 flex justify-end items-center mr-12 text-sm">
         <FaEdit size={20} className="text-icon_gray" />
         <MdDeleteForever size={22} className="text-mediumred" />
       </div>

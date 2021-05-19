@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router";
 import ButtonGoBack from "../../component/buttons/goBack";
+import Notification from "../../component/notification";
 
 export default function LayoutAction(props) {
   let history = useHistory();
@@ -13,6 +14,7 @@ export default function LayoutAction(props) {
       <div className="flex justify-center items-center" style={{ height: "89%", maxHeight: "90%" }}>
         {props.children}
       </div>
+      <Notification/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import SubmitButton from '../../buttons/submit';
 import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
+import {notify} from '../../notification';
 
 export default function CategoryForm() {
     const { datos, query } = Inputs("category", "create");
@@ -11,11 +12,6 @@ export default function CategoryForm() {
     const [data, setData] = useState(datos);
     const [isLoading, setIsLoading] = useState(false);
 
-    const sendData = (event) => {
-        event.preventDefault();
-        mutation()
-    }; 
-
     const handleChange = (event) => {
         setData({
             ...data,
@@ -23,9 +19,10 @@ export default function CategoryForm() {
         });
     };
 
-    async function mutation() {
+    async function mutation(event) {
+        event.preventDefault();
         setIsLoading(true)
-        await fetch(query, {
+        const response = await fetch(query, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -33,14 +30,17 @@ export default function CategoryForm() {
             },
             body: JSON.stringify(data),
         })
-            .then((response) => {
-                response.json();
-            })
-            .catch((err) => {
-            });
+        
+        if(response.status > 300){
+            notify("error", "Ha ocurrido un error al intentar agregar la categoría.")
+        }
+        if(response.status < 300){
+            notify("success", "La categoría ha sido agregada correctamente.")
+        }
+        
+        console.log(response.status)
         setIsLoading(false)
     }
-
 
     return (
         <div className="flex w-full justify-center">
@@ -57,7 +57,7 @@ export default function CategoryForm() {
                     />
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
-                    <form className="m-auto my-7 mx-28" onSubmit={sendData}>
+                    <form className="m-auto my-7 mx-28" onSubmit={mutation}>
                         <div>
                             <InputText
                                 width="21.5rem"
@@ -86,7 +86,7 @@ export default function CategoryForm() {
                         </div>
                         <SubmitButton
                             isLoading={isLoading}
-                            mode= "create"
+                            mode="create"
                         />
                     </form>
                 </div>

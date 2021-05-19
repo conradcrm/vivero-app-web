@@ -18,7 +18,7 @@ export default function Categories() {
                   !data.data.length > 0 ? <p>Aún no hay registros</p> : (
                     <>
                       <div className="col-span-9 bg-white p-6">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-8">
                           {status === "fetched" &&
                             (data.data.length > 0
                               ? data.data.map((category) => <CategoryItem {...category} key={category.id_categoria} class="col-span-1" />)

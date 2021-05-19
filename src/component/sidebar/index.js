@@ -14,31 +14,39 @@ export default function Sidebar() {
   return (
     <div className="bg-white col-span-1 grid grid-cols-1 gap-2 place-content-between">
       <div className="">
+      
+      <div className="col-span-5 gap-5 flex justify-center items-center text-gray-600">
+            <div class="h-11 w-11 flex items-center  rounded-3xl overflow-hidden">
+        <img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
+        <span className="mx-4 font-medium ">Angel David</span>
+      </div>
+            
+        </div>
 
-        <nav className="mt-3">
+        <nav className="mt-20">
           <Link to="/" 
           onClick={()=> setSelected("DASHBOARD")}
-          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected === "DASHBOARD" ? "text-t_green" : "text-b_ligth_gray"}`}>
+          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected === "DASHBOARD" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <RiDashboardLine/>
             <span className="mx-4 font-medium ">Dashboard</span>
           </Link>
 
           <Link to="/provider" onClick={()=> setSelected("PROVIDERS")}
-          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white  ${selected==="PROVIDERS" ? "text-t_green" : "text-b_ligth_gray"}`}>
+          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white  ${selected==="PROVIDERS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <BsFillPersonFill/>
             <span className="mx-4 font-medium">Proveedores</span>
           </Link>
 
           <Link to="/categories" 
           onClick={()=> setSelected("CATEGORIES")}
-          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected==="CATEGORIES" ? "text-t_green" : "text-b_ligth_gray"}`}>
+          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected==="CATEGORIES" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <BiColumns/>
             <span className="mx-4 font-medium">Categorías</span>
           </Link>
 
           <Link to="/products" 
           onClick={()=> setSelected("PRODUCTS")}
-          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected==="PRODUCTS" ? "text-t_green" : "text-b_ligth_gray"}`}>
+          className={`flex items-center mt-5 py-2 px-8 border-r-4 border-white ${selected==="PRODUCTS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <RiPlantFill/>
             <span className="mx-4 font-medium">Productos</span>
           </Link>

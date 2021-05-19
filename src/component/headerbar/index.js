@@ -1,12 +1,16 @@
 import React from "react";
-export default function HeaderBar({module, name, isHidden}) {
+import { Link } from "react-router-dom";
+export default function HeaderBar({module, name, isHidden, route}) {
+  
   return (
     <div>
-      <div class="flex justify-between">
-        <h3>{module}</h3>
-        <button className={`${isHidden ? "invisible" : "visible"}`}>
+      <div className="flex justify-between">
+        <h3 className="font-bold text-2xl">{module}</h3>
+        <Link to={route} className={`${isHidden ? "invisible" : "visible"}`}>
+          <button className="bg-mediumgreen px-4 py-2 rounded text-white border-mediumgreen border font-semibold hover:bg-white  hover:text-black">
             {name}
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
   );

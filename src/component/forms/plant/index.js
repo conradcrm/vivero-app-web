@@ -3,19 +3,20 @@ import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
-import { useQuery } from '../../../hooks';
+import { useQuery } from '../../../hooks/query';
 import SubmitButton from '../../buttons/submit';
-import {notify} from '../../notification';
+import { useMutation } from '../../../hooks/mutation';
 
 export default function PlantForm() {
-    const { dataCategories, statusCategories } = useQuery("api/categories", true, "Categories");
-    const { dataProviders, statusProviders } = useQuery("api/providers", true, "Providers");
+    const { dataCategories, statusCategories } = useQuery("api/categories", "Categories");
+    const { dataProviders, statusProviders } = useQuery("api/providers", "Providers");
     const { datos, query } = Inputs("plant", "create");
+    const [, fetchData] = useMutation(query, "Plant")
     const [isLoading, setIsLoading] = useState(false);
-    const [changeImage, setChangeImage] = useState(false);
+    const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    const mode = "create"
+
     let dataC = []
     let dataP = []
 
@@ -34,33 +35,25 @@ export default function PlantForm() {
         });
     };
 
-    async function mutation(event) {
+    const send = (event) => {
         event.preventDefault();
-        setIsLoading(true)
-        const response = await fetch(query, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        
-        if(response.status > 300){
-            notify("error", "Ha ocurrido un error al intentar agregar la planta.")
-        }
-        if(response.status < 300){
-            notify("success", "La planta ha sido agregada correctamente.")
-        }
-        console.log(response.status)
-        setIsLoading(false)
-    }
+        fetchData("POST", data, setIsLoading)
+    };
+
+    const styleSelect = {
+        borderRadius: "0.25rem",
+        borderWidth: "2px",
+        borderColor: "rgba(194, 207, 224, var(--tw-border-opacity));",
+        padding: "0.5rem 1rem 0.5rem 1rem",
+        fontSize: "0.875rem",
+        lineHeight: "1.25rem",
+      };
 
     return (
         <div className="flex w-full justify-center">
             <div className="h-full flex grid-cols-6 shadow-2xl">
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl px-8">
-                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Modulo planta</h3>
+                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo planta</h3>
                     <ImageInput
                         value={previewImage}
                         onChange={({ target }) => {
@@ -70,13 +63,11 @@ export default function PlantForm() {
                         }}
                     />
                 </div>
-                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32.5em" }}>
-                    <p className="w-full absolute bg-white mx-28 h-8" style={{ width: "21.5rem" }}></p>
-                    <form className="my-7 mx-28" onSubmit={mutation}>
+                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32em" }}>
+                    <form className="my-7 mx-24" onSubmit={send}>
                         <div>
                             <InputText
                                 width="21.5rem"
-                                style="rounded border-icon_gray border-2 py-2 px-4 text-sm"
                                 title="Nombre"
                                 required={true}
                                 name="nombre"
@@ -85,40 +76,37 @@ export default function PlantForm() {
                                 onChange={handleChange}
                                 type="text"
                             />
+                            <div className="flex justify-between" style={{marginTop:"22px"}}>
+                                <InputText
+                                    width="9.5rem"
+                                    title="Precio de compra"
+                                    required={true}
+                                    name="precio_compra"
+                                    placeholder="120.00"
+                                    value={data.precio_compra}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                                <InputText
+                                    width="9.5rem"
+                                    title="Precio de venta"
+                                    required={true}
+                                    name="precio_venta"
+                                    placeholder="240.00"
+                                    value={data.precio_venta}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                            </div>
                             <InputText
                                 width="21.5rem"
-                                style="rounded border-icon_gray border-2 py-2 px-4 text-sm"
-                                title="Precio de compra"
-                                marginTop={22}
-                                required={true}
-                                marginBottom={22}
-                                name="precio_compra"
-                                placeholder="$120.00"
-                                value={data.precio_compra}
-                                onChange={handleChange}
-                                type="number"
-                            />
-                            <InputText
-                                width="21.5rem"
-                                style="rounded border-icon_gray border-2 py-2 px-4 text-sm"
-                                title="Precio de venta"
-                                required={true}
-                                name="precio_venta"
-                                placeholder="$240,00"
-                                value={data.precio_venta}
-                                onChange={handleChange}
-                                type="number"
-                            />
-                            <InputText
-                                width="21.5rem"
-                                style="rounded border-icon_gray border-2 py-2 px-4 text-sm"
                                 title="Cantidad"
                                 marginTop={22}
-                                required={true}
+                                required={false}
                                 marginBottom={22}
-                                name="existencia"
+                                name="cantidad"
                                 placeholder="0"
-                                value={data.existencia}
+                                value={data.cantidad}
                                 onChange={handleChange}
                                 type="number"
                             />
@@ -131,6 +119,8 @@ export default function PlantForm() {
                                     multi={false}
                                     placeholder="Selecionar categoría"
                                     searchable={true}
+                                    color= "#000"
+                                    style={styleSelect}
                                     options={dataC}
                                     labelField="nombre"
                                     valueField="nombre"
@@ -152,6 +142,8 @@ export default function PlantForm() {
                                     multi={false}
                                     placeholder="Selecionar Proveedor"
                                     searchable={true}
+                                    style={styleSelect}
+                                    color= "#000"
                                     options={dataP}
                                     labelField="nombre"
                                     valueField="nombre"
@@ -180,7 +172,7 @@ export default function PlantForm() {
                         </div>
                         <SubmitButton
                             isLoading={isLoading}
-                            mode= "create"
+                            mode="create"
                         />
                     </form>
                 </div>

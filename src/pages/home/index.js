@@ -1,10 +1,10 @@
 import React from 'react'
-import HeaderBar from '../../component/headerbar'
+import HeaderBarTitle from '../../component/headerbar/tittle'
 
 export default function Home() {
     return (
         <div>
-            <HeaderBar module="Dashboard" isHidden={true} name= ""/>
+            <HeaderBarTitle module="Dashboard"/>
         </div>
     )
 }

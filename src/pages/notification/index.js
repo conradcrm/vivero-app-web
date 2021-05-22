@@ -1,9 +1,10 @@
 import React from 'react'
+import HeaderBarTitle from '../../component/headerbar/tittle'
 
 export default function Notification() {
     return (
         <div>
-        <HeaderBar module="Perfil" name= "" isHidden={false} route=""/>
-    </div>
+            <HeaderBarTitle module="Notificaciones" />
+        </div>
     )
 }

@@ -7,7 +7,7 @@ export default function ItemProvider({ nombre, imagen, telefono, direccion, esta
     <div className="grid grid-cols-11 bg-white h-16 my-1">
       <div className="col-span-9 grid grid-cols-11 mx-4 text-sm font-normal justify-end items-center">
         <div className="col-span-3 grid grid-cols-3 gap-3 items-center ">
-          <div class="col-span-1 flex items-center justify-center bg-center bg-no-repeat bg-cover ">
+          <div className="col-span-1 flex items-center justify-center bg-center bg-no-repeat bg-cover ">
             <img className="rounded" src="https://i.ibb.co/BHD0ZqY/papop-ruchirawat-1-Q-cg87o-CFc-unsplash.jpg" 
                   alt={imagen} />
           </div>  

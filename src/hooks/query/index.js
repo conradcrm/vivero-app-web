@@ -1,6 +1,6 @@
 import { useEffect, useRef, useReducer } from "react";
 
-export const useQuery = (endpoint, yes, module) => {
+export const useQuery = (endpoint, module) => {
   const query = `http://localhost:8000/`;
   let url = `${query}${endpoint}`;
   const cache = useRef({});
@@ -8,7 +8,7 @@ export const useQuery = (endpoint, yes, module) => {
   const initialState = {
     status: "loading",
     error: null,
-    module: [],
+    data: [],
   };
 
   const [state, dispatch] = useReducer((state, action) => {
@@ -54,12 +54,9 @@ export const useQuery = (endpoint, yes, module) => {
     };
   }, [url]);
 
-  if (yes) {
-    const newKeys = { data: "data"+module, status: "status"+module};
-    const obj = renameKeys(state, newKeys);
-    return obj
-  }
-  return state;
+  const newKeys = { data: "data" + module, status: "status" + module };
+  const obj = renameKeys(state, newKeys);
+  return obj
 };
 
 function renameKeys(obj, newKeys) {

@@ -3,15 +3,16 @@ import SubmitButton from '../../buttons/submit';
 import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
-import {notify} from '../../notification';
+import { useMutation } from '../../../hooks/mutation';
 
 export default function CategoryForm() {
     const { datos, query } = Inputs("category", "create");
-    const [changeImage, setChangeImage] = useState(false);
+    const [, fetchData] = useMutation(query, "Category")
+    const [, setChangeImage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    const [isLoading, setIsLoading] = useState(false);
-
+    
     const handleChange = (event) => {
         setData({
             ...data,
@@ -19,34 +20,16 @@ export default function CategoryForm() {
         });
     };
 
-    async function mutation(event) {
+    const send = (event) => {
         event.preventDefault();
-        setIsLoading(true)
-        const response = await fetch(query, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        
-        if(response.status > 300){
-            notify("error", "Ha ocurrido un error al intentar agregar la categoría.")
-        }
-        if(response.status < 300){
-            notify("success", "La categoría ha sido agregada correctamente.")
-        }
-        
-        console.log(response.status)
-        setIsLoading(false)
-    }
+        fetchData("POST", data, setIsLoading)
+    };
 
     return (
         <div className="flex w-full justify-center">
             <div className="h-full flex grid-cols-6 shadow-2xl">
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
-                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Modulo categoría</h3>
+                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo categoría</h3>
                     <ImageInput
                         value={previewImage}
                         onChange={({ target }) => {
@@ -57,11 +40,10 @@ export default function CategoryForm() {
                     />
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
-                    <form className="m-auto my-7 mx-28" onSubmit={mutation}>
+                    <form className="m-auto my-10 mx-28" onSubmit={send}>
                         <div>
                             <InputText
                                 width="21.5rem"
-                                style="rounded border-icon_gray border-2 py-2 px-4 text-sm"
                                 title="Nombre"
                                 required={true}
                                 name="nombre"

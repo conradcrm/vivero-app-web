@@ -5,6 +5,7 @@ import ModuleRoutes from "./routes";
 import FormRoutes from "./routes/forms";
 import { useLocation } from "react-router-dom";
 import LayoutAction from "./layout/action";
+import Notification from "./component/notification";
 
 function App() {
   let location = useLocation();
@@ -20,6 +21,7 @@ function App() {
           <FormRoutes />
         </LayoutAction>
       )}
+      <Notification/>
     </>
   );
 }

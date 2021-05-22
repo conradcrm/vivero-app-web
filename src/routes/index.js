@@ -5,14 +5,18 @@ import Plant from "../pages/plant";
 import Category from "../pages/category";
 import Provider from "../pages/provider";
 import Profile from '../pages/profile';
+import Notification from '../pages/notification';
 
 export default function ModuleRoutes() {
     return (
         <Switch>
             <Route path="/" component={Home} exact/>
-            <Route path="/products" component={Plant}/>
+            <Route path="/providers" component={Provider}/>
             <Route path="/categories" component={Category}/>
-            <Route path="/provider" component={Provider}/>
+            <Route path="/plants" component={Plant}/>
+            <Route path="/employees" render={()=> <p className="h-full flex justify-center font-bold items-center text-3xl text-darkgreen">Próximamente</p>}/>
+            <Route path="/profile" component={Profile}/>
+            <Route path="/notifications" component={Notification}/>
             <Route path="/profile" component={Profile}/>
         </Switch>
     )

@@ -1,10 +1,10 @@
 import React from 'react'
-import HeaderBar from '../../component/headerbar'
+import HeaderBarTitle from '../../component/headerbar/tittle'
 
 export default function Profile() {
     return (
         <div>
-        <HeaderBar module="Perfil" name= "" isHidden={false} route=""/>
+        <HeaderBarTitle module="Perfil"/>
     </div>
     )
 }

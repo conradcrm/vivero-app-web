@@ -5,8 +5,8 @@ import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
 
-export default function ProviderForm() {
-    const { datos, query } = Inputs("provider", "create");
+export default function ProviderForm({mode}) {
+    const { datos, method ,query } = Inputs("provider", mode);
     const [, fetchData] = useMutation(query, "Provider")
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
@@ -22,7 +22,7 @@ export default function ProviderForm() {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData("POST", data, setIsLoading)
+        fetchData(method, data, setIsLoading)
     };
 
     return (

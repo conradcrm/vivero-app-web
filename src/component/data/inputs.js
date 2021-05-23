@@ -3,6 +3,7 @@ export default function Inputs(module, mode, selectedItem) {
   let endpoint = undefined;
   let datos = undefined;
   let method = undefined;
+
   switch (module) {
     case "plant":
       if (mode === "create") {
@@ -37,8 +38,14 @@ export default function Inputs(module, mode, selectedItem) {
         datos = {
           nombre: selectedItem.nombre,
           descripcion: selectedItem.descripcion,
-          imagen: selectedItem.imagen,
-          id_categoria:selectedItem.id_categoria,
+          imagen: selectedItem.imagen
+        };
+      }
+      if (mode === "delete") {
+        endpoint = "api/delete-category/"+selectedItem.id_categoria;
+        method="PATCH"
+        datos = {
+          estado: 2,
         };
       }
       break;

@@ -7,7 +7,7 @@ import { useQuery } from '../../../hooks/query';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
 
-export default function PlantForm() {
+export default function PlantForm({mode}) {
     const { dataCategories, statusCategories } = useQuery("api/categories", "Categories");
     const { dataProviders, statusProviders } = useQuery("api/providers", "Providers");
     const { datos, query } = Inputs("plant", "create");

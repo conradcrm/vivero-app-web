@@ -5,14 +5,14 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useMutation } from '../../../hooks/mutation';
 
-export default function CategoryForm({selectedCategory, mode}) {
-    const { datos, method, query} = Inputs("category", mode, selectedCategory);
+export default function CategoryForm({ selectedCategory, mode }) {
+    const { datos, method, query } = Inputs("category", mode, selectedCategory);
     const [, fetchData] = useMutation(query, "Category")
     const [, setChangeImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    
+
     const handleChange = (event) => {
         setData({
             ...data,
@@ -22,6 +22,7 @@ export default function CategoryForm({selectedCategory, mode}) {
 
     const send = (event) => {
         event.preventDefault();
+        console.log(data)
         fetchData(method, data, setIsLoading)
     };
 
@@ -63,7 +64,6 @@ export default function CategoryForm({selectedCategory, mode}) {
                                     onChange={handleChange}
                                     name="descripcion"
                                     placeholder="Las suculentas son plantas perfectas para decorrar por su elegante forma" />
-
                             </div>
                         </div>
                         <SubmitButton

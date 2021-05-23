@@ -9,8 +9,8 @@ export default function FormRoutes() {
         <Switch>
             <Route path="/category/create" render={() => <CategoryForm mode="create"/>}/>
             <Route path="/category/edit" render={(props) => <CategoryForm selectedCategory={props.location.data} mode="edit"/>}/>
-            <Route path="/plant/create" render={() => <PlantForm/>}/>
-            <Route path="/provider/create" render={() => <ProviderForm />}/>
+            <Route path="/plant/create" render={() => <PlantForm mode="create"/>}/>
+            <Route path="/provider/create" render={() => <ProviderForm mode="create"/>}/>
         </Switch>
     )
 }

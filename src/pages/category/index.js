@@ -17,7 +17,7 @@ export default function Category() {
                         !data.length > 0 ? <p>Aún no hay registros</p> :
                             <>
                                 <HeaderBar module="Categoría" name="Agregar categoría" route="/category/create" />
-                                <div className="h-96 flex justify-center pt-8">
+                                <div className="pt-8">
                                     <Categories data={data} />
                                 </div>
                             </>

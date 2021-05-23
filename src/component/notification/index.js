@@ -23,7 +23,7 @@ export const notify = (type, message) => {
         case "success":
             toast.success(message, {
                 position: toast.POSITION.TOP_CENTE,
-                autoClose: 5000,
+                autoClose: 7000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -45,7 +45,7 @@ export const notify = (type, message) => {
         case "warn":
             toast.warn(message, {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 5000,
+                autoClose: 7000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -56,7 +56,7 @@ export const notify = (type, message) => {
         case "info":
             toast.info(message, {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 5000,
+                autoClose: 7000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

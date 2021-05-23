@@ -5,8 +5,8 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useMutation } from '../../../hooks/mutation';
 
-export default function CategoryForm() {
-    const { datos, query } = Inputs("category", "create");
+export default function CategoryForm({selectedCategory, mode}) {
+    const { datos, method, query} = Inputs("category", mode, selectedCategory);
     const [, fetchData] = useMutation(query, "Category")
     const [, setChangeImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ export default function CategoryForm() {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData("POST", data, setIsLoading)
+        fetchData(method, data, setIsLoading)
     };
 
     return (

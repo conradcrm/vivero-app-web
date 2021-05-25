@@ -68,7 +68,7 @@ export default function CategoryForm({ selectedCategory, mode }) {
                         </div>
                         <SubmitButton
                             isLoading={isLoading}
-                            mode="create"
+                            mode={mode}
                         />
                     </form>
                 </div>

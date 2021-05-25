@@ -5,8 +5,8 @@ import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
 
-export default function ProviderForm({mode}) {
-    const { datos, method ,query } = Inputs("provider", mode);
+export default function ProviderForm({selectedProvider,mode}) {
+    const { datos, method ,query } = Inputs("provider", mode, selectedProvider);
     const [, fetchData] = useMutation(query, "Provider")
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
@@ -89,7 +89,7 @@ export default function ProviderForm({mode}) {
                         </div>
                         <SubmitButton
                             isLoading={isLoading}
-                            mode="create"
+                            mode={mode}
                         />
                     </form>
                 </div>

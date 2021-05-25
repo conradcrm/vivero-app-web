@@ -10,13 +10,13 @@ import { useMutation } from '../../../hooks/mutation';
 export default function PlantForm({selectedPlant,mode}) {
     const { dataCategories, statusCategories } = useQuery("api/categories", "Categories");
     const { dataProviders, statusProviders } = useQuery("api/providers", "Providers");
-    const { datos, query } = Inputs("plant", "create");
+    const { datos, method, query } = Inputs("plant", "edit", selectedPlant);
     const [, fetchData] = useMutation(query, "Plant")
     const [isLoading, setIsLoading] = useState(false);
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-
+    console.log(query)
     let dataC = []
     let dataP = []
 
@@ -37,7 +37,7 @@ export default function PlantForm({selectedPlant,mode}) {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData("POST", data, setIsLoading)
+        fetchData(method, data, setIsLoading)
     };
 
     const styleSelect = {
@@ -48,6 +48,8 @@ export default function PlantForm({selectedPlant,mode}) {
         fontSize: "0.875rem",
         lineHeight: "1.25rem",
       };
+
+      console.log(selectedPlant)
 
     return (
         <div className="flex w-full justify-center">
@@ -120,7 +122,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     placeholder="Selecionar categoría"
                                     searchable={true}
                                     color= "#000"
-                                    style={styleSelect}
+                                    Style={styleSelect}
                                     options={dataC}
                                     labelField="nombre"
                                     valueField="nombre"
@@ -129,7 +131,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                         setData({ ...data, id_categoria: value[0].id_categoria });
                                     }}
                                     values={
-                                        dataC.filter((opt) => opt.nombre === data.nombre)
+                                            dataC.filter((opt) => opt.nombre === dataC.nombre)
                                     }
                                 />
                             </div>
@@ -142,7 +144,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     multi={false}
                                     placeholder="Selecionar Proveedor"
                                     searchable={true}
-                                    style={styleSelect}
+                                    Style={styleSelect}
                                     color= "#000"
                                     options={dataP}
                                     labelField="nombre"
@@ -172,7 +174,7 @@ export default function PlantForm({selectedPlant,mode}) {
                         </div>
                         <SubmitButton
                             isLoading={isLoading}
-                            mode="create"
+                            mode={mode}
                         />
                     </form>
                 </div>

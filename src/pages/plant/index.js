@@ -2,6 +2,7 @@ import React from 'react'
 import ServerError from '../../component/error/server'
 import HeaderBar from '../../component/headerbar'
 import LoadingData from '../../component/loading/data'
+import Plants from '../../component/plants';
 import { useQuery } from '../../hooks/query';
 
 export default function Plant() {
@@ -13,11 +14,11 @@ export default function Plant() {
             {
                 status === "error" ? <ServerError /> :
                     status === "loading" ? <LoadingData /> :
-                        !data.length > 0 ? <p>Aún no hay registros</p> :
+                        !data.length > 0 ? <p className="bg-darkred">Aún no hay registros</p> :
                             <>
-                                <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create"/>
-                                <div className="h-full flex justify-center pt-8">
-
+                                <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create" />
+                                <div className="pt-8">
+                                    <Plants data={data} />
                                 </div>
                             </>
             }

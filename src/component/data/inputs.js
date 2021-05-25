@@ -20,6 +20,20 @@ export default function Inputs(module, mode, selectedItem) {
           id_proveedor: undefined,
         };
       }
+      if (mode == "edit") {
+        endpoint = "api/update-plant/"+selectedItem.id_planta;
+        method="PATCH"
+        datos = {
+          nombre: selectedItem.nombre,
+          descripcion: selectedItem.descripcion,
+          imagen: selectedItem.imagen,
+          precio_venta: selectedItem.precio_venta,
+          precio_compra: selectedItem.precio_compra,
+          cantidad: selectedItem.cantidad,
+          id_categoria: selectedItem.id_categoria,
+          id_proveedor: selectedItem.id_proveedor,
+        };
+      }
       break;
 
     case "category":

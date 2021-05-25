@@ -34,6 +34,13 @@ export default function Inputs(module, mode, selectedItem) {
           id_proveedor: selectedItem.id_proveedor,
         };
       }
+      if (mode === "delete") {
+        endpoint = "api/delete-plant/"+selectedItem.id_planta;
+        method="PATCH"
+        datos = {
+          estado: 2,
+        };
+      }
       break;
 
     case "category":

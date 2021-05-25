@@ -20,7 +20,7 @@ export default function Plants({ data }) {
     onCloseModal()
   }
   let message = {
-    title: "¿Está seguro de quieres dar de baja la plant?.",
+    title: "¿Está seguro de quieres dar de baja la planta?.",
     description: "Se darán de baja todas las plantas que pertenecen a la planta."
   }
   if (isActivate) {

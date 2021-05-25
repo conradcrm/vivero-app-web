@@ -18,14 +18,14 @@ export default function ModalMessage({ title, message, onClose, update, isLoadin
             <div className="flex justify-end gap-4 mt-8">
                 <button
                     onClick={()=> {onClose();}}
-                    className=" bg-white px-3 py-1 border-2 border-b_ligth_gray rounded-lg hover:bg-gray">
+                    className=" bg-white px-3 py-1 focus:outline-none border-2 border-b_ligth_gray rounded-lg transition duration-150 ease-in-out transform hover:scale-105">
                     Cancelar
                 </button>
                 <button
                     onClick={update}
                     disabled={isLoading}
-                    className={`px-4 py-1 border-2 inline-flex  text-white rounded-lg  
-                    ${isActivate ? "text-darkred bg-mediumred hover:bg-darkred" : " text-ligthgreen bg-ligthgreen hover:bg-darkgreen"}`}>
+                    className={`px-4 py-1 border-2 inline-flex focus:outline-none  text-white rounded-lg transition duration-150 ease-in-out transform hover:scale-105
+                    ${isActivate ? "text-darkred bg-mediumred" : " text-ligthgreen bg-ligthgreen hover:bg-darkgreen"}`}>
                     {isLoading ?
                         <>
                             <Loading className="" color={"white"} size={22} />

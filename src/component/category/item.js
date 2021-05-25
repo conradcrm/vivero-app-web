@@ -3,13 +3,13 @@ import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import imageDefault from "../../resources/modules/category.jpg"
 import ToggleButton from "../buttons/toggle";
-export default function CategoryItem({ onOpenModal, setSelected, nombre, imagen, descripcion, id_categoria, estado, isActivate, setisActivate }) {
+export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal, setSelected, isActivate, setisActivate }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado === 1;
-  
+
   return (
     <div className="shadow bg-white rounded-lg mx-2 pt-3 grid justify-center items-center">
-      <div className="h-80 my-2 w-48 rounded-lg">
+      <div className="max-h-60 mt-3 mb-4 w-48 rounded-lg">
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
@@ -21,12 +21,13 @@ export default function CategoryItem({ onOpenModal, setSelected, nombre, imagen,
             }}
           />
         </div>
-        <div className="pt-4 pb-2 max-h-40">
+        <div className="pt-4 max-h-36">
           <p className="font-bold mb-2 truncate">{capNombre}</p>
-          <p className="overflow-ellipsis overflow-hidden h-20 font-normal text-sm">{descripcion} </p>
+          <p className="overflow-ellipsis overflow-hidden h-16 font-normal text-sm">{descripcion} </p>
         </div>
-        <div className="max-h-16 mb-3">
-          <div className="flex justify-between items-center text-sm mt-1 py-2 rounded-lg">
+      </div>
+      <div className="max-h-16 mb-3 hidde">
+          <div className="flex justify-between items-center text-sm mt-1 rounded-lg my-2">
             <span className="font-semibold">Editar</span>
             <Link to={{
               pathname: "/category/edit",
@@ -46,7 +47,7 @@ export default function CategoryItem({ onOpenModal, setSelected, nombre, imagen,
           </div>
           <div className="flex justify-between items-center text-sm mb-6">
             {
-              status ? <span className="font-semibold">Desactivar</span> : <span className="font-semibold">Activar</span>
+              status ? <span className="font-semibold">Activo</span> : <span className="font-semibold">Inactivo</span>
             }
             <ToggleButton
               activate={status}
@@ -60,7 +61,7 @@ export default function CategoryItem({ onOpenModal, setSelected, nombre, imagen,
           </div>
 
         </div>
-      </div>
+      
     </div>
   );
 }

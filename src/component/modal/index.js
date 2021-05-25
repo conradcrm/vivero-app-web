@@ -17,7 +17,7 @@ export default function ModalMessage({ title, message, onClose, update, isLoadin
 
             <div className="flex justify-end gap-4 mt-8">
                 <button
-                    onClick={()=> {onClose(); cancel();}}
+                    onClick={()=> {onClose();}}
                     className=" bg-white px-3 py-1 border-2 border-b_ligth_gray rounded-lg hover:bg-gray">
                     Cancelar
                 </button>

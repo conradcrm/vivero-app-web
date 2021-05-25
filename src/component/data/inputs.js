@@ -61,6 +61,25 @@ export default function Inputs(module, mode, selectedItem) {
           imagen: "",
         };
       }
+      if (mode === "edit") {
+        endpoint = "api/update-category/"+selectedItem.id_proveedor;
+        method="PATCH"
+        datos = {
+          nombre: selectedItem.nombre,
+          direccion: selectedItem.direccion,
+          telefono: selectedItem.telefono,
+          correo: selectedItem.correo,
+          imagen: selectedItem.imagen
+        };
+      }
+      if (mode === "delete") {
+        endpoint = "api/delete-provider/"+selectedItem.id_proveedor;
+        method="PATCH"
+        datos = {
+          estado: 2,
+        };
+      }
+      
       break;
     default:
       break;

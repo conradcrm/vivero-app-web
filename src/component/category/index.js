@@ -13,6 +13,7 @@ export default function Categories({ data }) {
   const [, fetchData] = useMutation(query, "Category")
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
+  
   const onCloseModal = () => setOpen(false);
   async function update() {
     await fetchData(method, datos, setIsLoading);
@@ -51,7 +52,6 @@ export default function Categories({ data }) {
             title={message.title}
             message={message.description}
             onClose={onCloseModal}
-            cancel={setisActivate}
             update={update}
             isActivate={!isActivate}
             isLoading={isLoading}

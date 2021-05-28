@@ -3,14 +3,16 @@ import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
-import { useQuery } from '../../../hooks/query';
+import { useQuery } from 'react-query';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
+import { getCategories, getProvider } from '../../../hooks/query';
 
 export default function PlantForm({selectedPlant,mode}) {
-    const { dataCategories, statusCategories } = useQuery("api/categories", "Categories");
-    const { dataProviders, statusProviders } = useQuery("api/providers", "Providers");
-    const { datos, method, query } = Inputs("plant", "edit", selectedPlant);
+    const categoryQuery = useQuery('categories', getCategories);
+    const providerQuery = useQuery('providers', getProvider);
+    
+    const { datos, method, query } = Inputs("plant", mode, selectedPlant);
     const [, fetchData] = useMutation(query, "Plant")
     const [isLoading, setIsLoading] = useState(false);
     const [, setChangeImage] = useState(false);
@@ -19,13 +21,14 @@ export default function PlantForm({selectedPlant,mode}) {
     console.log(query)
     let dataC = []
     let dataP = []
+    console.log(categoryQuery)
 
-    if (statusCategories === "fetched" && dataCategories.data.length > 0) {
-        dataC = dataCategories.data
+    if (categoryQuery.data !== undefined ) {
+        dataC = categoryQuery.data.data
     }
 
-    if (statusProviders === "fetched" && dataProviders.data.length > 0) {
-        dataP = dataProviders.data
+    if (providerQuery.data !== undefined ) {
+        dataP = providerQuery.data.data
     }
 
     const handleChange = (event) => {
@@ -126,7 +129,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     options={dataC}
                                     labelField="nombre"
                                     valueField="nombre"
-                                    disabled={statusCategories === "loading"}
+                                    disabled={categoryQuery.isLoading}
                                     onChange={(value) => {
                                         setData({ ...data, id_categoria: value[0].id_categoria });
                                     }}
@@ -149,7 +152,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     options={dataP}
                                     labelField="nombre"
                                     valueField="nombre"
-                                    disabled={statusProviders === "loading"}
+                                    disabled={providerQuery.isLoading}
                                     onChange={(value) => {
                                         setData({ ...data, id_proveedor: value[0].id_proveedor });
                                     }}

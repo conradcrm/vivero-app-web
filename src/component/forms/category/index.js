@@ -12,7 +12,7 @@ export default function CategoryForm({ selectedCategory, mode }) {
     const [isLoading, setIsLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-
+    
     const handleChange = (event) => {
         setData({
             ...data,

@@ -25,6 +25,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
           <p className="font-bold mb-2 truncate">{capNombre}</p>
           <p className="overflow-ellipsis overflow-hidden h-16 font-normal text-sm">{descripcion} </p>
         </div>
+        
       </div>
       <div className="max-h-16 mb-3 hidde">
         <div className="flex justify-between items-center text-sm mt-1 rounded-lg my-2">

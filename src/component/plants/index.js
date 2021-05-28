@@ -46,6 +46,9 @@ export default function Plants({ data }) {
           ))
           : ""}
       </div>
+      <div className="">
+
+      </div>
       <Modal open={open} onClose={onCloseModal} center>
         {selectedPlant !== undefined &&
           <ModalMessage

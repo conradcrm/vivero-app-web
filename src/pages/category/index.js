@@ -3,22 +3,21 @@ import Categories from '../../component/category'
 import HeaderBar from '../../component/headerbar'
 import ServerError from '../../component/error/server'
 import LoadingData from '../../component/loading/data';
-import { useQuery } from '../../hooks/query';
+import { useQuery } from 'react-query';
+import { getCategories } from '../../hooks/query';
 
 export default function Category() {
-    const { statusCategories, dataCategories } = useQuery("api/categories", "Categories");
-    const data = dataCategories.data
-    const status = statusCategories
+    const { data, isLoading, isError } = useQuery('categories', getCategories);
     return (
         <div className="h-full">
             {
-                status === "error" ? <ServerError /> :
-                    status === "loading" ? <LoadingData /> :
-                        !data.length > 0 ? <p>Aún no hay registros</p> :
+                isError ? <ServerError /> :
+                    isLoading ? <LoadingData /> :
+                        !data.data.length > 0 ? <p>Aún no hay registros</p> :
                             <>
-                                <HeaderBar module="Categoría" name="Agregar categoría" route="/category/create" />
+                                <HeaderBar module="Categorías" name="Agregar categoría" route="/category/create" />
                                 <div className="pt-8">
-                                    <Categories data={data} />
+                                    <Categories data={data.data} />
                                 </div>
                             </>
             }

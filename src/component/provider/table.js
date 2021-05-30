@@ -1,23 +1,31 @@
 import React, { useState } from "react";
 import ItemProvider from "./rows";
 import { Modal } from 'react-responsive-modal';
-import Inputs from "../data/inputs";
-import { useMutation } from "../../hooks/mutation";
-import ModalMessage from "../modal";
+import ModalChangeStatus from "../modal";
+import { useMutation } from "react-query";
+import { updateStatusItem } from "../../hooks/mutation/mutation";
+import { notify } from "../notification";
 
 export default function ProviderList({ data }) {
   const [selectedProvider, setSelectedProvider] = useState(data);
-  const [isLoading, setIsLoading] = useState(false);
-  const { datos, method, query } = Inputs("provider", "delete", selectedProvider);
-  const [, fetchData] = useMutation(query, "Provider")
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
 
-  const onCloseModal = () => setOpen(false);
-  async function update() {
-    await fetchData(method, datos, setIsLoading);
-    onCloseModal()
-  }
+  const { mutate, isLoading } = useMutation(updateStatusItem,{
+    variables: {
+      id: selectedProvider.id_proveedor,
+      endpoint: "delete-provider"
+    },
+     onSuccess: (data)=>{
+       notify(data.status, data.message)
+       setOpen(false);
+     },
+     onerror: (data)=>{
+      notify(data.status, data.message)
+      setOpen(false);
+    }
+  });
+
   let message = {
     title: "¿Está seguro de quieres dar de baja al proveedor?",
     description: ""
@@ -28,7 +36,6 @@ export default function ProviderList({ data }) {
       description: ""
     }
   }
-  console.log(method)
 
   return (
     <div className="bg-white h-5/6 w-full flex justify-center">
@@ -57,14 +64,14 @@ export default function ProviderList({ data }) {
           }
         </div>
       </div>
-      <Modal open={open} onClose={onCloseModal} center>
+      <Modal open={open} onClose={()=>setOpen(false)} center>
         {selectedProvider !== undefined &&
-          <ModalMessage
+          <ModalChangeStatus
             title={message.title}
             message={message.description}
-            onClose={onCloseModal}
-            update={update}
-            isActivate={!isActivate}
+            cancel={() => setOpen(false)}
+            action={() => mutate()}
+            isActivate={isActivate}
             isLoading={isLoading}
           />
         }

@@ -2,23 +2,31 @@ import React, { useState } from "react";
 import CategoryItem from "./item";
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import ModalMessage from "../modal";
-import { useMutation } from "../../hooks/mutation";
-import Inputs from "../data/inputs";
+import ModalChangeStatus from "../modal";
+import { deleteCategory, updateStatusItem } from "../../hooks/mutation/mutation";
+import { useMutation } from "react-query";
+import { notify } from "../notification";
 
 export default function Categories({ data }) {
   const [selectedCategory, setSelectedCategory] = useState(data);
-  const [isLoading, setIsLoading] = useState(false);
-  const { datos, method, query } = Inputs("category", "delete", selectedCategory);
-  const [, fetchData] = useMutation(query, "Category")
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-  
-  const onCloseModal = () => setOpen(false);
-  async function update() {
-    await fetchData(method, datos, setIsLoading);
-    onCloseModal()
-  }
+
+  const { mutate, isLoading } = useMutation(updateStatusItem, {
+    variables: {
+      id: selectedCategory.id_categoria,
+      endpoint: "delete-category"
+    },
+    onSuccess: (data) => {
+      notify(data.status, data.message)
+      setOpen(false);
+    },
+    onerror: (data) => {
+      notify(data.status, data.message)
+      setOpen(false);
+    }
+  });
+
   let message = {
     title: "¿Está seguro de quieres dar de baja la categoría?",
     description: "Se darán de baja todas las plantas que pertenecen a la categoría."
@@ -46,14 +54,14 @@ export default function Categories({ data }) {
           ))
           : ""}
       </div>
-      <Modal open={open} onClose={onCloseModal} center>
+      <Modal open={open} onClose={() => setOpen(false)} center>
         {selectedCategory !== undefined &&
-          <ModalMessage
+          <ModalChangeStatus
             title={message.title}
             message={message.description}
-            onClose={onCloseModal}
-            update={update}
-            isActivate={!isActivate}
+            cancel={() => setOpen(false)}
+            action={() => mutate()}
+            isActivate={isActivate}
             isLoading={isLoading}
           />
         }

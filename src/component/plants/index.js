@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 import PlantItem from "./item";
-import 'react-responsive-modal/styles.css';
+import ModalChangeStatus from "../modal";
+import { useMutation } from "react-query";
 import { Modal } from 'react-responsive-modal';
-import ModalMessage from "../modal";
-import { useMutation } from "../../hooks/mutation";
-import Inputs from "../data/inputs";
+import 'react-responsive-modal/styles.css';
+import { notify } from "../notification";
+import { updateStatusItem } from "../../hooks/mutation/mutation";
 
 export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
-  const [isLoading, setIsLoading] = useState(false);
-  const { datos, method, query } = Inputs("plant", "delete", selectedPlant);
-  const [, fetchData] = useMutation(query, "Plant")
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-  
-  const onCloseModal = () => setOpen(false);
-  async function update() {
-    await fetchData(method, datos, setIsLoading);
-    onCloseModal()
-  }
+
+  const { mutate, isLoading } = useMutation(updateStatusItem, {
+    variables: {
+      id: selectedPlant.id_categoria,
+      endpoint: "delete-plant"
+    },
+    onSuccess: (data) => {
+      notify(data.status, data.message)
+      setOpen(false);
+    },
+    onerror: (data) => {
+      notify(data.status, data.message)
+      setOpen(false);
+    }
+  });
+
   let message = {
     title: "¿Está seguro de quieres dar de baja la planta?.",
     description: "Se darán de baja todas las plantas que pertenecen a la planta."
@@ -49,14 +57,14 @@ export default function Plants({ data }) {
       <div className="">
 
       </div>
-      <Modal open={open} onClose={onCloseModal} center>
+      <Modal open={open} onClose={() => setOpen(false)} center>
         {selectedPlant !== undefined &&
-          <ModalMessage
+          <ModalChangeStatus
             title={message.title}
             message={message.description}
-            onClose={onCloseModal}
-            update={update}
-            isActivate={!isActivate}
+            cancel={() => setOpen(false)}
+            action={() => mutate()}
+            isActivate={isActivate}
             isLoading={isLoading}
           />
         }

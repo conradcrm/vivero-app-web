@@ -14,11 +14,11 @@ export default function Shopping() {
                 isError ? <ServerError /> :
                     isLoading ? <LoadingData /> :
                             <>
-                                <HeaderBar module="Compras" name="Agregar compra" route="/compra/create" />
+                                <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
                                 {
                                     !data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
                                     <div className="h-full flex justify-center pt-8">
-                                    {/* <ProviderList data={data.data} /> */}
+                                     <ShoppingList data={data.data} />
                                 </div>
                                 }
                             </>

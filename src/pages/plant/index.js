@@ -14,12 +14,12 @@ export default function Plant() {
             {
                 isError ? <ServerError /> :
                     isLoading ? <LoadingData /> :
-                        !data.data.length > 0 ? <p className="bg-darkred">Aún no hay registros</p> :
                             <>
                                 <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create" />
+                                {!data.data.length > 0 ? <p className="">Aún no hay registros</p> :
                                 <div className="pt-8">
                                     <Plants data={data.data} />
-                                </div>
+                                </div>}
                             </>
             }
 

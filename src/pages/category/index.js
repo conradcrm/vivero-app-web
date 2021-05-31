@@ -13,12 +13,12 @@ export default function Category() {
             {
                 isError ? <ServerError /> :
                     isLoading ? <LoadingData /> :
-                        !data.data.length > 0 ? <p>Aún no hay registros</p> :
                             <>
                                 <HeaderBar module="Categorías" name="Agregar categoría" route="/category/create" />
+                                {!data.data.length > 0 ? <p>Aún no hay registros</p> :
                                 <div className="pt-8">
                                     <Categories data={data.data} />
-                                </div>
+                                </div>}
                             </>
             }
         </div>

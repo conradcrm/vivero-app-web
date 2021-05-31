@@ -13,12 +13,12 @@ export default function Provider() {
             {
                 isError ? <ServerError /> :
                     isLoading ? <LoadingData /> :
-                        !data.data.length > 0 ? <p>Aún no hay registros</p> :
                             <>
                                 <HeaderBar module="Proveedores" name="Agregar proveedor" route="/provider/create" />
+                                {!data.data.length > 0 ? <p>Aún no hay registros</p> :
                                 <div className="h-full flex justify-center pt-8">
                                     <ProviderList data={data.data} />
-                                </div>
+                                </div>}
                             </>
             }
         </div>

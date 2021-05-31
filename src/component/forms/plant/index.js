@@ -18,11 +18,9 @@ export default function PlantForm({selectedPlant,mode}) {
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    console.log(query)
     let dataC = []
     let dataP = []
-    console.log(categoryQuery)
-
+    
     if (categoryQuery.data !== undefined ) {
         dataC = categoryQuery.data.data
     }
@@ -51,8 +49,6 @@ export default function PlantForm({selectedPlant,mode}) {
         fontSize: "0.875rem",
         lineHeight: "1.25rem",
       };
-
-      console.log(selectedPlant)
 
     return (
         <div className="flex w-full justify-center">

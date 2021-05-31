@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {AiFillShopping} from 'react-icons/ai';
 import { RiDashboardLine } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 import { RiPlantFill } from "react-icons/ri";
@@ -52,18 +53,20 @@ export default function Sidebar() {
             <span className="mx-4 font-medium">Plantas</span>
           </Link>
 
+          <Link to="/compras"
+            onClick={() => setSelected("SHOPPING")}
+            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "SHOPPING" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
+            <AiFillShopping />
+            <span className="mx-4 font-medium">Compras</span>
+          </Link>
+          
           <Link to="/employees"
             onClick={() => setSelected("EMPLOYEES")}
             className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "EMPLOYEES" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <RiTeamFill />
             <span className="mx-4 font-medium">Empleados</span>
           </Link>
-          <Link to="/compras"
-            onClick={() => setSelected("SHOPPING")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "SHOPPING" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <RiTeamFill />
-            <span className="mx-4 font-medium">Compras</span>
-          </Link>
+          
 
         </nav>
 

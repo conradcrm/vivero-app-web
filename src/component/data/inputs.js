@@ -8,7 +8,7 @@ export default function Inputs(module, mode, selectedItem) {
     case "plant":
       if (mode === "create") {
         endpoint = "api/create-plant";
-        method="POST"
+        method = "POST"
         datos = {
           nombre: "",
           descripcion: "",
@@ -21,8 +21,8 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode == "edit") {
-        endpoint = "api/update-plant/"+selectedItem.id_planta;
-        method="PATCH"
+        endpoint = "api/update-plant/" + selectedItem.id_planta;
+        method = "PATCH"
         datos = {
           nombre: selectedItem.nombre,
           descripcion: selectedItem.descripcion,
@@ -35,8 +35,8 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/status-plant/"+selectedItem.id_planta;
-        method="PATCH"
+        endpoint = "api/status-plant/" + selectedItem.id_planta;
+        method = "PATCH"
         datos = {
           estado: 2,
         };
@@ -46,7 +46,7 @@ export default function Inputs(module, mode, selectedItem) {
     case "category":
       if (mode === "create") {
         endpoint = "api/create-category";
-        method="POST"
+        method = "POST"
         datos = {
           nombre: "",
           descripcion: "",
@@ -54,8 +54,8 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "edit") {
-        endpoint = "api/update-category/"+selectedItem.id_categoria;
-        method="PATCH"
+        endpoint = "api/update-category/" + selectedItem.id_categoria;
+        method = "PATCH"
         datos = {
           nombre: selectedItem.nombre,
           descripcion: selectedItem.descripcion,
@@ -63,8 +63,8 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/status-category/"+selectedItem.id_categoria;
-        method="PATCH"
+        endpoint = "api/status-category/" + selectedItem.id_categoria;
+        method = "PATCH"
         datos = {
           estado: 2,
         };
@@ -74,6 +74,7 @@ export default function Inputs(module, mode, selectedItem) {
     case "provider":
       if (mode === "create") {
         endpoint = "api/create-provider";
+        method = "POST"
         datos = {
           nombre: "",
           direccion: "",
@@ -83,8 +84,8 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "edit") {
-        endpoint = "api/update-category/"+selectedItem.id_proveedor;
-        method="PATCH"
+        endpoint = "api/update-category/" + selectedItem.id_proveedor;
+        method = "PATCH"
         datos = {
           nombre: selectedItem.nombre,
           direccion: selectedItem.direccion,
@@ -94,18 +95,47 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/status-provider/"+selectedItem.id_proveedor;
-        method="PATCH"
+        endpoint = "api/status-provider/" + selectedItem.id_proveedor;
+        method = "PATCH"
         datos = {
           estado: 2,
         };
       }
-      
+      break;
+
+    case "shopping":
+      if (mode === "create") {
+        endpoint = "api/create-shopping";
+        method = "POST"
+        datos = {
+          cantidad: "",
+          id_planta: undefined,
+          id_proveedor: undefined,
+        };
+      }
+      if (mode == "edit") {
+        endpoint = "api/update-shopping/" + selectedItem.folio_compra;
+        method = "PATCH"
+        datos = {
+          cantidad: selectedItem.cantidad,
+          id_planta: selectedItem.id_planta,
+          id_proveedor: selectedItem.id_proveedor,
+        };
+      }
+      if (mode === "delete") {
+        endpoint = "api/status-plant/" + selectedItem.folio_compra;
+        method = "PATCH"
+        datos = {};
+      }
       break;
     default:
       break;
   }
 
   let query = `${url}${endpoint}`;
-  return { datos, method, query}
+  return {
+    datos,
+    method,
+    query
+  }
 }

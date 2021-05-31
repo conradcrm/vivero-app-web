@@ -20,3 +20,10 @@ export const getProvider = async () => {
   const data = await response.json();
   return data;
 };
+
+export const getShopping = async () => {
+  const query = globalQuery+"shopping";
+  const response = await fetch(query);
+  const data = await response.json();
+  return data;
+};

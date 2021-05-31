@@ -13,3 +13,14 @@ export const updateStatusItem = async ({id,endpoint}) => {
     const resp = await response.json();
     return resp;
 };
+
+export const updateItem = async ({id,data,endpoint}) => {
+    const url = `${globalQuery}${endpoint}/${id}`;
+    const response = await fetch(url, {
+        method: "PATCH",
+        headers:headers,
+    });
+    body: JSON.stringify(data)
+    const resp = await response.json();
+    return resp;
+};

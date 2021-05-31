@@ -6,6 +6,7 @@ import Category from "../pages/category";
 import Provider from "../pages/provider";
 import Profile from '../pages/profile';
 import Notification from '../pages/notification';
+import Shopping from '../pages/shopping';
 
 export default function ModuleRoutes() {
     return (
@@ -15,8 +16,8 @@ export default function ModuleRoutes() {
             <Route path="/categories" component={Category}/>
             <Route path="/plants" component={Plant}/>
             <Route path="/employees" render={()=> <p className="h-full flex justify-center font-bold items-center text-3xl text-darkgreen">Próximamente</p>}/>
-            <Route path="/profile" component={Profile}/>
             <Route path="/notifications" component={Notification}/>
+            <Route path="/compras" component={Shopping}/>
             <Route path="/profile" component={Profile}/>
         </Switch>
     )

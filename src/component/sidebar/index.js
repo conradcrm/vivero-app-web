@@ -54,11 +54,16 @@ export default function Sidebar() {
 
           <Link to="/employees"
             onClick={() => setSelected("EMPLOYEES")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "EMPLOYEES" ? "text-t_green" : "text-b_ligth_gray"}`}>
+            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "EMPLOYEES" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <RiTeamFill />
             <span className="mx-4 font-medium">Empleados</span>
           </Link>
-
+          <Link to="/compras"
+            onClick={() => setSelected("SHOPPING")}
+            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "SHOPPING" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
+            <RiTeamFill />
+            <span className="mx-4 font-medium">Compras</span>
+          </Link>
 
         </nav>
 

@@ -11,11 +11,10 @@ export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-
   const { mutate, isLoading } = useMutation(updateStatusItem, {
     variables: {
-      id: selectedPlant.id_categoria,
-      endpoint: "delete-plant"
+      id: selectedPlant.id_planta,
+      endpoint: "status-plant"
     },
     onSuccess: (data) => {
       notify(data.status, data.message)

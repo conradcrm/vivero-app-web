@@ -3,21 +3,22 @@ import CategoryItem from "./item";
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import ModalChangeStatus from "../modal";
-import { deleteCategory, updateStatusItem } from "../../hooks/mutation/mutation";
+import { updateStatusItem } from "../../hooks/mutation/mutation";
 import { useMutation } from "react-query";
 import { notify } from "../notification";
+
 
 export default function Categories({ data }) {
   const [selectedCategory, setSelectedCategory] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-
+  
   const { mutate, isLoading } = useMutation(updateStatusItem, {
     variables: {
       id: selectedCategory.id_categoria,
-      endpoint: "delete-category"
+      endpoint: "status-category"
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       notify(data.status, data.message)
       setOpen(false);
     },

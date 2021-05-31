@@ -35,7 +35,7 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/delete-plant/"+selectedItem.id_planta;
+        endpoint = "api/status-plant/"+selectedItem.id_planta;
         method="PATCH"
         datos = {
           estado: 2,
@@ -63,7 +63,7 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/delete-category/"+selectedItem.id_categoria;
+        endpoint = "api/status-category/"+selectedItem.id_categoria;
         method="PATCH"
         datos = {
           estado: 2,
@@ -94,7 +94,7 @@ export default function Inputs(module, mode, selectedItem) {
         };
       }
       if (mode === "delete") {
-        endpoint = "api/delete-provider/"+selectedItem.id_proveedor;
+        endpoint = "api/status-provider/"+selectedItem.id_proveedor;
         method="PATCH"
         datos = {
           estado: 2,

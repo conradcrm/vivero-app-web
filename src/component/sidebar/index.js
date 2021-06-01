@@ -14,7 +14,7 @@ export default function Sidebar() {
   const [selected, setSelected] = useState("DASHBOARD")
 
   return (
-    <div className="bg-white col-span-1 grid grid-cols-1 gap-2 place-content-between max-h-full">
+    <div className="bg-white col-span-1 grid grid-cols-1 place-content-between max-h-full">
       <div className="">
         <div className="grid justify-center items-center pt-6">
           <div className="flex items-center justify-center bg-center bg-no-repeat bg-cover">

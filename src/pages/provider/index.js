@@ -16,7 +16,7 @@ export default function Provider() {
                             <>
                                 <HeaderBar module="Proveedores" name="Agregar proveedor" route="/provider/create" />
                                 {!data.data.length > 0 ? <p>Aún no hay registros</p> :
-                                <div className="h-full flex justify-center pt-8">
+                                <div className="max-h-full flex justify-center pt-8">
                                     <ProviderList data={data.data} />
                                 </div>}
                             </>

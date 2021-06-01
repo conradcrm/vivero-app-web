@@ -38,7 +38,7 @@ export default function ProviderList({ data }) {
   }
 
   return (
-    <div className="bg-white h-5/6 w-full flex justify-center">
+    <div className="bg-white flex justify-center">
       <div className="bg-gray w-full rounded-md">
         <div className="grid grid-cols-11 text-sm font-semibold">
           <div className="col-span-9 grid grid-cols-11 mx-4 text-sm">
@@ -51,7 +51,7 @@ export default function ProviderList({ data }) {
           </div>
           <div className="col-span-2 py-3 ml-20">Acciones</div>
         </div>
-        <div className="h-screen bg-ligth_gray text-sm">
+        <div className=" bg-ligth_gray text-sm">
           {
             data.map((provider) =>
               <ItemProvider

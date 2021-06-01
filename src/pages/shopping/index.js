@@ -1,6 +1,6 @@
 import React from 'react'
 import HeaderBar from '../../component/headerbar'
-//import ShoppingList from '../../component/shopping/table'
+import ShoppingList from '../../component/shopping/table'
 import ServerError from '../../component/error/server'
 import LoadingData from '../../component/loading/data';
 import { useQuery } from 'react-query';
@@ -17,8 +17,8 @@ export default function Shopping() {
                                 <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
                                 {
                                     !data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
-                                    <div className="h-full flex justify-center pt-8">
-                                     <ShoppingList data={data.data} />
+                                    <div className="max-h-full pt-8">
+                                      <ShoppingList data={data.data} />
                                 </div>
                                 }
                             </>

@@ -6,6 +6,7 @@ import { useMutation } from '../../../hooks/mutation';
 import { useQuery } from 'react-query';
 import { getPlants, getProvider } from '../../../hooks/query';
 import Select from 'react-dropdown-select';
+import DynamicInputs from '../../dynamicInput';
 
 export default function ShoppingForm({selectedshopping,mode}) {
     const { datos, method ,query } = Inputs("shopping", mode, selectedshopping);
@@ -55,10 +56,9 @@ export default function ShoppingForm({selectedshopping,mode}) {
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo compra</h3>
                 </div>
-                <div className="col-span-4 bg-white rounded-r-xl">
-                    <form className="m-auto my-7 mx-24" onSubmit={send}>
-
-                    <div style={{ marginTop: 22, marginBottom: 22, width:"25rem"}}>
+                <div className="col-span-4 bg-white rounded-r-xl overflow-y-auto overflow-x-auto" style={{ maxHeight: "32em" }}>
+                    <form className="m-auto my-7 mx-20" onSubmit={send} >
+                            <div style={{ marginTop: 22, marginBottom: 22}}>
                                 <label className="block mb-2 font-semibold">
                                     Proveedor<span className={`ml-1 text-mediumred`}>*</span>
                                 </label>
@@ -81,45 +81,11 @@ export default function ShoppingForm({selectedshopping,mode}) {
                                     }
                                 />
                             </div>
-                            <div className="flex justify-between items-center gap-4" style={{ marginTop: 22, marginBottom: 22 }}>
-                                <div>
-                                <label className="block mb-2 font-semibold">
-                                    Planta<span className={`ml-1 text-mediumred`}>*</span>
-                                </label>    
-                                <Select
-                                    name="id_planta"
-                                    multi={false}
-                                    placeholder="Selecionar Planta"
-                                    searchable={true}
-                                    Style={styleSelect}
-                                    color= "#000"
-                                    options={dataPlant}
-                                    labelField="nombre"
-                                    valueField="nombre"
-                                    disabled={PlantQuery.isLoading}
-                                    onChange={(value) => {
-                                        setData({ ...data, id_planta: value[0].id_planta });
-                                    }}
-                                    values={
-                                        dataPlant.filter((opt) => opt.nombre === data.nombre)
-                                    }
-                                />
-                                </div>
-                                <InputText
-                                    width="9.5rem"
-                                    title="Cantidad"
-                                    required={true}
-                                    name="cantidad"
-                                    placeholder="0"
-                                    value={data.cantidad}
-                                    onChange={handleChange}
-                                    type="number"
-                                />
-                            </div>
-                        <SubmitButton
-                            isLoading={isLoading}
-                            mode={mode}
-                        />
+                            <DynamicInputs  data={dataPlant} isLoading={PlantQuery.isLoading}/>
+                            <SubmitButton
+                                isLoading={isLoading}
+                                mode={mode}
+                            />
                     </form>
                 </div>
             </div>

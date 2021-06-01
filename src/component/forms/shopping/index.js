@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Inputs from '../../data/inputs';
-import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
 import { useQuery } from 'react-query';
@@ -11,8 +10,8 @@ import DynamicInputs from '../../dynamicInput';
 export default function ShoppingForm({selectedshopping,mode}) {
     const { datos, method ,query } = Inputs("shopping", mode, selectedshopping);
     const [, fetchData] = useMutation(query, "shopping")
-    const [data, setData] = useState(datos);
     const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState({id_proveedor:undefined, inputs:undefined});
     
     const PlantQuery = useQuery('plants', getPlants);
     const providerQuery = useQuery('providers', getProvider);
@@ -28,16 +27,9 @@ export default function ShoppingForm({selectedshopping,mode}) {
         dataProv = providerQuery.data.data
     }
 
-    const handleChange = (event) => {
-        setData({
-            ...data,
-            [event.target.name]: event.target.value,
-        });
-    };
-
     const send = (event) => {
         event.preventDefault();
-        console.log(data, method, query)
+        console.log(method, query)
         fetchData(method, data, setIsLoading)
     };
 
@@ -81,7 +73,12 @@ export default function ShoppingForm({selectedshopping,mode}) {
                                     }
                                 />
                             </div>
-                            <DynamicInputs  data={dataPlant} isLoading={PlantQuery.isLoading}/>
+                            <DynamicInputs 
+                                plantas={dataPlant} 
+                                isLoading={PlantQuery.isLoading}
+                                data={data}
+                                setData= {setData}
+                                />
                             <SubmitButton
                                 isLoading={isLoading}
                                 mode={mode}

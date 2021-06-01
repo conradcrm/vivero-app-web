@@ -3,14 +3,14 @@ import Select from "react-dropdown-select";
 import InputText from "../Input/InputText";
 import {FiPlus} from 'react-icons/fi';
 
-export default function DynamicInputs({data, isLoading}) {
+export default function DynamicInputs({data,plantas, isLoading, setData}) {
   const [inputList, setInputList] = useState([{ id_planta: "", cantidad: "" }]);
-
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
+    setData({ ...data, inputs: inputList});
   };
 
   const handleSelectChange = (value, index) => {
@@ -18,8 +18,7 @@ export default function DynamicInputs({data, isLoading}) {
     list[index]['id_planta'] = value;
     setInputList(list);
   };
-  console.log(data)
-
+  
   const handleRemoveClick = index => {
     const list = [...inputList];
     list.splice(index, 1);
@@ -46,13 +45,13 @@ export default function DynamicInputs({data, isLoading}) {
                     placeholder="Selecionar Planta"
                     searchable={true}
                     color= "#000"
-                    options={data}
+                    options={plantas}
                     labelField="nombre"
                     valueField="nombre"
                     disabled={isLoading} 
                     onChange={ value => handleSelectChange(value[0].id_planta, index)}
                     values={
-                        data.filter((opt) => opt.nombre === data.nombre)
+                        plantas.filter((opt) => opt.nombre === plantas.nombre)
                     }
                     />
                 </div>
@@ -83,7 +82,7 @@ export default function DynamicInputs({data, isLoading}) {
                     {
                     inputList.length - 1 === index && 
                         <div 
-                            className="w-28 cursor-pointer text-sm flex justify-center rounded-lg bg-white border border-b_ligth_gray px-4 py-2 transition duration-150 ease-in-out transform hover:scale-105"
+                            className="w-28 cursor-pointer text-sm flex justify-center rounded-lg bg-white border border-b_ligth_gray py-2 transition duration-150 ease-in-out transform hover:scale-105"
                             onClick={handleAddClick}>
                             <FiPlus className="mt-1 mr-1"/>
                             <span className="">Agregar</span>

@@ -3,17 +3,18 @@ import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
-import { useQuery } from 'react-query';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
 import { getCategories, getProvider } from '../../../hooks/query';
+import { useQuery } from 'react-query';
 
 export default function PlantForm({selectedPlant,mode}) {
+    //const {id} = useParams();
     const categoryQuery = useQuery('categories', getCategories);
     const providerQuery = useQuery('providers', getProvider);
     
     const { datos, method, query } = Inputs("plant", mode, selectedPlant);
-    const [, fetchData] = useMutation(query, "Plant")
+    const [, fetchData] = useMutation(query, "Plant");
     const [isLoading, setIsLoading] = useState(false);
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();

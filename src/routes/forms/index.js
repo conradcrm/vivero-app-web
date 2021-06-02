@@ -6,6 +6,7 @@ import PlantForm from '../../component/forms/plant'
 import ShoppingForm from '../../component/forms/shopping'
 
 export default function FormRoutes() {
+    // to={`/plant/edit/${id_proveedor}`}>
     return (
         <Switch>
             <Route path="/category/create" render={() => <CategoryForm mode="create"/>}/>

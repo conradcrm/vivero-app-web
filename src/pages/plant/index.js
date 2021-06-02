@@ -8,7 +8,7 @@ import { getPlants } from '../../hooks/query';
 
 export default function Plant() {
     const { data, isLoading, isError } = useQuery('plants', getPlants);
-
+    
     return (
         <div className="h-full">
             {
@@ -22,7 +22,6 @@ export default function Plant() {
                                 </div>}
                             </>
             }
-
         </div>
     )
 }

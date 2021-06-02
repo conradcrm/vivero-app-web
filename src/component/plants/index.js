@@ -38,7 +38,7 @@ export default function Plants({ data }) {
   }
 
   return (
-    <div className="w-full bg-white rounded-lg p-8">
+    <div className="w-full bg-white rounded-lg p-8 hidden-scroll">
       <div className="grid grid-cols-4 gap-3">
         {data.length > 0
           ? data.map((plant) => (

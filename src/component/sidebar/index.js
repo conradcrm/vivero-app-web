@@ -16,16 +16,16 @@ export default function Sidebar() {
   return (
     <div className="bg-white col-span-1 grid grid-cols-1 place-content-between max-h-full">
       <div className="">
-        <div className="grid justify-center items-center pt-6">
+        <div className="grid justify-center items-center pt-3">
           <div className="flex items-center justify-center bg-center bg-no-repeat bg-cover">
             <img className="rounded-full w-16 h-16" src={profile_default} alt="nombre" />
           </div>
-          <span className="pt-4 text font-semibold" style={{ color: "rgb(140,140,140)" }}>
+          <span className="pt-1 text font-semibold" style={{ color: "rgb(140,140,140)" }}>
             Brisa Morales
           </span>
         </div>
 
-        <nav className="mt-12">
+        <nav className="mt-10">
           <Link to="/"
             onClick={() => setSelected("DASHBOARD")}
             className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "DASHBOARD" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>

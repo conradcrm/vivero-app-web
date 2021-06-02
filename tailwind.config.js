@@ -9,9 +9,9 @@
       mediumgreen: '#00C476',
       darkgreen: '#00A976',
       
-      ligthred: '#FFB8B8',
+      ligthred: '#FFD2D2',
       mediumred:'#D30000', //button
-      darkred:'#B51C1C', //text
+      darkred:'#D21212', //text
       
       b_ligth_gray: '#A1A1A1',
       ligth_gray: '#F5F6F8',

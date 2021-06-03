@@ -4,7 +4,7 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import ModalChangeStatus from "../modal";
 import { updateStatusItem } from "../../hooks/mutation/mutation";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { notify } from "../notification";
 
 
@@ -12,18 +12,30 @@ export default function Categories({ data }) {
   const [selectedCategory, setSelectedCategory] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-  
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading } = useMutation(updateStatusItem, {
     variables: {
       id: selectedCategory.id_categoria,
       endpoint: "status-category"
     },
-    onSuccess: (data, variables) => {
-      notify(data.status, data.message)
+    onSuccess: (response) => {
+      queryClient.setQueryData('CATEGORIES', function (oldData) {
+        let data = response.data;
+        for (let index = 0; index < oldData.data.length; index++) {
+          if (oldData.data[index].id_categoria == data.id_categoria) {
+            oldData.data.splice(index, 1)
+            oldData.data.splice(index, 0, response.data)
+            break;
+          }
+        }
+        return oldData;
+      });
+      notify(response.status, response.message)
       setOpen(false);
     },
-    onerror: (data) => {
-      notify(data.status, data.message)
+    onerror: (response) => {
+      notify(response.status, response.message)
       setOpen(false);
     }
   });

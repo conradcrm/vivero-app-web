@@ -5,12 +5,12 @@ import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
-import { getCategories, getProvider } from '../../../hooks/query';
+import useCategories, { getProvider } from '../../../hooks/query';
 import { useQuery } from 'react-query';
 
 export default function PlantForm({selectedPlant,mode}) {
     //const {id} = useParams();
-    const categoryQuery = useQuery('categories', getCategories);
+    const categoryQuery = useCategories();
     const providerQuery = useQuery('providers', getProvider);
     
     const { datos, method, query } = Inputs("plant", mode, selectedPlant);

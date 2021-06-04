@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PlantItem from "./item";
 import ModalChangeStatus from "../modal";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import { notify } from "../notification";
@@ -11,17 +11,29 @@ export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading } = useMutation(updateStatusItem, {
     variables: {
       id: selectedPlant.id_planta,
       endpoint: "status-plant"
     },
-    onSuccess: (data) => {
-      notify(data.status, data.message)
+    onSuccess: (response) => {
+      queryClient.setQueryData('PLANTS', function (oldData) {
+        for (let index = 0; index < oldData.data.length; index++) {
+          if (oldData.data[index].id_planta == response.data.id_planta) {
+            oldData.data.splice(index, 1)
+            oldData.data.splice(index, 0, response.data)
+            break;
+          }
+        }
+        return oldData;
+      });
+      notify(response.status, response.message)
       setOpen(false);
     },
-    onerror: (data) => {
-      notify(data.status, data.message)
+    onerror: (response) => {
+      notify(response.status, response.message)
       setOpen(false);
     }
   });

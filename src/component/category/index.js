@@ -20,8 +20,8 @@ export default function Categories({ data }) {
       endpoint: "status-category"
     },
     onSuccess: (response) => {
+      let data = response.data;
       queryClient.setQueryData('CATEGORIES', function (oldData) {
-        let data = response.data;
         for (let index = 0; index < oldData.data.length; index++) {
           if (oldData.data[index].id_categoria == data.id_categoria) {
             oldData.data.splice(index, 1)

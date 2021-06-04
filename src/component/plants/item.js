@@ -18,10 +18,10 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
     return (
       <div className={`bg-white shadow-lg h-60 w-48 ml-4 -mt-2
                          rounded-lg border border-icon_gray border-opacity-60
-          ${isShown ? "block" : "hidden"}`} >
+                         ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
           <div
-            className="flex op items-center justify-around hover:bg-gray py-2 rounded-lg gap-11">
+            className="flex items-center justify-around hover:bg-gray py-2 rounded-lg gap-11 cursor-default">
             <span className="text-sm ml-2">{status ? "Desactivar" : "Activar"}</span>
             <ToggleButton
               activate={status}
@@ -48,22 +48,22 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
             <span className="text-sm">Agregar</span>
           </div>
 
-            <Link 
+          <Link
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
             to={{
-            pathname: "/plant/edit",
-            data: {
-              id_planta: id_planta,
-              nombre: nombre,
-              descripcion: descripcion,
-              imagen: imagen,
-              precio_venta: precio_venta,
-              precio_compra: precio_compra,
-              cantidad: cantidad,
-              id_categoria: id_categoría,
-              id_proveedor: id_proveedor,
-            },
-          }}
+              pathname: "/plant/edit",
+              data: {
+                id_planta: id_planta,
+                nombre: nombre,
+                descripcion: descripcion,
+                imagen: imagen,
+                precio_venta: precio_venta,
+                precio_compra: precio_compra,
+                cantidad: cantidad,
+                id_categoria: id_categoría,
+                id_proveedor: id_proveedor,
+              },
+            }}
           >
             <HiOutlinePencilAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Editar</span>
@@ -84,13 +84,13 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
     <div
       className="relative shadow bg-white rounded-lg mx-2 grid justify-center cursor-default">
       <div className="cursor-pointer w-10 h-8 ml-1 absolute"
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
       >
-      <HiOutlineDotsHorizontal size={25} className="text-lg mx-2" />
-      <Menu/>
+        <HiOutlineDotsHorizontal size={25} className="text-lg mx-2" />
+        <Menu />
       </div>
-      <div className="max-h-60 mt-5 pt-3 mb-4 w-48 rounded-lg ">
+      <div className="max-h-64 mt-5 pt-3 mb-4 w-48 rounded-lg ">
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
@@ -102,13 +102,23 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
             }}
           />
         </div>
-        <div className="pt-4 max-h-36">
+        <div className="pt-4 max-h-28">
           <p className="font-bold mb-1 truncate">{capNombre}</p>
           <p className="overflow-ellipsis overflow-hidden h-16 text-sm">{descripcion} </p>
         </div>
-
+        <div className="flex justify-between items-center text-sm">
+          {status ? <span className="font-semibold">Activo</span> : <span className="font-semibold">Inactivo</span>}
+          <ToggleButton
+            activate={status}
+            click={setisActivate}
+            changeState={setisActivate}
+            selected={() => {
+              setSelected()
+              onOpenModal(true);
+            }}
+          />
+        </div>
       </div>
-
     </div>
   );
 }

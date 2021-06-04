@@ -14,6 +14,7 @@ export const updateStatusItem = async ({id,endpoint}) => {
     return resp;
 };
 
+
 export const updateItem = async ({id,data,endpoint}) => {
     const url = `${globalQuery}${endpoint}/${id}`;
     const response = await fetch(url, {

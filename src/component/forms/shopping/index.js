@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import Inputs from '../../data/inputs';
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
-import { useQuery } from 'react-query';
-import { getPlants, getProvider } from '../../../hooks/query';
+import { usePlants, useProviders } from '../../../hooks/query';
 import Select from 'react-dropdown-select';
 import DynamicInputs from '../../dynamicInput';
 
@@ -12,9 +11,8 @@ export default function ShoppingForm({selectedshopping,mode}) {
     const [, fetchData] = useMutation(query, "shopping")
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({id_proveedor:undefined, inputs:undefined});
-    
-    const PlantQuery = useQuery('plants', getPlants);
-    const providerQuery = useQuery('providers', getProvider);
+    const PlantQuery = usePlants();
+    const providerQuery = useProviders();
     
     let dataPlant = []
     let dataProv = []
@@ -29,7 +27,6 @@ export default function ShoppingForm({selectedshopping,mode}) {
 
     const send = (event) => {
         event.preventDefault();
-        console.log(method, query)
         fetchData(method, data, setIsLoading)
     };
 

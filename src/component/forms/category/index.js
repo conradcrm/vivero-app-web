@@ -22,7 +22,6 @@ export default function CategoryForm({ selectedCategory, mode }) {
 
     const send = (event) => {
         event.preventDefault();
-        console.log(data)
         fetchData(method, data, setIsLoading)
     };
 

@@ -5,14 +5,12 @@ import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
 import { useMutation } from '../../../hooks/mutation';
-import useCategories, { getProvider } from '../../../hooks/query';
-import { useQuery } from 'react-query';
+import { useCategories, useProviders } from '../../../hooks/query';
 
-export default function PlantForm({selectedPlant,mode}) {
-    //const {id} = useParams();
+export default function PlantForm({ selectedPlant, mode }) {
     const categoryQuery = useCategories();
-    const providerQuery = useQuery('providers', getProvider);
-    
+    const providerQuery = useProviders();
+
     const { datos, method, query } = Inputs("plant", mode, selectedPlant);
     const [, fetchData] = useMutation(query, "Plant");
     const [isLoading, setIsLoading] = useState(false);
@@ -21,12 +19,12 @@ export default function PlantForm({selectedPlant,mode}) {
     const [data, setData] = useState(datos);
     let dataC = []
     let dataP = []
-    
-    if (categoryQuery.data !== undefined ) {
+
+    if (categoryQuery.data !== undefined) {
         dataC = categoryQuery.data.data
     }
 
-    if (providerQuery.data !== undefined ) {
+    if (providerQuery.data !== undefined) {
         dataP = providerQuery.data.data
     }
 
@@ -49,7 +47,7 @@ export default function PlantForm({selectedPlant,mode}) {
         padding: "0.5rem 1rem 0.5rem 1rem",
         fontSize: "0.875rem",
         lineHeight: "1.25rem",
-      };
+    };
 
     return (
         <div className="flex w-full justify-center">
@@ -78,7 +76,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                 onChange={handleChange}
                                 type="text"
                             />
-                            <div className="flex justify-between" style={{marginTop:"22px"}}>
+                            <div className="flex justify-between" style={{ marginTop: "22px" }}>
                                 <InputText
                                     width="9.5rem"
                                     title="Precio de compra"
@@ -121,7 +119,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     multi={false}
                                     placeholder="Selecionar categoría"
                                     searchable={true}
-                                    color= "#000"
+                                    color="#000"
                                     Style={styleSelect}
                                     options={dataC}
                                     labelField="nombre"
@@ -131,7 +129,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                         setData({ ...data, id_categoria: value[0].id_categoria });
                                     }}
                                     values={
-                                            dataC.filter((opt) => opt.nombre === dataC.nombre)
+                                        dataC.filter((opt) => opt.nombre === dataC.nombre)
                                     }
                                 />
                             </div>
@@ -145,7 +143,7 @@ export default function PlantForm({selectedPlant,mode}) {
                                     placeholder="Selecionar Proveedor"
                                     searchable={true}
                                     Style={styleSelect}
-                                    color= "#000"
+                                    color="#000"
                                     options={dataP}
                                     labelField="nombre"
                                     valueField="nombre"

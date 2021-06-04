@@ -6,7 +6,7 @@ import ToggleButton from "../buttons/toggle";
 export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal, setSelected, isActivate, setisActivate }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado == 1;
-
+  
   return (
     <div className="shadow bg-white rounded-lg mx-2 pt-3 grid justify-center items-center">
       <div className="max-h-60 mt-3 mb-4 w-48 rounded-lg">

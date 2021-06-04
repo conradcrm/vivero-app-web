@@ -3,22 +3,21 @@ import HeaderBar from '../../component/headerbar'
 import ShoppingList from '../../component/shopping/table'
 import ServerError from '../../component/error/server'
 import LoadingData from '../../component/loading/data';
-import { useQuery } from 'react-query';
-import { getShopping } from '../../hooks/query';
+import { useShopping } from '../../hooks/query';
 
 export default function Shopping() {
-    const { data, isLoading, isError } = useQuery('shopping', getShopping);
+    const query = useShopping();
     return (
         <div className="h-full">
             {
-                isError ? <ServerError /> :
-                    isLoading ? <LoadingData /> :
+                query.isError ? <ServerError /> :
+                query.isLoading ? <LoadingData /> :
                             <>
                                 <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
                                 {
-                                    !data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
+                                    !query.data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
                                     <div className="max-h-full pt-8">
-                                      <ShoppingList data={data.data} />
+                                      <ShoppingList data={query.data.data} />
                                 </div>
                                 }
                             </>

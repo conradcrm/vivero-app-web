@@ -9,37 +9,28 @@ async function getDataModule(module){
   return data;
 }
 
-export default function useCategories(){
-  return useQuery('CATEGORIES', ()=> getDataModule('categories'),{
+export function usePlants(){
+  return useQuery('PLANTS', ()=> getDataModule('plants'),{
     staleTime:Infinity,
     notifyOnChangePropsExclusions:['isStale'],
   });
 }
 
-export const getCategories = async () => {
-  const query = url+"categories";
-  const response = await fetch(query);
-  const data = await response.json();
-  return data;
-};
+export function useCategories(){
+  return useQuery('CATEGORIES', ()=> getDataModule('categories'),{
+    
+  });
+}
 
-export const getPlants = async () => {
-  const query = url+"plants";
-  const response = await fetch(query);
-  const data = await response.json();
-  return data;
-};
+export function useProviders(){
+  return useQuery('PROVIDERS', ()=> getDataModule('providers'),{
+    
+  });
+}
 
-export const getProvider = async () => {
-  const query = url+"providers";
-  const response = await fetch(query);
-  const data = await response.json();
-  return data;
-};
-
-export const getShopping = async () => {
-  const query = url+"shopping";
-  const response = await fetch(query);
-  const data = await response.json();
-  return data;
-};
+export function useShopping(){
+  return useQuery('SHOPPING', ()=> getDataModule('shopping'),{
+    staleTime:Infinity,
+    notifyOnChangePropsExclusions:['isStale'],
+  });
+}

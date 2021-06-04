@@ -5,11 +5,13 @@ import ModalChangeStatus from "../modal";
 import { useMutation } from "react-query";
 import { updateStatusItem } from "../../hooks/mutation/mutation";
 import { notify } from "../notification";
+import { useShopping } from "../../hooks/query";
 
 export default function ShoppingList({ data }) {
   const [selectedShopping, setSelectedShopping] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
+  const queryShop = useShopping()
 
   const { mutate, isLoading } = useMutation(updateStatusItem,{
     variables: {

@@ -16,6 +16,15 @@ export const updateStatusItem = async ({ id, endpoint }) => {
     return resp;
 };
 
+export const deleteItem = async ({ id, endpoint }) => {
+  const url = `${globalQuery}${endpoint}/${id}`;
+  const response = await fetch(url, {
+      method: "DELETE",
+      headers: headers,
+  });
+  const resp = await response.json();
+  return resp;
+};
 
 export const updateItem = async ({ id, data, endpoint }) => {
     const url = `${globalQuery}${endpoint}/${id}`;
@@ -56,6 +65,35 @@ export function useMutationStatusCategories(id_categoria, setOpen) {
         }
     });
     return { mutate, isLoading }
+}
+
+export function useDeleteCategories(id_categoria, setOpen) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(deleteItem, {
+      variables: {
+          id: id_categoria,
+          endpoint: "delete-category"
+      },
+      onSuccess: (response) => {
+          let data = response.data;
+          queryClient.setQueryData('CATEGORIES', function (oldData) {
+              for (let index = 0; index < oldData.data.length; index++) {
+                  if (oldData.data[index].id_categoria === data.id_categoria) {
+                      oldData.data.splice(index, 1)
+                      break;
+                  }
+              }
+              return oldData;
+          });
+          notify(response.status, response.message)
+          setOpen(false);
+      },
+      onerror: (response) => {
+          notify(response.status, response.message)
+          setOpen(false);
+      }
+  });
+  return { mutate, isLoading }
 }
 
 

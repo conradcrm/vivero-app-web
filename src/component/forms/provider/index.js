@@ -12,7 +12,6 @@ export default function ProviderForm({selectedProvider,mode}) {
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
     const [isLoading, setIsLoading] = useState(false);
-    
     const handleChange = (event) => {
         setData({
             ...data,

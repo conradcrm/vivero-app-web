@@ -4,13 +4,14 @@ import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useMutationStatusPlants } from "../../hooks/mutation/mutation";
 import 'react-responsive-modal/styles.css';
+import { usePlants } from "../../hooks/query";
 
 export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusPlants(selectedPlant.id_planta, setOpen);
-
+  const queryPlan = usePlants()
   function handleClick() {
     mutate();
   }

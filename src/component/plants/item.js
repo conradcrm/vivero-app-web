@@ -15,36 +15,15 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
   const Menu = () => {
     return (
-      <div className={`bg-white shadow-lg h-60 w-48 ml-4 -mt-2
+      <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
                          rounded-lg border border-icon_gray border-opacity-60
                          ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
-          <div
-            className="flex items-center justify-around hover:bg-gray py-2 rounded-lg gap-11 cursor-default">
-            <span className="text-sm ml-2">{status ? "Desactivar" : "Activar"}</span>
-            <ToggleButton
-              activate={status}
-              click={setisActivate}
-              changeState={setisActivate}
-              selected={() => {
-                setSelected();
-                onOpenModal(true);
-              }}
-            />
-          </div>
-
-          <hr className="my-2 text-gray" />
-
+        
           <div
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2">
             <BiDetail size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Detalles</span>
-          </div>
-
-          <div
-            className="button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2">
-            <FiPlusCircle size="20" className="ml-2 opacity-70" />
-            <span className="text-sm">Agregar</span>
           </div>
 
           <Link
@@ -70,7 +49,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
           <hr className="my-2 text-gray" />
           <div
-            className="button-action flex cursor-pointer py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
+            className="button-action flex cursor-pointer mb-3 py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
             <FaTrashAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm ">Eliminar</span>
           </div>

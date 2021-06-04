@@ -3,13 +3,14 @@ import ItemProvider from "./rows";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useMutationStatusProvider } from "../../hooks/mutation/mutation";
+import { useProviders } from "../../hooks/query";
 
 export default function ProviderList({ data }) {
   const [selectedProvider, setSelectedProvider] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusProvider(selectedProvider.id_proveedor, setOpen);
-
+  const queryProv = useProviders()
   function handleClick() {
     mutate();
   }

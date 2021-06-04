@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import CategoryItem from "./item";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
-import { useMutationStatusCategories } from "../../hooks/mutation/mutation";
+import { useDeleteCategories, useMutationStatusCategories } from "../../hooks/mutation/mutation";
 import 'react-responsive-modal/styles.css';
+import { useCategories } from "../../hooks/query";
+import ModalDelete from "../modal/delete";
 
 export default function Categories({ data }) {
   const [selectedCategory, setSelectedCategory] = useState(data);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusCategories(selectedCategory.id_categoria, setOpen);
- 
+  const deleteCat = useDeleteCategories(selectedCategory.id_categoria, setOpenDelete);
+  const queryCat = useCategories();
   function handleClick() {
     mutate();
+  }
+
+  function handleClickDelete(){
+    deleteCat.mutate();
   }
 
   let message = {
@@ -26,13 +34,20 @@ export default function Categories({ data }) {
     }
   }
 
+  let messageD = {
+    title: "¿Está seguro de quieres eliminar la categoría?",
+    description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
+  }
+
+
   return (
     <div className="w-full bg-white rounded-lg p-8">
       <div className="grid grid-cols-4 gap-3">
-        {data.length > 0
-          ? data.map((category) => (
+        {queryCat.data.data.length > 0
+          ? queryCat.data.data.map((category) => (
             <CategoryItem
               onOpenModal={setOpen}
+              onOpenDeleteModal = {setOpenDelete}
               setSelected={() => setSelectedCategory(category)}
               isActivate={isActivate}
               setisActivate={setisActivate}
@@ -51,6 +66,17 @@ export default function Categories({ data }) {
             action={() => handleClick()}
             isActivate={isActivate}
             isLoading={isLoading}
+          />
+        }
+      </Modal>
+      <Modal open={openDelete} onClose={() => setOpenDelete(false)} center>
+        {selectedCategory !== undefined &&
+          <ModalDelete
+            title={messageD.title}
+            message={messageD.description}
+            cancel={() => setOpenDelete(false)}
+            action={() => handleClickDelete()}
+            isLoading={deleteCat.isLoading}
           />
         }
       </Modal>

@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import ItemProvider from "./rows";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
-import { useMutationStatusProvider } from "../../hooks/mutation/mutation";
+import { useDeleteProvider, useMutationStatusProvider } from "../../hooks/mutation/mutation";
 import { useProviders } from "../../hooks/query";
+import ModalDelete from "../modal/delete";
 
 export default function ProviderList({ data }) {
   const [selectedProvider, setSelectedProvider] = useState(data);
+  const [openDelete, setOpenDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusProvider(selectedProvider.id_proveedor, setOpen);
+  const deleteProvider = useDeleteProvider(selectedProvider.id_proveedor, setOpenDelete);
   const queryProv = useProviders()
   function handleClick() {
     mutate();
+  }
+
+  
+  function handleClickDelete(){
+    deleteProvider.mutate();
   }
 
   let message = {
@@ -24,6 +32,11 @@ export default function ProviderList({ data }) {
       title: "¿Activar proveedor?",
       description: ""
     }
+  }
+  
+  let messageD = {
+    title: "¿Está seguro de quieres eliminar al proveedor?",
+    description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
   }
 
   return (
@@ -45,6 +58,7 @@ export default function ProviderList({ data }) {
             data.map((provider) =>
               <ItemProvider
                 onOpenModal={setOpen}
+                onOpenDeleteModal = {setOpenDelete}
                 setSelected={() => setSelectedProvider(provider)}
                 isActivate={isActivate}
                 setisActivate={setisActivate}
@@ -62,6 +76,17 @@ export default function ProviderList({ data }) {
             action={() => handleClick()}
             isActivate={isActivate}
             isLoading={isLoading}
+          />
+        }
+      </Modal>
+      <Modal open={openDelete} onClose={() => setOpenDelete(false)} center>
+        {selectedProvider !== undefined &&
+          <ModalDelete
+            title={messageD.title}
+            message={messageD.description}
+            cancel={() => setOpenDelete(false)}
+            action={() => handleClickDelete()}
+            isLoading={deleteProvider.isLoading}
           />
         }
       </Modal>

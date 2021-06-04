@@ -4,7 +4,7 @@ import { MdDeleteForever } from "react-icons/md";
 import ToggleButton from "../buttons/toggle";
 import imageDefault from "../../resources/modules/category.jpg"
 import { Link } from "react-router-dom";
-export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, correo, direccion, estado, onOpenModal, setSelected, isActivate, setisActivate }) {
+export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, correo, direccion, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let status = estado <= 1;
 
   return (
@@ -71,7 +71,12 @@ export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, c
             </div>
           </Link>
         </div>
-        <button className="p-2 hover:bg-ligthred rounded-3xl flex outline-none border-none focus:outline-none opacity-80 hover:opacity-100">
+        <button 
+         onClick={() => {
+          setSelected();
+          onOpenDeleteModal(true);
+        }}
+        className="p-2 hover:bg-ligthred rounded-3xl flex outline-none border-none focus:outline-none opacity-80 hover:opacity-100">
           <MdDeleteForever size={22} className="text-mediumred" />
         </button>
       </div>

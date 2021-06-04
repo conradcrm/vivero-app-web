@@ -96,7 +96,6 @@ export function useDeleteCategories(id_categoria, setOpen) {
   return { mutate, isLoading }
 }
 
-
 export function useMutationStatusPlants(id_planta, setOpen) {
     const queryClient = useQueryClient();
     const { mutate, isLoading } = useMutation(updateStatusItem, {
@@ -124,6 +123,36 @@ export function useMutationStatusPlants(id_planta, setOpen) {
         }
       });
     return { mutate, isLoading }
+}
+
+
+export function useDeletePlants(id_planta, setOpen) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(deleteItem, {
+      variables: {
+          id: id_planta,
+          endpoint: "delete-plant"
+      },
+      onSuccess: (response) => {
+          let data = response.data;
+          queryClient.setQueryData('PLANTS', function (oldData) {
+              for (let index = 0; index < oldData.data.length; index++) {
+                  if (oldData.data[index].id_planta === data.id_planta) {
+                      oldData.data.splice(index, 1)
+                      break;
+                  }
+              }
+              return oldData;
+          });
+          notify(response.status, response.message)
+          setOpen(false);
+      },
+      onerror: (response) => {
+          notify(response.status, response.message)
+          setOpen(false);
+      }
+  });
+  return { mutate, isLoading }
 }
 
 export function useMutationStatusProvider(id_proveedor, setOpen) {
@@ -154,4 +183,33 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
         }
       });
     return { mutate, isLoading }
+}
+
+export function useDeleteProvider(id_proveedor, setOpen) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(deleteItem, {
+      variables: {
+          id: id_proveedor,
+          endpoint: "delete-provider"
+      },
+      onSuccess: (response) => {
+          let data = response.data;
+          queryClient.setQueryData('PROVIDERS', function (oldData) {
+              for (let index = 0; index < oldData.data.length; index++) {
+                  if (oldData.data[index].id_proveedor === data.id_proveedor) {
+                      oldData.data.splice(index, 1)
+                      break;
+                  }
+              }
+              return oldData;
+          });
+          notify(response.status, response.message)
+          setOpen(false);
+      },
+      onerror: (response) => {
+          notify(response.status, response.message)
+          setOpen(false);
+      }
+  });
+  return { mutate, isLoading }
 }

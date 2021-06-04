@@ -2,18 +2,26 @@ import React, { useState } from "react";
 import PlantItem from "./item";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
-import { useMutationStatusPlants } from "../../hooks/mutation/mutation";
+import { useDeletePlants, useMutationStatusPlants } from "../../hooks/mutation/mutation";
 import 'react-responsive-modal/styles.css';
 import { usePlants } from "../../hooks/query";
+import ModalDelete from "../modal/delete";
 
 export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
+  const [openDelete, setOpenDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusPlants(selectedPlant.id_planta, setOpen);
+  const deletePlant = useDeletePlants(selectedPlant.id_planta, setOpenDelete);
+  
   const queryPlan = usePlants()
   function handleClick() {
     mutate();
+  }
+
+  function handleClickDelete(){
+    deletePlant.mutate();
   }
 
   let message = {
@@ -26,6 +34,11 @@ export default function Plants({ data }) {
       description: ""
     }
   }
+  
+  let messageD = {
+    title: "¿Está seguro de quieres eliminar la planta?",
+    description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
+  }
 
   return (
     <div className="w-full bg-white rounded-lg p-8 hidden-scroll">
@@ -34,6 +47,7 @@ export default function Plants({ data }) {
           ? data.map((plant) => (
             <PlantItem
               onOpenModal={setOpen}
+              onOpenDeleteModal = {setOpenDelete}
               setSelected={() => setSelectedPlant(plant)}
               isActivate={isActivate}
               setisActivate={setisActivate}
@@ -55,6 +69,17 @@ export default function Plants({ data }) {
             action={() => handleClick()}
             isActivate={isActivate}
             isLoading={isLoading}
+          />
+        }
+      </Modal>
+      <Modal open={openDelete} onClose={() => setOpenDelete(false)} center>
+        {selectedPlant !== undefined &&
+          <ModalDelete
+            title={messageD.title}
+            message={messageD.description}
+            cancel={() => setOpenDelete(false)}
+            action={() => handleClickDelete()}
+            isLoading={deletePlant.isLoading}
           />
         }
       </Modal>

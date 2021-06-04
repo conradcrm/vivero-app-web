@@ -8,7 +8,7 @@ import { BiDetail } from 'react-icons/bi';
 import { FiPlusCircle } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 
-export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate }) {
+export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado <= 1;
   const [isShown, setIsShown] = useState(false);
@@ -19,7 +19,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
                          rounded-lg border border-icon_gray border-opacity-60
                          ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
-        
+
           <div
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2">
             <BiDetail size="20" className="ml-2 opacity-70" />
@@ -49,6 +49,10 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
           <hr className="my-2 text-gray" />
           <div
+            onClick={() => {
+              setSelected();
+              onOpenDeleteModal(true);
+            }}
             className="button-action flex cursor-pointer mb-3 py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
             <FaTrashAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm ">Eliminar</span>

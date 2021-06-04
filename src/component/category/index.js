@@ -36,7 +36,7 @@ export default function Categories({ data }) {
 
   let messageD = {
     title: "¿Está seguro de quieres eliminar la categoría?",
-    description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
+    description: "Se eliminará la categoría t todas las plantas perteneciente a la misma. Esta acción no se puede deshacer. Los datos no se podrán recuperar."
   }
 
 

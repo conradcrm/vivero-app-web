@@ -1,42 +1,19 @@
 import React, { useState } from "react";
 import PlantItem from "./item";
 import ModalChangeStatus from "../modal";
-import { useMutation, useQueryClient } from "react-query";
 import { Modal } from 'react-responsive-modal';
+import { useMutationStatusPlants } from "../../hooks/mutation/mutation";
 import 'react-responsive-modal/styles.css';
-import { notify } from "../notification";
-import { updateStatusItem } from "../../hooks/mutation/mutation";
 
 export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutationStatusPlants(selectedPlant.id_planta, setOpen);
 
-  const { mutate, isLoading } = useMutation(updateStatusItem, {
-    variables: {
-      id: selectedPlant.id_planta,
-      endpoint: "status-plant"
-    },
-    onSuccess: (response) => {
-      queryClient.setQueryData('PLANTS', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_planta === response.data.id_planta) {
-            oldData.data.splice(index, 1)
-            oldData.data.splice(index, 0, response.data)
-            break;
-          }
-        }
-        return oldData;
-      });
-      notify(response.status, response.message)
-      setOpen(false);
-    },
-    onerror: (response) => {
-      notify(response.status, response.message)
-      setOpen(false);
-    }
-  });
+  function handleClick() {
+    mutate();
+  }
 
   let message = {
     title: "¿Está seguro de quieres dar de baja la planta?.",
@@ -74,7 +51,7 @@ export default function Plants({ data }) {
             title={message.title}
             message={message.description}
             cancel={() => setOpen(false)}
-            action={() => mutate()}
+            action={() => handleClick()}
             isActivate={isActivate}
             isLoading={isLoading}
           />

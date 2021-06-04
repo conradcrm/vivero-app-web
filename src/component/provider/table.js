@@ -1,42 +1,18 @@
 import React, { useState } from "react";
 import ItemProvider from "./rows";
-import { Modal } from 'react-responsive-modal';
 import ModalChangeStatus from "../modal";
-import { useMutation, useQueryClient } from "react-query";
-import { updateStatusItem } from "../../hooks/mutation/mutation";
-import { notify } from "../notification";
+import { Modal } from 'react-responsive-modal';
+import { useMutationStatusProvider } from "../../hooks/mutation/mutation";
 
 export default function ProviderList({ data }) {
   const [selectedProvider, setSelectedProvider] = useState(data);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
-  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutationStatusProvider(selectedProvider.id_proveedor, setOpen);
 
-  const { mutate, isLoading } = useMutation(updateStatusItem,{
-    variables: {
-      id: selectedProvider.id_proveedor,
-      endpoint: "status-provider"
-    },
-    onSuccess: (response) => {
-      let data = response.data;
-      queryClient.setQueryData('PROVIDERS', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_proveedor === data.id_proveedor) {
-            oldData.data.splice(index, 1)
-            oldData.data.splice(index, 0, response.data)
-            break;
-          }
-        }
-        return oldData;
-      });
-      notify(response.status, response.message)
-      setOpen(false);
-    },
-     onerror: (response)=>{
-      notify(response.status, response.message)
-      setOpen(false);
-    }
-  });
+  function handleClick() {
+    mutate();
+  }
 
   let message = {
     title: "¿Está seguro de quieres dar de baja al proveedor?",
@@ -76,13 +52,13 @@ export default function ProviderList({ data }) {
           }
         </div>
       </div>
-      <Modal open={open} onClose={()=>setOpen(false)} center>
+      <Modal open={open} onClose={() => setOpen(false)} center>
         {selectedProvider !== undefined &&
           <ModalChangeStatus
             title={message.title}
             message={message.description}
             cancel={() => setOpen(false)}
-            action={() => mutate()}
+            action={() => handleClick()}
             isActivate={isActivate}
             isLoading={isLoading}
           />

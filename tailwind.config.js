@@ -5,6 +5,7 @@
    darkMode: false,
    theme: {
     colors: { // t = text, b = button, s = select
+      ligthgreen100: "#CCFFCB",
       ligthgreen: '#00CC55',
       mediumgreen: '#00C476',
       darkgreen: '#00A976',

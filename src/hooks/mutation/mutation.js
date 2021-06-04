@@ -6,6 +6,17 @@ const headers = {
     Accept: "application/json",
 }
 
+export const updateStatusItemShopping = async ({ id, data ,endpoint }) => {
+    const url = `${globalQuery}${endpoint}/${id}`;  
+    const response = await fetch(url, {
+        method: "PATCH",
+        headers: headers,
+        body: JSON.stringify(data),
+    });
+    const resp = await response.json();
+    return resp;
+};
+
 export const updateStatusItem = async ({ id, endpoint }) => {
     const url = `${globalQuery}${endpoint}/${id}`;
     const response = await fetch(url, {
@@ -212,4 +223,37 @@ export function useDeleteProvider(id_proveedor, setOpen) {
       }
   });
   return { mutate, isLoading }
+}
+
+//*******++++++++++++++++++++++++++++++++++++++++++++++++++SHOPPIN */
+
+export function useMutationStatusShopping(folio_compra, data ,setOpen) {
+    const queryClient = useQueryClient();
+    const { mutate, isLoading } = useMutation(updateItem,{
+        variables: {
+          id: folio_compra,
+          data : data,
+          endpoint: "status-shopping",
+        },
+        onSuccess: (response) => {
+          let data = response.data;
+          queryClient.setQueryData('SHOPPING', function (oldData) {
+            for (let index = 0; index < oldData.data.length; index++) {
+              if (oldData.data[index].folio_compra === data.folio_compra) {
+                oldData.data.splice(index, 1)
+                oldData.data.splice(index, 0, response.data)
+                break;
+              }
+            }
+            return oldData;
+          });
+          notify(response.status, response.message)
+          setOpen(false);
+        },
+         onerror: (response)=>{
+          notify(response.status, response.message)
+          setOpen(false);
+        }
+      });
+    return { mutate, isLoading }
 }

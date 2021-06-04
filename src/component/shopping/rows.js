@@ -4,7 +4,7 @@ import { MdDeleteForever } from "react-icons/md";
 import ToggleButton from "../buttons/toggle";
 import { Link } from "react-router-dom";
 export default function ItemProvider(shopping,{onOpenModal, setSelected, isActivate, setisActivate }) {
-  let status = shopping.estado == 1;
+  let status = shopping.estado <= 1;
   let total = shopping.detalle.reduce((tot, detalle)=>{
     return tot + detalle.planta.precio_compra;
   },0)

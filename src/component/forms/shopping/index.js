@@ -7,7 +7,7 @@ import Select from 'react-dropdown-select';
 import DynamicInputs from '../../dynamicInput';
 
 export default function ShoppingForm({selectedshopping,mode}) {
-    const { datos, method ,query } = Inputs("shopping", mode, selectedshopping);
+    const { method ,query } = Inputs("shopping", mode, selectedshopping);
     const [, fetchData] = useMutation(query, "shopping")
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({id_proveedor:undefined, inputs:undefined});

@@ -18,13 +18,15 @@ export function usePlants(){
 
 export function useCategories(){
   return useQuery('CATEGORIES', ()=> getDataModule('categories'),{
-    
+    staleTime:Infinity,
+    notifyOnChangePropsExclusions:['isStale'],
   });
 }
 
 export function useProviders(){
   return useQuery('PROVIDERS', ()=> getDataModule('providers'),{
-    
+    staleTime:Infinity,
+    notifyOnChangePropsExclusions:['isStale'],
   });
 }
 

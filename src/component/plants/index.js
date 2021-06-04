@@ -21,7 +21,7 @@ export default function Plants({ data }) {
     onSuccess: (response) => {
       queryClient.setQueryData('PLANTS', function (oldData) {
         for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_planta == response.data.id_planta) {
+          if (oldData.data[index].id_planta === response.data.id_planta) {
             oldData.data.splice(index, 1)
             oldData.data.splice(index, 0, response.data)
             break;

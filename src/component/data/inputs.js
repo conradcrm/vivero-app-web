@@ -20,7 +20,7 @@ export default function Inputs(module, mode, selectedItem) {
           id_proveedor: undefined,
         };
       }
-      if (mode == "edit") {
+      if (mode === "edit") {
         endpoint = "api/update-plant/" + selectedItem.id_planta;
         method = "PATCH"
         datos = {
@@ -113,7 +113,7 @@ export default function Inputs(module, mode, selectedItem) {
           id_proveedor: undefined,
         };
       }
-      if (mode == "edit") {
+      if (mode === "edit") {
         endpoint = "api/update-shopping/" + selectedItem.folio_compra;
         method = "PATCH"
         datos = {

@@ -5,7 +5,7 @@ import ToggleButton from "../buttons/toggle";
 import imageDefault from "../../resources/modules/category.jpg"
 import { Link } from "react-router-dom";
 export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, correo, direccion, estado, onOpenModal, setSelected, isActivate, setisActivate }) {
-  let status = estado == 1;
+  let status = estado <= 1;
 
   return (
     <div className="grid grid-cols-11 bg-white h-16 my-1">

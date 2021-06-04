@@ -23,7 +23,7 @@ export default function Categories({ data }) {
       let data = response.data;
       queryClient.setQueryData('CATEGORIES', function (oldData) {
         for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_categoria == data.id_categoria) {
+          if (oldData.data[index].id_categoria === data.id_categoria) {
             oldData.data.splice(index, 1)
             oldData.data.splice(index, 0, response.data)
             break;

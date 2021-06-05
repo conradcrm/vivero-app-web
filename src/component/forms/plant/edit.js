@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
-import { useCategories, useProviders } from '../../../hooks/query';
-import { useCreatePLant } from '../../../hooks/mutation/mutation';
+import { getDataModuleId, useCategories, useProviders } from '../../../hooks/query';
+import { useUpdatePlant } from '../../../hooks/mutation/mutation';
+import { useParams } from 'react-router';
 
-export default function PlantForm() {
+export default function PlantEditForm() {
+    const {id} = useParams()
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
     const [, setChangeImage] = useState(false);
@@ -22,7 +24,8 @@ export default function PlantForm() {
         id_proveedor: undefined,
     });
 
-    const createPlant = useCreatePLant(data);
+    const updatePlant = useUpdatePlant(id, data);
+    
     let dataC = []
     let dataP = []
 
@@ -41,9 +44,13 @@ export default function PlantForm() {
         });
     };
 
+    useEffect(() => {
+        getDataModuleId('plant', id, setData)
+    }, [id])
+
     const send = (event) => {
         event.preventDefault();
-        createPlant.mutate();
+        updatePlant.mutate();
     };
 
     const styleSelect = {
@@ -135,7 +142,7 @@ export default function PlantForm() {
                                         setData({ ...data, id_categoria: value[0].id_categoria });
                                     }}
                                     values={
-                                        dataC.filter((opt) => opt.nombre === dataC.nombre)
+                                        dataC.filter((opt) => opt.id_categoria === data.id_categoria)
                                     }
                                 />
                             </div>
@@ -158,7 +165,7 @@ export default function PlantForm() {
                                         setData({ ...data, id_proveedor: value[0].id_proveedor });
                                     }}
                                     values={
-                                        dataP.filter((opt) => opt.nombre === data.nombre)
+                                        dataP.filter((opt) => opt.id_proveedor === data.id_proveedor)
                                     }
                                 />
 
@@ -177,8 +184,8 @@ export default function PlantForm() {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={createPlant.isLoading}
-                            mode={"create"}
+                            isLoading={updatePlant.isLoading}
+                            mode={"edit"}
                         />
                     </form>
                 </div>

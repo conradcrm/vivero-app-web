@@ -211,6 +211,42 @@ export function useCreatePLant(data) {
   return { mutate, isLoading }
 }
 
+export function useUpdatePlant(id_planta, data) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(updateItem, {
+    variables: {
+      id: id_planta,
+      endpoint: "update-plant",
+      data: data
+    },
+    onSuccess: (response) => {
+      let data = response.data;
+      const noData = queryClient.setQueryData('PLANTS', function (oldData) {
+        if (oldData !== undefined) {
+          for (let index = 0; index < oldData.data.length; index++) {
+            if (oldData.data[index].id_planta === data.id_planta) {
+              oldData.data.splice(index, 1)
+              oldData.data.splice(index, 0, response.data)
+              break;
+            }
+          }
+        }
+        return oldData;
+      });
+      
+      if (noData === undefined) {
+        queryClient.invalidateQueries('PLANTS');
+      }
+      notify(response.status, response.message)
+    },
+    onerror: (response) => {
+      notify(response.status, response.message)
+    }
+  });
+  return { mutate, isLoading }
+}
+
+
 export function useMutationStatusPlants(id_planta, setOpen) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateStatusItem, {

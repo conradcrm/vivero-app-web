@@ -27,7 +27,7 @@ export default function CategoryEditForm() {
 
     useEffect(() => {
         getDataModuleId('category', id, setData)
-    }, [])
+    }, [id])
 
     const send = (event) => {
         event.preventDefault();

@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import SubmitButton from '../../buttons/submit';
-import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useCreateCategory } from '../../../hooks/mutation/mutation';
 
-export default function CategoryForm({ selectedCategory, mode }) {
-    const { datos, method, query } = Inputs("category", mode, selectedCategory);
+export default function CategoryForm() {
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
-    const [data, setData] = useState(datos);
+    const [data, setData] = useState({
+        descripcion: '',
+        id_categoria: '',
+        imagen: '',
+        nombre: '',
+    });
+
     const  createCategory = useCreateCategory(data);
     const handleChange = (event) => {
         setData({
@@ -65,7 +69,7 @@ export default function CategoryForm({ selectedCategory, mode }) {
                         </div>
                         <SubmitButton
                             isLoading={createCategory.isLoading}
-                            mode={mode}
+                            mode={"create"}
                         />
                     </form>
                 </div>

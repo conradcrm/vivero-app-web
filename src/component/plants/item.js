@@ -5,7 +5,6 @@ import ToggleButton from "../buttons/toggle";
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BiDetail } from 'react-icons/bi';
-import { FiPlusCircle } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 
 export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
@@ -28,21 +27,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
           <Link
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
-            to={{
-              pathname: "/plant/edit",
-              data: {
-                id_planta: id_planta,
-                nombre: nombre,
-                descripcion: descripcion,
-                imagen: imagen,
-                precio_venta: precio_venta,
-                precio_compra: precio_compra,
-                cantidad: cantidad,
-                id_categoria: id_categoría,
-                id_proveedor: id_proveedor,
-              },
-            }}
-          >
+            to={`/plant/edit/${id_planta}`}>
             <HiOutlinePencilAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Editar</span>
           </Link>

@@ -3,9 +3,8 @@ import PlantItem from "./item";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useDeletePlants, useMutationStatusPlants } from "../../hooks/mutation/mutation";
-import 'react-responsive-modal/styles.css';
-import { usePlants } from "../../hooks/query";
 import ModalDelete from "../modal/delete";
+import 'react-responsive-modal/styles.css';
 
 export default function Plants({ data }) {
   const [selectedPlant, setSelectedPlant] = useState(data);
@@ -14,13 +13,11 @@ export default function Plants({ data }) {
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusPlants(selectedPlant.id_planta, setOpen);
   const deletePlant = useDeletePlants(selectedPlant.id_planta, setOpenDelete);
-  
-  const queryPlan = usePlants()
-  function handleClick() {
+   function handleClick() {
     mutate();
   }
 
-  function handleClickDelete(){
+  function handleClickDelete() {
     deletePlant.mutate();
   }
 
@@ -34,7 +31,7 @@ export default function Plants({ data }) {
       description: ""
     }
   }
-  
+
   let messageD = {
     title: "¿Está seguro de quieres eliminar la planta?",
     description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
@@ -47,7 +44,7 @@ export default function Plants({ data }) {
           ? data.map((plant) => (
             <PlantItem
               onOpenModal={setOpen}
-              onOpenDeleteModal = {setOpenDelete}
+              onOpenDeleteModal={setOpenDelete}
               setSelected={() => setSelectedPlant(plant)}
               isActivate={isActivate}
               setisActivate={setisActivate}

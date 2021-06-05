@@ -12,13 +12,13 @@ export default function Plant() {
             {
                 query.isError ? <ServerError /> :
                     query.isLoading ? <LoadingData /> :
-                            <>
-                                <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create" />
-                                {!query.data.data.length > 0 ? <p className="">Aún no hay registros</p> :
+                        query.data !== undefined && <>
+                            <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create" />
+                            {!query.data.data.length > 0 ? <p className="">Aún no hay registros</p> :
                                 <div className="pt-8">
                                     <Plants data={query.data.data} />
                                 </div>}
-                            </>
+                        </>
             }
         </div>
     )

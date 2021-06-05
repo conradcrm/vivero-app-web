@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import ItemProvider from "./rows";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
-import { useDeleteProvider, useMutationStatusProvider } from "../../hooks/mutation/mutation";
-import { useProviders } from "../../hooks/query";
 import ModalDelete from "../modal/delete";
+import { useDeleteProvider, useMutationStatusProvider } from "../../hooks/mutation/mutation";
 
 export default function ProviderList({ data }) {
   const [selectedProvider, setSelectedProvider] = useState(data);
@@ -13,12 +12,11 @@ export default function ProviderList({ data }) {
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusProvider(selectedProvider.id_proveedor, setOpen);
   const deleteProvider = useDeleteProvider(selectedProvider.id_proveedor, setOpenDelete);
-  const queryProv = useProviders()
+
   function handleClick() {
     mutate();
   }
 
-  
   function handleClickDelete(){
     deleteProvider.mutate();
   }

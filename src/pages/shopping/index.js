@@ -11,16 +11,16 @@ export default function Shopping() {
         <div className="h-full">
             {
                 query.isError ? <ServerError /> :
-                query.isLoading ? <LoadingData /> :
-                            <>
-                                <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
-                                {
-                                    !query.data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
+                    query.isLoading ? <LoadingData /> :
+                        query.data != undefined && <>
+                            <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
+                            {
+                                !query.data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :
                                     <div className="max-h-full pt-8">
-                                      <ShoppingList data={query.data.data} />
-                                </div>
-                                }
-                            </>
+                                        <ShoppingList data={query.data.data} />
+                                    </div>
+                            }
+                        </>
             }
         </div>
     )

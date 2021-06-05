@@ -5,15 +5,14 @@ import { useMutation } from '../../../hooks/mutation';
 import { usePlants, useProviders } from '../../../hooks/query';
 import Select from 'react-dropdown-select';
 import DynamicInputs from '../../dynamicInput';
+import { useCreateShopping } from '../../../hooks/mutation/mutation';
 
 export default function ShoppingForm({selectedshopping,mode}) {
     const { method ,query } = Inputs("shopping", mode, selectedshopping);
-    const [, fetchData] = useMutation(query, "shopping")
-    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({id_proveedor:undefined, inputs:undefined});
     const PlantQuery = usePlants();
     const providerQuery = useProviders();
-    
+    const registerShopping = useCreateShopping(data);
     let dataPlant = []
     let dataProv = []
     
@@ -27,7 +26,7 @@ export default function ShoppingForm({selectedshopping,mode}) {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData(method, data, setIsLoading)
+        registerShopping.mutate();
     };
 
     const styleSelect = {
@@ -77,7 +76,7 @@ export default function ShoppingForm({selectedshopping,mode}) {
                                 setData= {setData}
                                 />
                             <SubmitButton
-                                isLoading={isLoading}
+                                isLoading={registerShopping.isLoading}
                                 mode={mode}
                             />
                     </form>

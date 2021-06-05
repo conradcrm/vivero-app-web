@@ -4,19 +4,17 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
-import { useMutation } from '../../../hooks/mutation';
 import { useCategories, useProviders } from '../../../hooks/query';
+import { useCreatePLant } from '../../../hooks/mutation/mutation';
 
 export default function PlantForm({ selectedPlant, mode }) {
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
-
     const { datos, method, query } = Inputs("plant", mode, selectedPlant);
-    const [, fetchData] = useMutation(query, "Plant");
-    const [isLoading, setIsLoading] = useState(false);
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
+    const createPlant = useCreatePLant(data);
     let dataC = []
     let dataP = []
 
@@ -37,7 +35,7 @@ export default function PlantForm({ selectedPlant, mode }) {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData(method, data, setIsLoading)
+        createPlant.mutate();
     };
 
     const styleSelect = {
@@ -171,7 +169,7 @@ export default function PlantForm({ selectedPlant, mode }) {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={isLoading}
+                            isLoading={createPlant.isLoading}
                             mode={mode}
                         />
                     </form>

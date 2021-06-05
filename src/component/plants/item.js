@@ -10,7 +10,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-  let status = estado <= 1;
+  let status = estado===undefined || estado <= 1;
   const [isShown, setIsShown] = useState(false);
 
   const Menu = () => {

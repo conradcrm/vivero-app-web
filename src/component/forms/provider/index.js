@@ -3,15 +3,14 @@ import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
-import { useMutation } from '../../../hooks/mutation';
+import { useCreateProvider } from '../../../hooks/mutation/mutation';
 
 export default function ProviderForm({selectedProvider,mode}) {
-    const { datos, method ,query } = Inputs("provider", mode, selectedProvider);
-    const [, fetchData] = useMutation(query, "Provider")
+    const { datos } = Inputs("provider", mode, selectedProvider);
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    const [isLoading, setIsLoading] = useState(false);
+    const createProvider = useCreateProvider(data);
     const handleChange = (event) => {
         setData({
             ...data,
@@ -21,7 +20,7 @@ export default function ProviderForm({selectedProvider,mode}) {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData(method, data, setIsLoading)
+        createProvider.mutate();
     };
 
     return (
@@ -87,7 +86,7 @@ export default function ProviderForm({selectedProvider,mode}) {
                             />
                         </div>
                         <SubmitButton
-                            isLoading={isLoading}
+                            isLoading={createProvider.isLoading}
                             mode={mode}
                         />
                     </form>

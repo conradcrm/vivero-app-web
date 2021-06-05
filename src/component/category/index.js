@@ -4,7 +4,6 @@ import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useDeleteCategories, useMutationStatusCategories } from "../../hooks/mutation/mutation";
 import 'react-responsive-modal/styles.css';
-import { useCategories } from "../../hooks/query";
 import ModalDelete from "../modal/delete";
 
 export default function Categories({ data }) {
@@ -14,7 +13,6 @@ export default function Categories({ data }) {
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusCategories(selectedCategory.id_categoria, setOpen);
   const deleteCat = useDeleteCategories(selectedCategory.id_categoria, setOpenDelete);
-  const queryCat = useCategories();
   function handleClick() {
     mutate();
   }
@@ -43,8 +41,8 @@ export default function Categories({ data }) {
   return (
     <div className="w-full bg-white rounded-lg p-8">
       <div className="grid grid-cols-4 gap-3">
-        {queryCat.data.data.length > 0
-          ? queryCat.data.data.map((category) => (
+        {data.length > 0
+          ? data.map((category) => (
             <CategoryItem
               onOpenModal={setOpen}
               onOpenDeleteModal = {setOpenDelete}

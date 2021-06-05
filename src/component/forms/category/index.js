@@ -3,16 +3,14 @@ import SubmitButton from '../../buttons/submit';
 import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
-import { useMutation } from '../../../hooks/mutation';
+import { useCreateCategory } from '../../../hooks/mutation/mutation';
 
 export default function CategoryForm({ selectedCategory, mode }) {
     const { datos, method, query } = Inputs("category", mode, selectedCategory);
-    const [, fetchData] = useMutation(query, "Category")
     const [, setChangeImage] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [data, setData] = useState(datos);
-    
+    const  createCategory = useCreateCategory(data);
     const handleChange = (event) => {
         setData({
             ...data,
@@ -22,7 +20,7 @@ export default function CategoryForm({ selectedCategory, mode }) {
 
     const send = (event) => {
         event.preventDefault();
-        fetchData(method, data, setIsLoading)
+        createCategory.mutate()
     };
 
     return (
@@ -66,7 +64,7 @@ export default function CategoryForm({ selectedCategory, mode }) {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={isLoading}
+                            isLoading={createCategory.isLoading}
                             mode={mode}
                         />
                     </form>

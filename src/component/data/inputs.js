@@ -3,7 +3,6 @@ export default function Inputs(module, mode, selectedItem) {
   let endpoint = undefined;
   let datos = undefined;
   let method = undefined;
-console.log(module, mode)
   switch (module) {
     case "plant":
       if (mode === "create") {
@@ -84,7 +83,6 @@ console.log(module, mode)
         };
       }
       if (mode === "edit") {
-        console.log(mode)
         endpoint = "api/update-provider/" + selectedItem.id_proveedor;
         method = "PATCH"
         datos = {

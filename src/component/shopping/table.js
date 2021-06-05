@@ -17,12 +17,11 @@ export default function ProviderList({ data }) {
   const queryProv = useShopping()
   function handleClick() {
     mutate();
-    console.log("state",state) 
+    
   }
   
   function handleClickDelete(){
     deleteProvider.mutate();
-    console.log("state",selectedShopping)
   }
 
   let message = {

@@ -22,7 +22,6 @@ export default function ItemShopping({
 
 
   let status = estado <= 1;
-    console.log(id_proveedor)
   // let total = shopping.detalle.reduce((tot, detalle) => {
   //   return tot + detalle.planta.precio_compra;
   // }, 0)

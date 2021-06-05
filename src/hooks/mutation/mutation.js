@@ -84,6 +84,41 @@ export function useCreateCategory(data) {
   return { mutate, isLoading }
 }
 
+export function useUpdateCategory(id_categoria, data) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(updateItem, {
+    variables: {
+      id: id_categoria,
+      endpoint: "update-category",
+      data: data
+    },
+    onSuccess: (response) => {
+      let data = response.data;
+      const noData = queryClient.setQueryData('CATEGORIES', function (oldData) {
+        if (oldData !== undefined) {
+          for (let index = 0; index < oldData.data.length; index++) {
+            if (oldData.data[index].id_categoria === data.id_categoria) {
+              oldData.data.splice(index, 1)
+              oldData.data.splice(index, 0, response.data)
+              break;
+            }
+          }
+        }
+        return oldData;
+      });
+      
+      if (noData === undefined) {
+        queryClient.invalidateQueries('CATEGORIES');
+      }
+      notify(response.status, response.message)
+    },
+    onerror: (response) => {
+      notify(response.status, response.message)
+    }
+  });
+  return { mutate, isLoading }
+}
+
 export function useMutationStatusCategories(id_categoria, setOpen) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {

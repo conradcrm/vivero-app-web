@@ -9,9 +9,9 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal , onOpenDeleteModal, setSelected, isActivate, setisActivate }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-  let status = estado <= 1;
+  let status = estado===undefined || estado <= 1;
   const [isShown, setIsShown] = useState(false);
-
+ 
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
@@ -20,17 +20,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
         <div className="mx-3 mt-3 opacity-100">
           <Link
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
-            to={{
-              pathname: "/category/edit",
-              data: {
-                id_categoria: id_categoria,
-                nombre: nombre,
-                descripcion: descripcion,
-                imagen: imagen,
-                estado: estado
-              },
-            }}
-          >
+            to={`/category/edit/${id_categoria}`}>
             <HiOutlinePencilAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Editar</span>
           </Link>

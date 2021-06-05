@@ -1,26 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SubmitButton from '../../buttons/submit';
-import Inputs from '../../data/inputs';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
-import { useCreateCategory } from '../../../hooks/mutation/mutation';
+import { useUpdateCategory } from '../../../hooks/mutation/mutation';
+import { getDataModuleId } from '../../../hooks/query/index';
+import { useParams } from 'react-router';
 
-export default function CategoryForm({ selectedCategory, mode }) {
-    const { datos, method, query } = Inputs("category", mode, selectedCategory);
+export default function CategoryEditForm() {
+    const { id } = useParams();
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
-    const [data, setData] = useState(datos);
-    const  createCategory = useCreateCategory(data);
+    const [data, setData] = useState({
+        descripcion: '',
+        id_categoria: '',
+        imagen: '',
+        nombre: '',
+    });
+    const updateCategory = useUpdateCategory(id,data);
+
     const handleChange = (event) => {
         setData({
             ...data,
             [event.target.name]: event.target.value,
         });
     };
-    
+
+    useEffect(() => {
+        getDataModuleId('category', id, setData)
+    }, [])
+
     const send = (event) => {
         event.preventDefault();
-        createCategory.mutate()
+        updateCategory.mutate()
     };
 
     return (
@@ -64,8 +75,8 @@ export default function CategoryForm({ selectedCategory, mode }) {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={createCategory.isLoading}
-                            mode={mode}
+                            isLoading={updateCategory.isLoading}
+                            mode={"edit"}
                         />
                     </form>
                 </div>

@@ -4,7 +4,6 @@ import ButtonGoBack from "../../component/buttons/goBack";
 
 export default function LayoutAction(props) {
   let history = useHistory();
-
   return (
     <div className="bg-ligth_gray h-screen">
       <div className=" px-4 pb-3 pt-6">

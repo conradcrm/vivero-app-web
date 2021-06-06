@@ -8,13 +8,13 @@ export default function InputText({width, title, name, placeholder, value, onCha
             </label>
             <input
                 style={{width:width}}
-                className="rounded border-icon_gray border-2 py-2 px-4 text-sm"
+                className="noscroll rounded border-icon_gray border-2 py-2 px-4 text-sm"
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
                 name={name}
                 type={type}
-                min="0"
+                min="1"
             />
         </div>
     )

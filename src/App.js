@@ -10,6 +10,7 @@ import Notification from "./component/notification";
 function App() {
   let location = useLocation();
   let route = location.pathname;
+    
   return (
     <>
       {!route.includes('create') && !route.includes('edit')  ? (

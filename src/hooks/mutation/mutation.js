@@ -246,7 +246,6 @@ export function useUpdatePlant(id_planta, data) {
   return { mutate, isLoading }
 }
 
-
 export function useMutationStatusPlants(id_planta, setOpen) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateStatusItem, {
@@ -325,6 +324,41 @@ export function useCreateProvider(data) {
           return oldData;
         }
       });
+      if (noData === undefined) {
+        queryClient.invalidateQueries('PROVIDERS');
+      }
+      notify(response.status, response.message)
+    },
+    onerror: (response) => {
+      notify(response.status, response.message)
+    }
+  });
+  return { mutate, isLoading }
+}
+
+export function useUpdateProvier(id, data) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(updateItem, {
+    variables: {
+      id: id,
+      endpoint: "update-provider",
+      data: data
+    },
+    onSuccess: (response) => {
+      let data = response.data;
+      const noData = queryClient.setQueryData('PROVIDERS', function (oldData) {
+        if (oldData !== undefined) {
+          for (let index = 0; index < oldData.data.length; index++) {
+            if (oldData.data[index].id_proveedor === data.id_proveedor) {
+              oldData.data.splice(index, 1)
+              oldData.data.splice(index, 0, response.data)
+              break;
+            }
+          }
+        }
+        return oldData;
+      });
+      
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }

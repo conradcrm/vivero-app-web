@@ -6,7 +6,10 @@ export const getDataModuleId = async (module, id, setData) =>{
   const query = url+module+"/"+id;
   const response = await fetch(query);
   const data = await response.json();
-  setData(data.data)
+  if(data.data){
+    setData(data.data)
+    return data;
+  }
 }
 
 async function getDataModule(module){
@@ -21,6 +24,10 @@ export function usePlants(){
     staleTime:Infinity,
     notifyOnChangePropsExclusions:['isStale'],
   });
+}
+
+export function useItemId(id, module ,setData){
+  return useQuery(`${module}${"/"}${id}`, ()=> getDataModuleId(module, id, setData));
 }
 
 export function useCategories(){

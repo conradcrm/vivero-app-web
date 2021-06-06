@@ -39,32 +39,11 @@ export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, c
               onOpenModal(true);
             }}
           />
-          {/* {status ?
-            <div className="relative">
-              <p className="bg-ligthgreen opacity-30 mr-5 py-4 rounded"></p>
-              <span className="text-darkgreen font-semibold text-center absolute -mt-7 ml-6"> Activo</span>
-            </div> :
-            <div className="relative">
-              <p className="bg-ligthred opacity-30 mr-5 py-4 rounded"></p>
-              <span className="text-darkred font-semibold text-center absolute -mt-7 ml-6"> Inactivo</span>
-            </div>
-          } */}
         </div>
       </div>
       <div className="col-span-2 flex justify-end items-center mr-8 text-sm">
         <div className="flex justify-between items-center text-sm mt-1 rounded-lg my-2">
-          <Link to={{
-            pathname: "/provider/edit",
-            data: {
-              id_proveedor: id_proveedor,
-              nombre: nombre,
-              telefono: telefono,
-              direccion: direccion,
-              correo: correo,
-              imagen: imagen,
-              estado: estado
-            },
-          }}
+          <Link to={`/provider/edit/${id_proveedor}`}
           >
             <div className="p-2 hover:bg-gray rounded-3xl flex outline-none border-none focus:outline-none opacity-80 hover:opacity-100">
               <FaEdit size={19} className="text-b_icon_gray opacity-40 cursor-pointer" />

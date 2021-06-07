@@ -51,6 +51,7 @@ export default function ProviderList({ data }) {
           </div>
           <div className="col-span-2 py-3 ml-20">Acciones</div>
         </div>
+        
         <div className=" bg-ligth_gray text-sm">
           {
             data.map((provider) =>

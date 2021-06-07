@@ -1,36 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
-import ToggleButton from "../buttons/toggle";
-import imageDefault from "../../resources/modules/category.jpg"
 import { Link } from "react-router-dom";
 import Select from "react-dropdown-select";
+import { BiDetail } from 'react-icons/bi';
 export default function ItemShopping({
-  id_proveedor,
-  nombre, 
-  imagen, 
-  telefono, 
-  correo, 
-  direccion, 
-  estado, 
-  onOpenModal, 
-  setSelected, 
-  isActivate, 
-  setisActivate, 
-  onOpenDeleteModal, 
+  folio_compra,
+  detalle,
+  proveedor,
+  created_at,
+  updated_at,
+  estado,
+  onOpenModal,
+  setSelected,
+  isActivate,
+  setisActivate,
+  onOpenDeleteModal,
   statusShop }) {
 
+  let total;
+  if(detalle!==undefined){
+    total = detalle.reduce((tot, detalle) => {
+      return tot + detalle.planta.precio_compra;
+    }, 0)
+  }
 
-  let status = estado <= 1;
-  // let total = shopping.detalle.reduce((tot, detalle) => {
-  //   return tot + detalle.planta.precio_compra;
-  // }, 0)
-
-  let statuss = status;
+  let statuss = estado;
   let estados = statuss == 1 ? "Completado" : statuss == 2 ? "Pendiente" : "Cancelado"
-  const color = statuss == 1 ? "#CCFFCB" : statuss == 2 ? "#F5F6F8" : "#FFD2D2"
-  const colorText = statuss == 1 ? "darkgreen" : statuss == 2 ? "#000" : "darkred"
-  
+  const color = statuss == 1 ? "#CCFFCB" : statuss == 2 ? "#fff8a5" : "#FAE1DD"
+  const colorText = statuss == 1 ? "darkgreen" : statuss == 2 ? "#f48f00" : "mediumred"
+
   const optionStatus = [
     { label: "Completado" },
     { label: "Pendiente" },
@@ -40,71 +39,66 @@ export default function ItemShopping({
   const styleSelect = {
     fontSize: "12px",
     width: "8rem",
-    padding: "0 5 0 5",
+    padding: "0 8 0 8",
     borderRadius: "10px",
     fontWeight: "600",
     backgroundColor: color,
     color: colorText,
     border: "none",
+    margin: 0,
   };
   return (
-    <div className="grid grid-cols-11 bg-white h-16 my-1">
-      <div className="col-span-9 grid grid-cols-11 mx-4 text-sm font-normal justify-end items-center">
-        <div className="col-span-7 grid grid-cols-2 items-center">
-          <div className="grid grid-cols-3 gap-3 items-center">
-           <p className="col-span-2 pr-2 w-full overflow-hidden overflow-ellipsis">{nombre}</p>
-          </div>
-          <p className="text-gray-600 pl-4">{direccion}</p>
-        </div>
-        <p className="col-span-2 text-gray-600">{telefono}</p>
-
-        <div className="col-span-2 mx-4">
+    <div className="grid grid-cols-12 h-20 my-1 justify-end items-center bg-white font-semibold">
+      <div className="col-span-10 h-14 grid grid-cols-12 mx-4 items-center" style={{fontSize: "0.84rem",lineHeight: "1.25rem"}}>
+        <p className="col-span-1 flex items-center "><span className="bg-icon_gray rounded-lg p-2">#{folio_compra}</span></p>
+        <p className="col-span-4">{proveedor.nombre}</p>
+        <p className="col-span-2">{created_at.split("T")[0]}</p>
+        <p className="col-span-2">
+          {total.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </p>
+        <div className="col-span-2">
           <Select
             options={optionStatus}
             id="select-status"
             color="#000"
             valueField="label"
             style={styleSelect}
-            className="mb-5 text-lg font-bold"
-            values={optionStatus.filter(
-              (opt) => opt.label === "Completado"
-            )}
+            values={optionStatus.filter((opt) => opt.label === estados)}
             onChange={(value) => {
-              statusShop({"status":value[0].label});
+              statusShop({ "status": value[0].label });
               setSelected();
               onOpenModal(true);
             }}
           />
         </div>
       </div>
-      <div className="col-span-2 flex justify-end items-center mr-8 text-sm">
-        <div className="flex justify-between items-center text-sm mt-1 rounded-lg my-2">
-          <Link to={{
-            pathname: "/provider/edit",
-            data: {
-              id_proveedor: id_proveedor,
-              nombre: nombre,
-              telefono: telefono,
-              direccion: direccion,
-              correo: correo,
-              imagen: imagen,
-              estado: estado
-            },
-          }}
-          >
-            <div className="p-2 hover:bg-gray rounded-3xl flex outline-none border-none focus:outline-none opacity-80 hover:opacity-100">
-              <FaEdit size={19} className="text-b_icon_gray opacity-40 cursor-pointer" />
+      <div className="col-span-2 flex justify-center items-center">
+        <div className="w-2/3 grid grid-cols-3 items-end">
+          <button className="p-2 hover:bg-gray rounded-lg grid justify-center"
+            onClick={() => {
+              setSelected();
+              onOpenDeleteModal(true);
+            }}>
+            <BiDetail size={21} className="opacity-70" />
+          </button>
+          <Link 
+          className="contents"
+          to={{ pathname: "/provider/edit" }}>
+            <div className="p-2  hover:bg-gray rounded-lg grid justify-center">
+              <FaEdit size={19} className="opacity-60 mb-0.5 ml-1" />
             </div>
           </Link>
+          <button className="p-2 grid justify-center hover:bg-ligthred rounded-lg"
+            onClick={() => {
+              setSelected();
+              onOpenDeleteModal(true);
+            }}>
+            <MdDeleteForever size={21} className="text-darkred" />
+          </button>
         </div>
-        <button
-          onClick={() => {
-            setSelected();
-            onOpenDeleteModal(true);
-          }}
-          className="p-2 hover:bg-ligthred rounded-3xl flex outline-none border-none focus:outline-none opacity-80 hover:opacity-100">
-          <MdDeleteForever size={22} className="text-mediumred" />
-        </button>
       </div>
     </div>
   );

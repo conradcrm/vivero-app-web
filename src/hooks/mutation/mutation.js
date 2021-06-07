@@ -106,7 +106,7 @@ export function useUpdateCategory(id_categoria, data) {
         }
         return oldData;
       });
-      
+
       if (noData === undefined) {
         queryClient.invalidateQueries('CATEGORIES');
       }
@@ -233,7 +233,7 @@ export function useUpdatePlant(id_planta, data) {
         }
         return oldData;
       });
-      
+
       if (noData === undefined) {
         queryClient.invalidateQueries('PLANTS');
       }
@@ -358,7 +358,7 @@ export function useUpdateProvier(id, data) {
         }
         return oldData;
       });
-      
+
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
@@ -380,7 +380,7 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
     },
     onSuccess: (response) => {
       let data = response.data;
-      queryClient.setQueryData('PROVIDERS', function (oldData) {
+      const noData = queryClient.setQueryData('PROVIDERS', function (oldData) {
         for (let index = 0; index < oldData.data.length; index++) {
           if (oldData.data[index].id_proveedor === data.id_proveedor) {
             oldData.data.splice(index, 1)
@@ -390,6 +390,9 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
         }
         return oldData;
       });
+      if(noData===undefined){
+        queryClient.invalidateQueries('PROVIDERS');
+      }
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -473,16 +476,21 @@ export function useMutationStatusShopping(folio_compra, data, setOpen) {
     },
     onSuccess: (response) => {
       let data = response.data;
-      queryClient.setQueryData('SHOPPING', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].folio_compra === data.folio_compra) {
-            oldData.data.splice(index, 1)
-            oldData.data.splice(index, 0, response.data)
-            break;
+      const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
+        if (oldData !== undefined) {
+          for (let index = 0; index < oldData.data.length; index++) {
+            if (oldData.data[index].folio_compra === data.folio_compra) {
+              oldData.data.splice(index, 1)
+              oldData.data.splice(index, 0, response.data)
+              break;
+            }
           }
+          return oldData;
         }
-        return oldData;
       });
+      if (noData === undefined) {
+        queryClient.invalidateQueries('SHOPPING');
+      }
       notify(response.status, response.message)
       setOpen(false);
     },

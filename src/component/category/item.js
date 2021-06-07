@@ -11,7 +11,6 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado===undefined || estado <= 1;
   const [isShown, setIsShown] = useState(false);
- 
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2

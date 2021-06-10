@@ -22,8 +22,8 @@ export default function Plants({ data }) {
   }
 
   let message = {
-    title: "¿Está seguro de quieres dar de baja la planta?.",
-    description: "Se darán de baja todas las plantas que pertenecen a la planta."
+    title: "¿Está seguro de quieres dar de baja la planta?",
+    description: ""
   }
   if (isActivate) {
     message = {

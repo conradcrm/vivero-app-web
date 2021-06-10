@@ -25,10 +25,9 @@ export default function ItemShopping({
     }, 0)
   }
 
-  let statuss = estado;
-  let estados = statuss == 1 ? "Completado" : statuss == 2 ? "Pendiente" : "Cancelado"
-  const color = statuss == 1 ? "#CCFFCB" : statuss == 2 ? "#fff8a5" : "#FAE1DD"
-  const colorText = statuss == 1 ? "darkgreen" : statuss == 2 ? "#f48f00" : "mediumred"
+  let estados = estado === 1 ? "Completado" : estado === 2 ? "Pendiente" : "Cancelado"
+  const color = estado === 1 ? "#CCFFCB" : estado === 2 ? "#fff8a5" : "#FAE1DD"
+  const colorText = estado === 1 ? "darkgreen" : estado === 2 ? "#f48f00" : "mediumred"
 
   const optionStatus = [
     { label: "Completado" },

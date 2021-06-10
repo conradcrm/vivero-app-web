@@ -23,7 +23,7 @@ export default function Categories({ data }) {
 
   let message = {
     title: "¿Está seguro de quieres dar de baja la categoría?",
-    description: "Se darán de baja todas las plantas que pertenecen a la categoría."
+    description: ""
   }
   if (isActivate) {
     message = {

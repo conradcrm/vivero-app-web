@@ -152,10 +152,11 @@ export function useMutationStatusCategories(id_categoria, setOpen) {
 
 export function useDeleteCategories(id_categoria, setOpen) {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(deleteItem, {
+  const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
       id: id_categoria,
-      endpoint: "delete-category"
+      endpoint: "delete-category",
+      data: []
     },
     onSuccess: (response) => {
       let data = response.data;
@@ -434,7 +435,6 @@ export function useDeleteProvider(id_proveedor, setOpen) {
 }
 
 
-
 /******
  * SHOPPING
 **/
@@ -451,6 +451,7 @@ export function useCreateShopping(data) {
         if (oldData !== undefined) {
           const position = oldData.data.length;
           oldData.data.splice(position, 0, response.data)
+          console.log(oldData)
           return oldData;
         }
       });
@@ -501,3 +502,39 @@ export function useMutationStatusShopping(folio_compra, data, setOpen) {
   });
   return { mutate, isLoading }
 }
+
+
+export function useDeleteShoppin(folio_compra, setOpen) {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(updateItem, {
+    variables: {
+      id: folio_compra,
+      endpoint: "delete-shopping"
+    },
+    onSuccess: (response) => {
+      let data = response.data;
+      const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
+        for (let index = 0; index < oldData.data.length; index++) {
+          if (oldData.data[index].folio_compra === data.folio_compra) {
+            oldData.data.splice(index, 1)
+            break;
+          }
+        }
+        return oldData;
+      });
+
+      if (noData === undefined) {
+        queryClient.invalidateQueries('SHOPPING');
+      }
+
+      notify(response.status, response.message)
+      setOpen(false);
+    },
+    onerror: (response) => {
+      notify(response.status, response.message)
+      setOpen(false);
+    }
+  });
+  return { mutate, isLoading }
+}
+

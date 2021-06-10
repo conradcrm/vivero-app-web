@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import ItemShopping from "./rows";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
-import { useDeleteProvider, useMutationStatusShopping } from "../../hooks/mutation/mutation";
-import { useShopping } from "../../hooks/query";
+import { useDeleteShoppin, useMutationStatusShopping } from "../../hooks/mutation/mutation";
 import ModalDelete from "../modal/delete";
 
 export default function ShoppingList({ data }) {
@@ -13,13 +12,14 @@ export default function ShoppingList({ data }) {
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusShopping(selectedShopping.folio_compra, state, setOpen);
-  const deleteProvider = useDeleteProvider(selectedShopping.id_proveedor, setOpenDelete);
+  const deleteShopping = useDeleteShoppin(selectedShopping.folio_compra, setOpenDelete);
+  
   function handleClick() {
     mutate();
   }
 
   function handleClickDelete() {
-    deleteProvider.mutate();
+    deleteShopping.mutate();
   }
 
   let message = {
@@ -79,7 +79,7 @@ export default function ShoppingList({ data }) {
             message={messageD.description}
             cancel={() => setOpenDelete(false)}
             action={() => handleClickDelete()}
-            isLoading={deleteProvider.isLoading}
+            isLoading={deleteShopping.isLoading}
           />
         }
       </Modal>

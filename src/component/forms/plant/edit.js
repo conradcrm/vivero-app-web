@@ -3,20 +3,14 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
-import { useCategories, useItemId, usePlants, useProviders } from '../../../hooks/query';
+import { useCategories, useItemId, useProviders } from '../../../hooks/query';
 import { useUpdatePlant } from '../../../hooks/mutation/mutation';
 import { useParams } from 'react-router';
 import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
-import { useQueryClient } from 'react-query';
 
 export default function PlantEditForm() {
     const { id } = useParams()
-    const queryClient = useQueryClient();
-    const dataCache = queryClient.getQueryData('PLANTS')
-    const dataCache2 = queryClient.getQueryData(`plant/${id}`)
-    console.log("1",dataCache)
-    console.log("2",dataCache2)
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
     const [, setChangeImage] = useState(false);

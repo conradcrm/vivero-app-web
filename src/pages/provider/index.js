@@ -12,7 +12,7 @@ export default function Provider() {
             {
                 query.isError ? <ServerError /> :
                     query.isLoading ? <LoadingData /> :
-                        query.data != undefined && <>
+                        query.data !== undefined && query.data.data !== undefined && <>
                             <HeaderBar module="Proveedores" name="Agregar proveedor" route="/provider/create" />
                             {!query.data.data.length > 0 ? <p>Aún no hay registros</p> :
                                 <div className="max-h-full pt-8">

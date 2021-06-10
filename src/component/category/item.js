@@ -9,7 +9,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal , onOpenDeleteModal, setSelected, isActivate, setisActivate }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-  let status = estado===undefined || estado <= 1;
+  let status = estado===undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
   const Menu = () => {
     return (

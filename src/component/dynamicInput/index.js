@@ -33,7 +33,7 @@ export default function DynamicInputs({data,plantas, isLoading, setData}) {
     <div className="" style={{width:'30rem'}}>
       {inputList.map((x, index) => {
         return (
-            <div className="" style={{ marginTop: 22, marginBottom: 22 }}>
+            <div key={index} className="" style={{ marginTop: 22, marginBottom: 22 }}>
                 <div className="grid grid-cols-7 gap-3">
                     <div className="col-span-4">
                     <label className="block mb-2 font-semibold">

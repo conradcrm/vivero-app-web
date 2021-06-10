@@ -12,7 +12,7 @@ export default function Shopping() {
             {
                 query.isError ? <ServerError /> :
                     query.isLoading ? <LoadingData /> :
-                        query.data != undefined && <>
+                        query.data !== undefined && <>
                             <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
                             {
                                 !query.data.data.length > 0 ? <p>Aún no ha realizado ninguna compra.</p> :

@@ -3,8 +3,8 @@ import CategoryItem from "./item";
 import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useDeleteCategories, useMutationStatusCategories } from "../../hooks/mutation/mutation";
-import 'react-responsive-modal/styles.css';
 import ModalDelete from "../modal/delete";
+import 'react-responsive-modal/styles.css';
 
 export default function Categories({ data }) {
   const [selectedCategory, setSelectedCategory] = useState(data);
@@ -36,7 +36,6 @@ export default function Categories({ data }) {
     title: "¿Está seguro de quieres eliminar la categoría?",
     description: "Se eliminará la categoría t todas las plantas perteneciente a la misma. Esta acción no se puede deshacer. Los datos no se podrán recuperar."
   }
-
 
   return (
     <div className="w-full bg-white rounded-lg p-8">

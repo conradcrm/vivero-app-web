@@ -65,15 +65,17 @@ export function useCreateCategory(data) {
       data: data
     },
     onSuccess: (response) => {
-      const noData = queryClient.setQueryData('CATEGORIES', function (oldData) {
-        if (oldData !== undefined) {
-          const position = oldData.data.length;
-          oldData.data.splice(position, 0, response.data)
-          return oldData;
+      if (response.status === "success") {
+        const noData = queryClient.setQueryData('CATEGORIES', function (oldData) {
+          if (oldData !== undefined) {
+            const position = oldData.data.length;
+            oldData.data.splice(position, 0, response.data)
+            return oldData;
+          }
+        });
+        if (noData === undefined) {
+          queryClient.invalidateQueries('CATEGORIES');
         }
-      });
-      if (noData === undefined) {
-        queryClient.invalidateQueries('CATEGORIES');
       }
       notify(response.status, response.message)
     },
@@ -391,7 +393,7 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
         }
         return oldData;
       });
-      if(noData===undefined){
+      if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
       notify(response.status, response.message)
@@ -450,8 +452,7 @@ export function useCreateShopping(data) {
       const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
         if (oldData !== undefined) {
           const position = oldData.data.length;
-          oldData.data.splice(position, 0, response.data)
-          console.log(oldData)
+          oldData.data.splice(position, 0, response.data);
           return oldData;
         }
       });

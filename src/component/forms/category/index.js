@@ -14,7 +14,7 @@ export default function CategoryForm() {
         nombre: '',
     });
 
-    const  createCategory = useCreateCategory(data);
+    const createCategory = useCreateCategory(data);
     const handleChange = (event) => {
         setData({
             ...data,

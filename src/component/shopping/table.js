@@ -4,16 +4,18 @@ import ModalChangeStatus from "../modal";
 import { Modal } from 'react-responsive-modal';
 import { useDeleteShoppin, useMutationStatusShopping } from "../../hooks/mutation/mutation";
 import ModalDelete from "../modal/delete";
+import DetailsShopping from "../views/shopping";
 
 export default function ShoppingList({ data }) {
   const [selectedShopping, setSelectedShopping] = useState(data);
   const [state, setState] = useState({ status: "" })
   const [openDelete, setOpenDelete] = useState(false);
+  const [openView, setOpenView] = useState(false);
   const [open, setOpen] = useState(false);
   const [isActivate, setisActivate] = useState(false);
   const { mutate, isLoading } = useMutationStatusShopping(selectedShopping.folio_compra, state, setOpen);
   const deleteShopping = useDeleteShoppin(selectedShopping.folio_compra, setOpenDelete);
-  
+
   function handleClick() {
     mutate();
   }
@@ -24,9 +26,9 @@ export default function ShoppingList({ data }) {
 
   let message = {
     title: "¿Desea continuar?",
-    description: "El estado de la compra cambiará."
+    description: `El estado de la compra cambiará a ${state.status ? state.status : ""}.`
   }
-
+  console.log(state)
   let messageD = {
     title: "¿Está seguro de quieres eliminar el registro de compra?",
     description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."
@@ -51,8 +53,10 @@ export default function ShoppingList({ data }) {
               <ItemShopping
                 onOpenModal={setOpen}
                 onOpenDeleteModal={setOpenDelete}
+                onOpenView = {setOpenView}
                 setSelected={() => setSelectedShopping(shopping)}
                 statusShop={setState}
+                state ={state} 
                 isActivate={isActivate}
                 setisActivate={setisActivate}
                 {...shopping}
@@ -65,9 +69,9 @@ export default function ShoppingList({ data }) {
           <ModalChangeStatus
             title={message.title}
             message={message.description}
-            cancel={() => setOpen(false)}
+            cancel={() => { setOpen(false); setState("Pendiente") }}
             action={() => handleClick()}
-            isActivate={isActivate}
+            isActivate={true}
             isLoading={isLoading}
           />
         }
@@ -81,6 +85,11 @@ export default function ShoppingList({ data }) {
             action={() => handleClickDelete()}
             isLoading={deleteShopping.isLoading}
           />
+        }
+      </Modal>
+      <Modal open={openView} onClose={() => setOpenView(false)} center>
+        {selectedShopping !== undefined &&
+          <DetailsShopping shopping={selectedShopping}/>
         }
       </Modal>
     </div>

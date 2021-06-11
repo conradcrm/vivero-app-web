@@ -7,9 +7,6 @@ export default function ServerError() {
                   alt="Ha ocurrido un error" />
             <p className="text-darkred text-xl font-semibold text-center">
                 Ha ocurrido un error, inténtelo más tarde. 
-                <span className="block text-b_ligth_gray font-medium text-base">
-                    Todo indica que no trabajará hoy :)
-                </span>
             </p>
         </div>
     )

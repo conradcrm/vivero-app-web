@@ -44,7 +44,7 @@ export default function ShoppingForm({ mode }) {
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo compra</h3>
                     <div className="w-full text-center flex justify-center">
-                        <p className="text-white text-sm font-semibold w-60 text-center pt-4  tracking-wider">
+                        <p className="text-white text-sm font-semibold w-60 text-center pt-4 tracking-wider">
                             Antes de selccionar las plantas, primero selecciona el proveedor.
                         </p>
                     </div>

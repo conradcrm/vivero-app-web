@@ -6,7 +6,7 @@ export default function ModalChangeStatus({ title, message, action, isLoading, i
         <div className="px-8">
             <div className="py-4 flex space-x-4 md:flex-row flex-col md:text-left text-center items-center">
                 <div className="">
-                    <h2 className={`text-xl font-semibold tracking-wide ${isActivate ?" text-darkgreen" : "text-darkred"}`}>
+                    <h2 className={`text-xl font-semibold tracking-wide ${isActivate ? "text-darkgreen" : "text-darkred"}`}>
                         {title}
                     </h2>
                     <p className="text-b_ligth_gray pt-4">

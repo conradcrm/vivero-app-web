@@ -1,7 +1,7 @@
 import React from "react";
-import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
+//import { FaEdit } from "react-icons/fa";
 import Select from "react-dropdown-select";
 import { BiDetail } from 'react-icons/bi';
 export default function ItemShopping({
@@ -14,19 +14,21 @@ export default function ItemShopping({
   onOpenModal,
   setSelected,
   onOpenDeleteModal,
+  state,
+  onOpenView,
   statusShop }) {
 
   let total;
   if (detalle !== undefined) {
     total = detalle.reduce((tot, detalle) => {
-      return tot + detalle.planta.precio_compra;
+      return tot + (detalle.planta.precio_compra*detalle.cantidad);
     }, 0)
   }
-
+  
   let estados = estado === 1 ? "Completado" : estado === 2 ? "Pendiente" : "Cancelado";
   let color = estado === 1 ? "#CCFFCB" : estado === 2 ? "#fff8a5" : "#FAE1DD";
   let colorText = estado === 1 ? "darkgreen" : estado === 2 ? "#f48f00" : "#D30000";
-
+  
   const optionStatus = [
     { label: "Completado" },
     { label: "Pendiente" },
@@ -58,8 +60,6 @@ export default function ItemShopping({
           })}
         </p>
         <div className="col-span-2">
-          {
-            estados === "Pendiente" ?
               <Select
                 options={optionStatus}
                 id="select-status"
@@ -72,11 +72,7 @@ export default function ItemShopping({
                   setSelected();
                   onOpenModal(true);
                 }}
-              /> :
-                <div className="py-2 text-center cursor-default" style={styleSelect}>
-                  {estados}
-                </div>
-          }
+              /> 
         </div>
       </div>
       <div className="col-span-2 flex justify-center items-center">
@@ -84,7 +80,7 @@ export default function ItemShopping({
           <button className="p-2 hover:bg-gray rounded-lg grid justify-center"
             onClick={() => {
               setSelected();
-              onOpenDeleteModal(true);
+              onOpenView(true);
             }}>
             <BiDetail size={21} className="opacity-70" />
           </button>

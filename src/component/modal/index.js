@@ -1,7 +1,8 @@
 import React from 'react'
 import Loading from '../loading'
 
-export default function ModalChangeStatus({ title, message, action, isLoading, isActivate, cancel }) {
+export default function ModalChangeStatus({ title, message, action, isLoading, isActivate, cancel, type }) {
+
     return (
         <div className="px-8">
             <div className="py-4 flex space-x-4 md:flex-row flex-col md:text-left text-center items-center">
@@ -25,13 +26,16 @@ export default function ModalChangeStatus({ title, message, action, isLoading, i
                     onClick={action}
                     disabled={isLoading}
                     className={`px-4 py-1 border-2 inline-flex focus:outline-none  text-white rounded-lg transition duration-150 ease-in-out transform hover:scale-105
-                    ${isActivate ?" text-ligthgreen bg-ligthgreen hover:bg-darkgreen" : "text-darkred bg-mediumred"  }`}>
+                    ${isActivate ? " text-ligthgreen bg-ligthgreen hover:bg-darkgreen" : "text-darkred bg-mediumred"}`}>
                     {isLoading ?
                         <>
                             <Loading className="" color={"white"} size={22} />
-                            <p className="ml-1">{isActivate ? "Activando ...": "Desactivando ..."}</p>
+                            <p className="ml-1">
+                                {
+                                   type!=undefined ? "Aceptar" : isActivate ? "Activando ..." : "Desactivando ..."
+                                }</p>
                         </> :
-                        <>{isActivate ? "Activar": "Desactivar"}</>
+                        <>{type!=undefined ? "Aceptar" : isActivate ? "Activar" : "Desactivar"}</>
                     }
                 </button>
             </div>

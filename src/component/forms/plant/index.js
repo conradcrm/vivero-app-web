@@ -6,6 +6,8 @@ import SubmitButton from '../../buttons/submit';
 import { useCategories, useProviders } from '../../../hooks/query';
 import { useCreatePLant } from '../../../hooks/mutation/mutation';
 import { handleUpload } from '../../../files';
+import { inputsValidate3 } from '../../validations';
+import { notify } from '../../notification';
 
 export default function PlantForm() {
     const categoryQuery = useCategories();
@@ -13,6 +15,15 @@ export default function PlantForm() {
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
+
+    const [messageE,] = useState({
+        name: "",
+        description: "",
+        p_venta: "",
+        p_compra: "",
+        image: "",
+        result: false,
+    })
 
     const [data, setData] = useState({
         nombre: "",
@@ -41,16 +52,32 @@ export default function PlantForm() {
             ...data,
             [event.target.name]: event.target.value,
         });
+        inputsValidate3([event.target.name], event.target.value, messageE);
     };
-    
+
     function handleChangeFile(target) {
         setFile(target.files[0]);
     }
 
     const send = (event) => {
         event.preventDefault();
-        handleUpload(file);
-        createPlant.mutate();
+        //handleUpload(file);
+        if (messageE.result) {
+            if (data.id_categoria !== undefined) {
+                if (data.id_proveedor !== undefined) {
+                    createPlant.mutate();
+                }
+                else {
+                    notify("info", "Seleccione un proveedor")
+                }
+            }
+            else {
+                notify("info", "Seleccione una categoría")
+            }
+        }
+        else {
+            notify("info", "La información ingresada no es válida.")
+        }
     };
 
     const styleSelect = {
@@ -71,7 +98,7 @@ export default function PlantForm() {
                         value={previewImage}
                         onChange={({ target }) => {
                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
-                            handleChangeFile(target);
+                            //handleChangeFile(target);
                             setChangeImage(true);
                             setPreviewImage(URL.createObjectURL(target.files[0]));
                         }}
@@ -89,6 +116,7 @@ export default function PlantForm() {
                                 value={data.nombre}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.name}
                             />
                             <div className="flex justify-between" style={{ marginTop: "22px" }}>
                                 <InputText
@@ -100,6 +128,7 @@ export default function PlantForm() {
                                     value={data.precio_compra}
                                     onChange={handleChange}
                                     type="number"
+                                    message={messageE.p_compra}
                                 />
                                 <InputText
                                     width="9.5rem"
@@ -110,6 +139,7 @@ export default function PlantForm() {
                                     value={data.precio_venta}
                                     onChange={handleChange}
                                     type="number"
+                                    message={messageE.p_venta}
                                 />
                             </div>
                             {/* <InputText
@@ -182,6 +212,7 @@ export default function PlantForm() {
                                     onChange={handleChange}
                                     name="descripcion"
                                     placeholder="Es una de las plantas crasas más bonitas y fáciles de cuidar del mundo" />
+                                <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
                             </div>
                         </div>
                         <SubmitButton

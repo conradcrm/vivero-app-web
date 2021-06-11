@@ -5,18 +5,27 @@ import SubmitButton from '../../buttons/submit';
 import { useCreateProvider } from '../../../hooks/mutation/mutation';
 //import { handleUpload } from '../../../files';
 import providerImg from '../../../resources/provider.svg';
+import { inputsValidate2 } from '../../validations';
+import { notify } from '../../notification';
 
 export default function ProviderForm() {
     //  const [, setChangeImage] = useState(false);
     //    const [previewImage, setPreviewImage] = useState();
     //   const [file, setFile] = useState();
 
+    const [messageE,] = useState({
+        name: "",
+        address: "",
+        phone: "",
+        email: "",
+        result: false,
+    })
+
     const [data, setData] = useState({
         nombre: "",
         direccion: "",
         telefono: "",
         correo: "",
-        imagen: "",
     });
 
     const createProvider = useCreateProvider(data);
@@ -26,6 +35,7 @@ export default function ProviderForm() {
             ...data,
             [event.target.name]: event.target.value,
         });
+        inputsValidate2([event.target.name], event.target.value, messageE);
     };
 
     // function handleChangeFile(target) {
@@ -35,7 +45,12 @@ export default function ProviderForm() {
     const send = (event) => {
         event.preventDefault();
         //handleUpload(file);
-        createProvider.mutate();
+        if (messageE.result) {
+            createProvider.mutate();
+        }
+        else {
+            notify("info", "La información ingresada no es válida.")
+        }
     };
 
     return (
@@ -74,6 +89,7 @@ export default function ProviderForm() {
                                 value={data.nombre}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.name}
                             />
                             <InputText
                                 width="21.5rem"
@@ -86,6 +102,7 @@ export default function ProviderForm() {
                                 value={data.direccion}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.address}
                             />
                             <InputText
                                 width="21.5rem"
@@ -96,6 +113,8 @@ export default function ProviderForm() {
                                 value={data.telefono}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.phone}
+                                max={10}
                             />
                             <InputText
                                 width="21.5rem"
@@ -108,6 +127,7 @@ export default function ProviderForm() {
                                 value={data.correo}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.email}
                             />
                         </div>
                         <SubmitButton

@@ -9,12 +9,22 @@ import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
 //import { HandleDonwload, handleUpload } from '../../../files';
 import providerImg from '../../../resources/provider.svg';
+import { inputsValidate2 } from '../../validations';
+import { notify } from '../../notification';
 
 export default function ProviderEditForm() {
     const { id } = useParams();
     //const [, setChangeImage] = useState(false);
-   // const [previewImage, setPreviewImage] = useState();
+    // const [previewImage, setPreviewImage] = useState();
     //const [file, setFile] = useState();
+    const [messageE,] = useState({
+        name: "",
+        address: "",
+        phone: "",
+        email: "",
+        result: false,
+    })
+
     const [data, setData] = useState(
         {
             nombre: "",
@@ -42,12 +52,19 @@ export default function ProviderEditForm() {
             ...data,
             [event.target.name]: event.target.value,
         });
+        inputsValidate2([event.target.name], event.target.value, messageE);
     };
 
     const send = (event) => {
         event.preventDefault();
         //handleUpload(file);
-        updateProvider.mutate()
+        if (messageE.result) {
+
+            updateProvider.mutate()
+        }
+        else {
+            notify("info", "La información ingresada no es válida.")
+        }
     };
 
     return (
@@ -60,7 +77,7 @@ export default function ProviderEditForm() {
                             <div className="h-full flex grid-cols-6 shadow-2xl">
                                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo proveedor</h3>
-                                    <div className="my-6 relative w-full h-64" style={{textAlign: "-webkit-center"}}>
+                                    <div className="my-6 relative w-full h-64" style={{ textAlign: "-webkit-center" }}>
                                         <img
                                             className=""
                                             width={200}
@@ -91,6 +108,7 @@ export default function ProviderEditForm() {
                                                 value={data.nombre}
                                                 onChange={handleChange}
                                                 type="text"
+                                                message={messageE.name}
                                             />
                                             <InputText
                                                 width="21.5rem"
@@ -103,6 +121,7 @@ export default function ProviderEditForm() {
                                                 value={data.direccion}
                                                 onChange={handleChange}
                                                 type="text"
+                                                message={messageE.address}
                                             />
                                             <InputText
                                                 width="21.5rem"
@@ -113,6 +132,8 @@ export default function ProviderEditForm() {
                                                 value={data.telefono}
                                                 onChange={handleChange}
                                                 type="text"
+                                                message={messageE.phone}
+                                                max={10}
                                             />
                                             <InputText
                                                 width="21.5rem"
@@ -124,7 +145,8 @@ export default function ProviderEditForm() {
                                                 placeholder="sanangel12@gmail.com"
                                                 value={data.correo}
                                                 onChange={handleChange}
-                                                type="text"
+                                                type="email"
+                                                message={messageE.email}
                                             />
                                         </div>
                                         <SubmitButton

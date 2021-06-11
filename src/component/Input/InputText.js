@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function InputText({width, title, name, placeholder, value, onChange, type, marginTop, marginBottom, required}) {
+export default function InputText({width, title, name, placeholder, value, onChange, type, marginTop, marginBottom, required, message, max}) {
     return (
         <div style={{marginTop:marginTop, marginBottom:marginBottom}}>
             <label className="block mb-2 font-semibold">
@@ -15,7 +15,9 @@ export default function InputText({width, title, name, placeholder, value, onCha
                 name={name}
                 type={type}
                 min="1"
+                max={max}
             />
+            <span className="block text-mediumred text-sm font-medium pt-0.5">{message}</span>
         </div>
     )
 }

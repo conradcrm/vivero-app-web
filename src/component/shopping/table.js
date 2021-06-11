@@ -72,6 +72,7 @@ export default function ShoppingList({ data }) {
             cancel={() => { setOpen(false); setState("Pendiente") }}
             action={() => handleClick()}
             isActivate={true}
+            type={true}
             isLoading={isLoading}
           />
         }

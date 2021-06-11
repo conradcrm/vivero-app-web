@@ -41,7 +41,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
     )
   }
 
-  HandleDonwload(imagen,setPreviewImage)
+  //HandleDonwload(imagen,setPreviewImage)
   
   return (
     <div className="relative shadow bg-white rounded-lg mx-2 pt-6 grid justify-center cursor-default">
@@ -56,7 +56,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
-            src={previewImage}
+            src={imageDefault}
             alt={descripcion}
             onError={(e) => {
               e.target.onerror = null;

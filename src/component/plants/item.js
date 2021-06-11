@@ -6,14 +6,13 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BiDetail } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
-import { HandleDonwload } from "../../files";
 
 export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado===undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
   const [previewImage, setPreviewImage] = useState();
-  HandleDonwload(imagen,setPreviewImage)
+  //HandleDonwload(imagen,setPreviewImage)
 
   const Menu = () => {
     return (
@@ -64,7 +63,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
-            src={previewImage}
+            src={imageDefault}
             alt={descripcion}
             onError={(e) => {
               e.target.onerror = null;

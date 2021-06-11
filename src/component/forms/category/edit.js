@@ -8,6 +8,8 @@ import { useParams } from 'react-router';
 import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
 import storage from "../../../firebase.js";
+import { inputsValidate } from '../../validations';
+import { notify } from '../../notification';
 
 export default function CategoryEditForm() {
     const { id } = useParams();
@@ -21,11 +23,17 @@ export default function CategoryEditForm() {
             imagen: '',
             nombre: '',
         });
+    const [messageE,] = useState({
+        description: "",
+        names: "",
+        image: "",
+        result: false,
+    })
     const query = useItemId(id, 'category', setData);
     const updateCategory = useUpdateCategory(id, data);
 
     if (!query.isLoading && query.data && !previewImage) {
-        handleDonwload();
+        //handleDonwload();
     }
 
     function handleDonwload() {
@@ -49,12 +57,18 @@ export default function CategoryEditForm() {
             ...data,
             [event.target.name]: event.target.value,
         });
+        inputsValidate([event.target.name], event.target.value, messageE);
     };
 
     const send = (event) => {
         event.preventDefault();
-        handleUpload();
-        updateCategory.mutate()
+        //handleUpload();
+        if (messageE.result) {
+            updateCategory.mutate()
+        }
+        else {
+            notify("info", "La información ingresada no es válida.")
+        }
     };
 
     return (
@@ -76,6 +90,9 @@ export default function CategoryEditForm() {
                                             setPreviewImage(URL.createObjectURL(target.files[0]));
                                         }}
                                     />
+                                    <div className="flex justify-end mb-6">
+                                        <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.image}</span>
+                                    </div>
                                 </div>
                                 <div className="col-span-4 bg-white rounded-r-xl">
                                     <form className="m-auto my-10 mx-28" onSubmit={send}>
@@ -89,6 +106,7 @@ export default function CategoryEditForm() {
                                                 value={data.nombre}
                                                 onChange={handleChange}
                                                 type="text"
+                                                message={messageE.name}
                                             />
                                             <div style={{ marginTop: 22, marginBottom: 22 }}>
                                                 <label className="block mb-2 font-semibold">
@@ -101,6 +119,7 @@ export default function CategoryEditForm() {
                                                     onChange={handleChange}
                                                     name="descripcion"
                                                     placeholder="Las suculentas son plantas perfectas para decorrar por su elegante forma" />
+                                                <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
                                             </div>
                                         </div>
                                         <SubmitButton

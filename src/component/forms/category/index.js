@@ -4,27 +4,37 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useCreateCategory } from '../../../hooks/mutation/mutation';
 import storage from "../../../firebase.js";
+import { inputsValidate } from '../../validations';
+import { notify } from '../../notification';
 
 export default function CategoryForm() {
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
-    
+
+    const [messageE,] = useState({
+        description: "",
+        names: "",
+        image: "",
+        result: false,
+    })
+
     const [data, setData] = useState({
         descripcion: '',
-        id_categoria: '',
         imagen: '',
         nombre: '',
     });
 
     const createCategory = useCreateCategory(data);
+
     const handleChange = (event) => {
         setData({
             ...data,
             [event.target.name]: event.target.value,
         });
+        inputsValidate([event.target.name], event.target.value, messageE);
     };
-    
+
     function handleChangeFile(target) {
         setFile(target.files[0]);
     }
@@ -33,13 +43,17 @@ export default function CategoryForm() {
         let ref = storage.ref(`/images/${file.name}`);
         ref.put(file);
     }
-    
+
     const send = (event) => {
         event.preventDefault();
-        handleUpload();
-        createCategory.mutate()
+        if (messageE.result) {
+            createCategory.mutate()
+        }
+        else {
+            notify("info", "La información ingresada no es válida.")
+        }
     };
-    
+
     return (
         <div className="flex w-full justify-center">
             <div className="h-full flex grid-cols-6 shadow-2xl">
@@ -54,6 +68,9 @@ export default function CategoryForm() {
                             setPreviewImage(URL.createObjectURL(target.files[0]));
                         }}
                     />
+                    <div className="flex justify-end mb-6">
+                        <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.image}</span>
+                    </div>
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
                     <form className="m-auto my-10 mx-28" onSubmit={send}>
@@ -67,6 +84,7 @@ export default function CategoryForm() {
                                 value={data.nombre}
                                 onChange={handleChange}
                                 type="text"
+                                message={messageE.name}
                             />
                             <div style={{ marginTop: 22, marginBottom: 22 }}>
                                 <label className="block mb-2 font-semibold">
@@ -79,6 +97,7 @@ export default function CategoryForm() {
                                     onChange={handleChange}
                                     name="descripcion"
                                     placeholder="Las suculentas son plantas perfectas para decorrar por su elegante forma" />
+                                <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
                             </div>
                         </div>
                         <SubmitButton

@@ -60,19 +60,22 @@ export default function ItemShopping({
           })}
         </p>
         <div className="col-span-2">
-              <Select
-                options={optionStatus}
-                id="select-status"
-                color="#000"
-                valueField="label"
-                style={styleSelect}
-                values={optionStatus.filter((opt) => opt.label === estados)}
-                onChange={(value) => {
-                  statusShop({ "status": value[0].label });
-                  setSelected();
-                  onOpenModal(true);
-                }}
-              /> 
+          {
+            estados ==="Pendiente" ?  <Select
+            options={optionStatus}
+            id="select-status"
+            color="#000"
+            valueField="label"
+            style={styleSelect}
+            values={optionStatus.filter((opt) => opt.label === estados)}
+            onChange={(value) => {
+              statusShop({ "status": value[0].label });
+              setSelected();
+              onOpenModal(true);
+            }}
+          /> :
+          <p className="py-3 text-center" style={styleSelect}>{estados}</p>
+          }
         </div>
       </div>
       <div className="col-span-2 flex justify-center items-center">

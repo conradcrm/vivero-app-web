@@ -482,8 +482,9 @@ export function useMutationStatusShopping(folio_compra, data, setOpen) {
         if (oldData !== undefined) {
           for (let index = 0; index < oldData.data.length; index++) {
             if (oldData.data[index].folio_compra === data.folio_compra) {
-              oldData.data.splice(index, 1)
-              oldData.data.splice(index, 0, response.data)
+              oldData.data[index].estado = response.data.estado;
+              // oldData.data.splice(index, 1)
+              // oldData.data.splice(index, 0, response.data)
               break;
             }
           }

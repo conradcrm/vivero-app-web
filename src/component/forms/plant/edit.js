@@ -21,7 +21,6 @@ export default function PlantEditForm() {
         precio_venta: "",
         precio_compra: "",
         imagen: "",
-        cantidad: "",
         id_categoria: undefined,
         id_proveedor: undefined,
     });
@@ -115,7 +114,7 @@ export default function PlantEditForm() {
                                                     type="number"
                                                 />
                                             </div>
-                                            <InputText
+                                            {/* <InputText
                                                 width="21.5rem"
                                                 title="Cantidad"
                                                 marginTop={22}
@@ -126,7 +125,7 @@ export default function PlantEditForm() {
                                                 value={data.cantidad}
                                                 onChange={handleChange}
                                                 type="number"
-                                            />
+                                            /> */}
                                             <div style={{ marginTop: 22, marginBottom: 22 }}>
                                                 <label className="block mb-2 font-semibold">
                                                     Categoría<span className={`ml-1 text-mediumred`}>*</span>

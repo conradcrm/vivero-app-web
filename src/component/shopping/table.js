@@ -43,7 +43,7 @@ export default function ShoppingList({ data }) {
             <p className="col-span-2">Total</p>
             <p className="col-span-2">Estado</p>
           </div>
-          <div className="col-span-2 flex justify-center">Acciones</div>
+          <div className="col-span-2 flex justify-center -ml-12">Acciones</div>
         </div>
         <div className=" bg-ligth_gray text-sm">
           {

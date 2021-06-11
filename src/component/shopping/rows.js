@@ -88,13 +88,13 @@ export default function ItemShopping({
             }}>
             <BiDetail size={21} className="opacity-70" />
           </button>
-          <Link
+          {/* <Link
             className="contents"
             to={{ pathname: "/provider/edit" }}>
             <div className="p-2  hover:bg-gray rounded-lg grid justify-center">
               <FaEdit size={19} className="opacity-60 mb-0.5 ml-1" />
             </div>
-          </Link>
+          </Link> */}
           <button className="p-2 grid justify-center hover:bg-ligthred rounded-lg"
             onClick={() => {
               setSelected();

@@ -8,6 +8,7 @@ import { useUpdatePlant } from '../../../hooks/mutation/mutation';
 import { useParams } from 'react-router';
 import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
+import { HandleDonwload, handleUpload } from '../../../files';
 
 export default function PlantEditForm() {
     const { id } = useParams()
@@ -15,6 +16,7 @@ export default function PlantEditForm() {
     const providerQuery = useProviders();
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
+    const [file, setFile] = useState();
     const [data, setData] = useState({
         nombre: "",
         descripcion: "",
@@ -28,6 +30,12 @@ export default function PlantEditForm() {
     const query = useItemId(id, 'plant', setData);
     
     const updatePlant = useUpdatePlant(id, data);
+    
+    if (!query.isLoading && query.data && !previewImage) {
+        let imagen = data.imagen    
+        HandleDonwload(imagen, setPreviewImage);
+    }
+
     let dataC = []
     let dataP = []
 
@@ -39,6 +47,10 @@ export default function PlantEditForm() {
         dataP = providerQuery.data.data
     }
 
+    function handleChangeFile(target) {
+        setFile(target.files[0]);
+    }
+
     const handleChange = (event) => {
         setData({
             ...data,
@@ -48,6 +60,7 @@ export default function PlantEditForm() {
 
     const send = (event) => {
         event.preventDefault();
+        handleUpload(file);
         updatePlant.mutate();
     };
 
@@ -74,6 +87,7 @@ export default function PlantEditForm() {
                                         value={previewImage}
                                         onChange={({ target }) => {
                                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
+                                            handleChangeFile(target)
                                             setChangeImage(true);
                                             setPreviewImage(URL.createObjectURL(target.files[0]));
                                         }}

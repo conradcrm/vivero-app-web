@@ -7,11 +7,13 @@ import { useItemId } from '../../../hooks/query/index';
 import { useParams } from 'react-router';
 import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
+import storage from "../../../firebase.js";
 
 export default function CategoryEditForm() {
     const { id } = useParams();
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
+    const [file, setFile] = useState();
     const [data, setData] = useState(
         {
             descripcion: '',
@@ -22,6 +24,26 @@ export default function CategoryEditForm() {
     const query = useItemId(id, 'category', setData);
     const updateCategory = useUpdateCategory(id, data);
 
+    if (!query.isLoading && query.data && !previewImage) {
+        handleDonwload();
+    }
+
+    function handleDonwload() {
+        let ref = storage.ref(`/images/${query.data.imagen}`);
+        ref.getDownloadURL().then((url) => {
+            setPreviewImage(url);
+        })
+    }
+
+    function handleUpload() {
+        let ref = storage.ref(`/images/${file.name}`);
+        ref.put(file);
+    }
+
+    function handleChangeFile(target) {
+        setFile(target.files[0]);
+    }
+
     const handleChange = (event) => {
         setData({
             ...data,
@@ -31,6 +53,7 @@ export default function CategoryEditForm() {
 
     const send = (event) => {
         event.preventDefault();
+        handleUpload();
         updateCategory.mutate()
     };
 
@@ -49,6 +72,7 @@ export default function CategoryEditForm() {
                                         onChange={({ target }) => {
                                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
                                             setChangeImage(true);
+                                            handleChangeFile(target)
                                             setPreviewImage(URL.createObjectURL(target.files[0]));
                                         }}
                                     />

@@ -28,7 +28,7 @@ export default function ShoppingList({ data }) {
     title: "¿Desea continuar?",
     description: `El estado de la compra cambiará a ${state.status ? state.status : ""}.`
   }
-  console.log(state)
+  
   let messageD = {
     title: "¿Está seguro de quieres eliminar el registro de compra?",
     description: "Esta acción no se puede deshacer. Los datos no se podrán recuperar."

@@ -5,12 +5,14 @@ import ToggleButton from "../buttons/toggle";
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { FaTrashAlt } from 'react-icons/fa';
+import { HandleDonwload } from "../../files";
 
 
-export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal , onOpenDeleteModal, setSelected, isActivate, setisActivate }) {
+export default function CategoryItem({ nombre, imagen, descripcion, id_categoria, estado, onOpenModal, onOpenDeleteModal, setSelected, isActivate, setisActivate }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-  let status = estado===undefined || estado === 1;
+  let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
+  const [previewImage, setPreviewImage] = useState();
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
@@ -26,10 +28,10 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
 
           <hr className="my-2 text-gray" />
           <div
-          onClick={() => {
-            setSelected();
-            onOpenDeleteModal(true);
-          }}
+            onClick={() => {
+              setSelected();
+              onOpenDeleteModal(true);
+            }}
             className="button-action flex cursor-pointer  mb-2 py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
             <FaTrashAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm ">Eliminar</span>
@@ -39,6 +41,8 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
     )
   }
 
+  HandleDonwload(imagen,setPreviewImage)
+  
   return (
     <div className="relative shadow bg-white rounded-lg mx-2 pt-6 grid justify-center cursor-default">
       <div className="cursor-pointer w-16 absolute"
@@ -52,7 +56,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
-            src={imagen}
+            src={previewImage}
             alt={descripcion}
             onError={(e) => {
               e.target.onerror = null;

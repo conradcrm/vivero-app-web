@@ -4,6 +4,7 @@ import Select from 'react-dropdown-select';
 import DynamicInputs from '../../dynamicInput';
 import { usePlants, useProviders } from '../../../hooks/query';
 import { useCreateShopping } from '../../../hooks/mutation/mutation';
+import shoppingImg from '../../../resources/stock.svg';
 
 export default function ShoppingForm({ mode }) {
     const [data, setData] = useState({ id_proveedor: undefined, inputs: undefined });
@@ -43,11 +44,21 @@ export default function ShoppingForm({ mode }) {
             <div className="h-full flex grid-cols-6 shadow-2xl">
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo compra</h3>
-                    <div className="w-full text-center flex justify-center">
-                        <p className="text-white text-sm font-semibold w-60 text-center pt-4 tracking-wider">
+                    <div className="my-6 relative w-full h-64" style={{textAlign: "-webkit-center"}}>
+                                        <img
+                                            className=""
+                                            width={200}
+                                            src={shoppingImg}
+                                            alt="Nuevos proveedores"
+                                        />
+                                        <p className="w-60 my-5 text-sm text-white">Antes de selccionar las plantas, primero selecciona el proveedor.</p>
+                                    </div>
+                    {/* <div className="w-full text-center flex justify-center">
+                        <p className="text-white text-sm font-semibold text-center tracking-wider w-64 mt-4">
                             Antes de selccionar las plantas, primero selecciona el proveedor.
                         </p>
-                    </div>
+
+                    </div> */}
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl overflow-y-auto overflow-x-auto" style={{ height: "26em", maxHeight: "32em" }}>
                     <form className="m-auto my-7 mx-20" onSubmit={send} >

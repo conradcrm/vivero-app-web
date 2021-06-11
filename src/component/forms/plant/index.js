@@ -5,12 +5,15 @@ import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
 import { useCategories, useProviders } from '../../../hooks/query';
 import { useCreatePLant } from '../../../hooks/mutation/mutation';
+import { handleUpload } from '../../../files';
 
 export default function PlantForm() {
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
+    const [file, setFile] = useState();
+
     const [data, setData] = useState({
         nombre: "",
         descripcion: "",
@@ -39,9 +42,14 @@ export default function PlantForm() {
             [event.target.name]: event.target.value,
         });
     };
+    
+    function handleChangeFile(target) {
+        setFile(target.files[0]);
+    }
 
     const send = (event) => {
         event.preventDefault();
+        handleUpload(file);
         createPlant.mutate();
     };
 
@@ -63,6 +71,7 @@ export default function PlantForm() {
                         value={previewImage}
                         onChange={({ target }) => {
                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
+                            handleChangeFile(target);
                             setChangeImage(true);
                             setPreviewImage(URL.createObjectURL(target.files[0]));
                         }}

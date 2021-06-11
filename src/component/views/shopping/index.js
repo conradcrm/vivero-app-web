@@ -2,7 +2,6 @@ import React from 'react'
 import ItemView from './item'
 
 export default function DetailsShopping({ shopping }) {
-    console.log(shopping.detalle)
     let total = shopping.detalle.reduce((tot, detalle) => {
         return tot + (detalle.planta.precio_compra * detalle.cantidad);
     }, 0)

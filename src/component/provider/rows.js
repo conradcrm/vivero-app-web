@@ -5,6 +5,7 @@ import ToggleButton from "../buttons/toggle";
 import { Link } from "react-router-dom";
 export default function ItemProvider({ id_proveedor, nombre, imagen, telefono, correo, direccion, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let status = estado===undefined || estado === 1;
+  
   return (
     <div className="grid grid-cols-11 my-1 h-16 bg-white font-semibold" style={{height:"4.5rem"}}>
       <div className="col-span-9 grid grid-cols-11 mx-4 items-center" style={{fontSize: "0.84rem",lineHeight: "1.25rem"}}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ImageInput from '../../Input/Image'
+//import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
 import { useParams } from 'react-router';
@@ -7,11 +7,14 @@ import { useItemId } from '../../../hooks/query';
 import { useUpdateProvier } from '../../../hooks/mutation/mutation';
 import ServerError from '../../error/server';
 import LoadingData from '../../loading/data';
+//import { HandleDonwload, handleUpload } from '../../../files';
+import providerImg from '../../../resources/provider.svg';
 
 export default function ProviderEditForm() {
     const { id } = useParams();
-    const [, setChangeImage] = useState(false);
-    const [previewImage, setPreviewImage] = useState();
+    //const [, setChangeImage] = useState(false);
+   // const [previewImage, setPreviewImage] = useState();
+    //const [file, setFile] = useState();
     const [data, setData] = useState(
         {
             nombre: "",
@@ -21,9 +24,18 @@ export default function ProviderEditForm() {
             imagen: "",
         }
     );
-    const query = useItemId(id, 'provider' ,setData);
+    const query = useItemId(id, 'provider', setData);
 
     const updateProvider = useUpdateProvier(id, data);
+
+    // if (!query.isLoading && query.data && !previewImage) {
+    //     let imagen = data.imagen
+    //     HandleDonwload(imagen, setPreviewImage);
+    // }
+
+    // function handleChangeFile(target) {
+    //     setFile(target.files[0]);
+    // }
 
     const handleChange = (event) => {
         setData({
@@ -34,6 +46,7 @@ export default function ProviderEditForm() {
 
     const send = (event) => {
         event.preventDefault();
+        //handleUpload(file);
         updateProvider.mutate()
     };
 
@@ -47,14 +60,24 @@ export default function ProviderEditForm() {
                             <div className="h-full flex grid-cols-6 shadow-2xl">
                                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo proveedor</h3>
-                                    <ImageInput
+                                    <div className="my-6 relative w-full h-64" style={{textAlign: "-webkit-center"}}>
+                                        <img
+                                            className=""
+                                            width={200}
+                                            src={providerImg}
+                                            alt="Nuevos proveedores"
+                                        />
+                                        <p className="w-4/5 mt-4 text-sm text-white">Asegúrate de registrar los datos correctamente.</p>
+                                    </div>
+                                    {/* <ImageInput
                                         value={previewImage}
                                         onChange={({ target }) => {
                                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
                                             setChangeImage(true);
+                                            handleChangeFile(target)
                                             setPreviewImage(URL.createObjectURL(target.files[0]));
                                         }}
-                                    />
+                                    /> */}
                                 </div>
                                 <div className="col-span-4 bg-white rounded-r-xl">
                                     <form className="m-auto my-7 mx-28" onSubmit={send}>
@@ -111,7 +134,7 @@ export default function ProviderEditForm() {
                                     </form>
                                 </div>
                             </div>
-           }
+            }
         </div>
 
     )

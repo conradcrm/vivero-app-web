@@ -3,10 +3,13 @@ import SubmitButton from '../../buttons/submit';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useCreateCategory } from '../../../hooks/mutation/mutation';
+import storage from "../../../firebase.js";
 
 export default function CategoryForm() {
     const [, setChangeImage] = useState(false);
     const [previewImage, setPreviewImage] = useState();
+    const [file, setFile] = useState();
+    
     const [data, setData] = useState({
         descripcion: '',
         id_categoria: '',
@@ -22,11 +25,21 @@ export default function CategoryForm() {
         });
     };
     
+    function handleChangeFile(target) {
+        setFile(target.files[0]);
+    }
+
+    function handleUpload() {
+        let ref = storage.ref(`/images/${file.name}`);
+        ref.put(file);
+    }
+    
     const send = (event) => {
         event.preventDefault();
+        handleUpload();
         createCategory.mutate()
     };
-
+    
     return (
         <div className="flex w-full justify-center">
             <div className="h-full flex grid-cols-6 shadow-2xl">
@@ -36,6 +49,7 @@ export default function CategoryForm() {
                         value={previewImage}
                         onChange={({ target }) => {
                             handleChange({ target: { name: "imagen", value: target.files[0].name } });
+                            handleChangeFile(target)
                             setChangeImage(true);
                             setPreviewImage(URL.createObjectURL(target.files[0]));
                         }}

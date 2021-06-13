@@ -1,9 +1,9 @@
 import React from 'react'
-import HeaderBar from '../../component/headerbar'
-import ShoppingList from '../../component/shopping/table'
-import ServerError from '../../component/error/server'
-import LoadingData from '../../component/loading/data';
-import { useShopping } from '../../hooks/query';
+import HeaderBar from '../component/headerbar'
+import ShoppingList from '../component/shopping/table'
+import ServerError from '../component/error/server'
+import LoadingData from '../component/loading/data';
+import { useShopping } from '../hooks/query';
 
 export default function Shopping() {
     const query = useShopping();

@@ -1,9 +1,9 @@
 import React from 'react'
-import Categories from '../../component/category'
-import HeaderBar from '../../component/headerbar'
-import ServerError from '../../component/error/server'
-import LoadingData from '../../component/loading/data';
-import { useCategories } from '../../hooks/query';
+import Categories from '../component/category'
+import HeaderBar from '../component/headerbar'
+import ServerError from '../component/error/server'
+import LoadingData from '../component/loading/data';
+import { useCategories } from '../hooks/query';
 
 export default function Category() {
     const query = useCategories();

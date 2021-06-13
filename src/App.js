@@ -1,30 +1,28 @@
+import React from 'react';
+import { useAuth } from './context/Auth';
+import { LogoutRoutes, Modules } from './routes';
+import Notification from './component/notification';
+import LoadingData from './component/loading/data';
 import "./App.css";
 import "./index.css";
-import Layout from "./layout";
-import ModuleRoutes from "./routes";
-import FormRoutes from "./routes/forms";
-import { useLocation } from "react-router-dom";
-import LayoutAction from "./layout/action";
-import Notification from "./component/notification";
 
-function App() {
-  let location = useLocation();
-  let route = location.pathname;
-    
+export default function App() {
+  const { user, loadingUser } = useAuth();
+
+  if (loadingUser) {
+    return (
+      <div className="h-screen">
+        <LoadingData />
+      </div>
+    );
+  }
+
   return (
     <>
-      {!route.includes('create') && !route.includes('edit')  ? (
-        <Layout>
-          <ModuleRoutes />
-        </Layout>
-      ) : (
-        <LayoutAction>
-          <FormRoutes />
-        </LayoutAction>
-      )}
-      <Notification/>
+      {user ? <Modules /> : <LogoutRoutes />}
+      <Notification />
     </>
   );
 }
 
-export default App;
+

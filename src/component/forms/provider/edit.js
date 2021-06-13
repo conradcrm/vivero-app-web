@@ -34,8 +34,8 @@ export default function ProviderEditForm() {
             imagen: "",
         }
     );
-    const query = useItemId(id, 'provider', setData);
-
+    const query = useItemId(id, 'provider',setData);
+    
     const updateProvider = useUpdateProvier(id, data);
 
     // if (!query.isLoading && query.data && !previewImage) {

@@ -1,9 +1,9 @@
 import React from 'react'
-import ServerError from '../../component/error/server'
-import HeaderBar from '../../component/headerbar'
-import LoadingData from '../../component/loading/data'
-import Plants from '../../component/plants';
-import { usePlants } from '../../hooks/query';
+import ServerError from '../component/error/server'
+import HeaderBar from '../component/headerbar'
+import LoadingData from '../component/loading/data'
+import Plants from '../component/plants';
+import { usePlants } from '../hooks/query';
 
 export default function Plant() {
     const query = usePlants();

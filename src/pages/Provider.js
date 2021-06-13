@@ -1,12 +1,12 @@
 import React from 'react'
-import HeaderBar from '../../component/headerbar'
-import ProviderList from '../../component/provider/table'
-import ServerError from '../../component/error/server'
-import LoadingData from '../../component/loading/data';
-import { useProviders } from '../../hooks/query';
+import HeaderBar from '../component/headerbar'
+import ProviderList from '../component/provider/table'
+import ServerError from '../component/error/server'
+import LoadingData from '../component/loading/data';
+import { useProviders } from '../hooks/query';
 
 export default function Provider() {
-    const query = useProviders();
+    let query = useProviders();
     return (
         <div className="h-full">
             {

@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { notify } from "../../component/notification";
 
-export const useMutation = (endpoint, module) => {
+export const useFetch = (endpoint, module) => {
     let url = endpoint;
     const initialState = {
         status: "loading",
@@ -37,7 +37,7 @@ export const useMutation = (endpoint, module) => {
             });
             const data = await response.json();
             dispatch({ type: "FETCHED", payload: data });
-            notify(data.status, data.message)
+            //notify(data.status, data.message)
         } catch (error) {
             dispatch({ type: "ERROR", payload: error.message });
             notify("error", "Ha ocurrido un error, inténtelo más tarde.")

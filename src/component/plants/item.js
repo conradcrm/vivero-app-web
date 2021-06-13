@@ -9,7 +9,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
-  let status = estado===undefined || estado === 1;
+  let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
   const [previewImage, setPreviewImage] = useState();
   //HandleDonwload(imagen,setPreviewImage)
@@ -59,7 +59,7 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
         <HiOutlineDotsHorizontal size={25} className="text-lg mx-2" />
         <Menu />
       </div>
-      <div className="max-h-64 mt-5 pt-3 mb-4 w-48 rounded-lg ">
+      <div className="max-h-80 mt-5 pt-3 mb-4 w-48 rounded-lg ">
         <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
           <img
             className="rounded-lg max-h-32"
@@ -71,11 +71,29 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
             }}
           />
         </div>
-        <div className="pt-4 max-h-28">
+        <div className="pt-4 max-h-36">
           <p className="font-bold mb-1 truncate">{capNombre}</p>
-          <p className="overflow-ellipsis overflow-hidden h-16 text-sm">{descripcion} </p>
+          <p className="overflow-ellipsis overflow-hidden h-11 text-sm">{descripcion} </p>
+          <div className="flex justify-between text-sm">
+            <span>compra:</span>
+            <span>{precio_compra.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}</span>
+          </div>
+          <div className=" flex justify-between text-sm">
+            <span>Venta:</span>
+            <span>{precio_venta.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}</span>
+          </div>
+          {cantidad > 0 && <div className=" flex justify-between text-sm">
+            <span>Cantidad:</span>
+            <span>{cantidad}</span>
+          </div>}
         </div>
-        <div className="flex justify-between items-center text-sm">
+        <div className="flex justify-between items-center text-sm mt-4">
           {status ? <span className="font-semibold">Activo</span> : <span className="font-semibold">Inactivo</span>}
           <ToggleButton
             activate={status}

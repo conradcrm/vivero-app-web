@@ -1,56 +1,57 @@
+import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { notify } from "../../component/notification";
+import { initAxiosInterceptors, initInterceptors } from "../../helpers/helper-auth";
 
-const globalQuery = "http://localhost:8000/api/";
-const headers = {
-  "content-type": "application/json",
-  Accept: "application/json",
-}
+const globalURL = "http://localhost:8000/api/";
 
 //General create item
 export const createItem = async ({ data, endpoint }) => {
-  const url = `${globalQuery}${endpoint}`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify(data),
-  });
-  const resp = await response.json();
-  return resp;
+  initAxiosInterceptors();
+  const url = `${globalURL}${endpoint}`;
+  try {
+    const { data: item } = await axios.post(url, data);
+    return item;
+  } catch (error) {
+    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+  }
 };
 
 //GENERAL UPDATE STATUS
 export const updateStatusItem = async ({ id, endpoint }) => {
-  const url = `${globalQuery}${endpoint}/${id}`;
-  const response = await fetch(url, {
-    method: "PATCH",
-    headers: headers,
-  });
-  const resp = await response.json();
-  return resp;
+  initAxiosInterceptors();
+  const url = `${globalURL}${endpoint}/${id}`;
+  try {
+    const { data: item } = await axios.patch(url);
+    return item;
+  } catch (error) {
+    notify('error', `Ha ocurrido un error, no se actualizó el registro. ${error}`);
+  }
+
 };
 
 //General delete item
 export const deleteItem = async ({ id, endpoint }) => {
-  const url = `${globalQuery}${endpoint}/${id}`;
-  const response = await fetch(url, {
-    method: "DELETE",
-    headers: headers,
-  });
-  const resp = await response.json();
-  return resp;
+  initAxiosInterceptors();
+  const url = `${globalURL}${endpoint}/${id}`;
+  try {
+    const { data: item } = await axios.delete(url);
+    return item;
+  } catch (error) {
+    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+  }
 };
 
 //General update item
 export const updateItem = async ({ id, data, endpoint }) => {
-  const url = `${globalQuery}${endpoint}/${id}`;
-  const response = await fetch(url, {
-    method: "PATCH",
-    headers: headers,
-    body: JSON.stringify(data),
-  });
-  const resp = await response.json();
-  return resp;
+  initAxiosInterceptors();
+  const url = `${globalURL}${endpoint}/${id}`;
+  try {
+    const { data: item } = await axios.patch(url, data);
+    return item;
+  } catch (error) {
+    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+  }
 };
 
 /******
@@ -280,10 +281,11 @@ export function useMutationStatusPlants(id_planta, setOpen) {
 
 export function useDeletePlants(id_planta, setOpen) {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(deleteItem, {
+  const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
       id: id_planta,
-      endpoint: "delete-plant"
+      endpoint: "delete-plant",
+      data: []
     },
     onSuccess: (response) => {
       let data = response.data;
@@ -327,6 +329,7 @@ export function useCreateProvider(data) {
           return oldData;
         }
       });
+
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
@@ -382,6 +385,7 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
       endpoint: "status-provider"
     },
     onSuccess: (response) => {
+
       let data = response.data;
       const noData = queryClient.setQueryData('PROVIDERS', function (oldData) {
         for (let index = 0; index < oldData.data.length; index++) {
@@ -409,10 +413,11 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
 
 export function useDeleteProvider(id_proveedor, setOpen) {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(deleteItem, {
+  const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
       id: id_proveedor,
-      endpoint: "delete-provider"
+      endpoint: "delete-provider",
+      data: []
     },
     onSuccess: (response) => {
       let data = response.data;
@@ -511,7 +516,8 @@ export function useDeleteShoppin(folio_compra, setOpen) {
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
       id: folio_compra,
-      endpoint: "delete-shopping"
+      endpoint: "delete-shopping",
+      data: []
     },
     onSuccess: (response) => {
       let data = response.data;

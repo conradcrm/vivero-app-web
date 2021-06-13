@@ -5,9 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import AppProviders from './context';
 
 const queryClient = new QueryClient({
-  defaultOptions:{
+  defaultOptions: {
     queries: {
       retry: 0,
       refetchOnWindowFocus: false,
@@ -17,7 +18,9 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <App />
+      <AppProviders>
+        <App />
+      </AppProviders>
     </BrowserRouter>
   </QueryClientProvider>,
   document.getElementById('root')

@@ -132,7 +132,6 @@ export function inputsValidate2(input, value, messageE) {
 
 export function validateDireccion(value) {
     if (value == "") {
-        console.log("1")
         return {
             field: "address",
             result: false,
@@ -140,14 +139,12 @@ export function validateDireccion(value) {
         };
     }
     if (value.length > 6 || /^[a-zA-Z0-9\s]+$/.test(value)) {
-        console.log("2")
         return {
             field: "address",
             result: true,
             message: "",
         };
     }
-    console.log("3")
     return {
         field: "address",
         result: false,

@@ -1,5 +1,5 @@
 import React from 'react'
-import HeaderBarTitle from '../../component/headerbar/tittle'
+import HeaderBarTitle from '../component/headerbar/tittle'
 
 export default function Notification() {
     return (

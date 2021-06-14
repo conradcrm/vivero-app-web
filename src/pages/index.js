@@ -4,7 +4,7 @@ import HeaderBarTitle from '../component/headerbar/tittle'
 export default function Home() {
     return (
         <div>
-            <HeaderBarTitle module="Dashboard"/>
+            <HeaderBarTitle module="Dashboard" />
         </div>
     )
 }

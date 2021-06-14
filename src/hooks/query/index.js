@@ -17,15 +17,13 @@ export const getDataModuleId = async (module, id, setData) => {
   const {data: item} = await axios.get(query);
   setData(item.data);
   return item.data;
-
 }
 
-export function useItemId(id, module, setData) {
+export function useItemId(id, module, setData, setPreviewImage) {
   return useQuery(`${module}${"/"}${id}`, () => getDataModuleId(module, id, setData));
 }
 
 export function useGetData(module) {
-
   return useQuery(module, () => getDataModule(module), {
     staleTime: Infinity,
     notifyOnChangePropsExclusions: ['isStale']

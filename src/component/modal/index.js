@@ -32,10 +32,10 @@ export default function ModalChangeStatus({ title, message, action, isLoading, i
                             <Loading className="" color={"white"} size={22} />
                             <p className="ml-1">
                                 {
-                                   type!=undefined ? "Aceptar" : isActivate ? "Activando ..." : "Desactivando ..."
+                                   type!==undefined ? "Aceptar" : isActivate ? "Activando ..." : "Desactivando ..."
                                 }</p>
                         </> :
-                        <>{type!=undefined ? "Aceptar" : isActivate ? "Activar" : "Desactivar"}</>
+                        <>{type!==undefined ? "Aceptar" : isActivate ? "Activar" : "Desactivar"}</>
                     }
                 </button>
             </div>

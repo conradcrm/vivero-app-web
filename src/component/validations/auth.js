@@ -41,6 +41,8 @@ export function inputsValidate(name, data) {
     case "password":
       response = validatePassword(data);
       break;
+      default:
+        break;
   }
   return response;
 }

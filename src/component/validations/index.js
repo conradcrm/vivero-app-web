@@ -22,7 +22,7 @@ export function inputsValidate(input, value, messageE) {
 }
 
 export function validateName(value) {
-    if (value == "") {
+    if (value === "") {
         return {
             field: "name",
             result: false,
@@ -54,7 +54,7 @@ export function validateName(value) {
 }
 
 export function validateDescription(value) {
-    if (value == "") {
+    if (value === "") {
         return {
             field: "description",
             result: false,
@@ -131,7 +131,7 @@ export function inputsValidate2(input, value, messageE) {
 
 
 export function validateDireccion(value) {
-    if (value == "") {
+    if (value === "") {
         return {
             field: "address",
             result: false,

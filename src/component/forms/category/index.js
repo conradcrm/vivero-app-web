@@ -3,12 +3,12 @@ import SubmitButton from '../../buttons/submit';
 import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import { useCreateCategory } from '../../../hooks/mutation/mutation';
-import storage from "../../../firebase.js";
 import { inputsValidate } from '../../validations';
 import { notify } from '../../notification';
+import storage from "../../../firebase.js";
 
 export default function CategoryForm() {
-    const [, setChangeImage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
 
@@ -39,20 +39,47 @@ export default function CategoryForm() {
         setFile(target.files[0]);
     }
 
-    function handleUpload() {
-        let ref = storage.ref(`/images/${file.name}`);
-        ref.put(file);
-    }
-
-    const send = (event) => {
+    function handleUploadFile(event) {
+        setIsLoading(true)
         event.preventDefault();
+        if (previewImage) {
+            try {
+                const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+                uploadTask.on("state_changed", snapshot => {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000);
+                }, error => {
+                    setIsLoading(false)
+                    notify("error", `Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde. ${error}`)
+                },
+                    () => {
+                        storage.ref("images").child(file.name).getDownloadURL()
+                            .then(url => {
+                                setData({ ...data, imagen: url })
+                                sendData()
+                            });
+                    }
+                );
+            } catch (error) {
+                setIsLoading(false)
+                notify("error", "Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde.")
+            }
+        } else {
+            sendData()
+        }
+    };
+
+    function sendData() {
         if (messageE.result) {
-            createCategory.mutate()
+            createCategory.mutate();
+            if (!createCategory.isLoading) {
+                setIsLoading(false)
+            }
         }
         else {
             notify("info", "La información ingresada no es válida.")
+            setIsLoading(false)
         }
-    };
+    }
 
     return (
         <div className="flex w-full justify-center">
@@ -60,12 +87,18 @@ export default function CategoryForm() {
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo categoría</h3>
                     <ImageInput
-                        value={previewImage}
+                        value={previewImage ? previewImage : data.imagen}
+                        preview={previewImage}
+                        text="Seleccione una imagen"
+                        cancel={() => setPreviewImage(undefined)}
                         onChange={({ target }) => {
-                            handleChange({ target: { name: "imagen", value: target.files[0].name } });
+                            handleChange(
+                                { target: target.name && { name: "imagen", value: target.files[0].name } }
+                            );
                             handleChangeFile(target)
-                            setChangeImage(true);
-                            setPreviewImage(URL.createObjectURL(target.files[0]));
+                            if (target.files.length !== 0) {
+                                setPreviewImage(URL.createObjectURL(target.files[0]));
+                            }
                         }}
                     />
                     <div className="flex justify-end mb-6">
@@ -73,7 +106,7 @@ export default function CategoryForm() {
                     </div>
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
-                    <form className="m-auto my-10 mx-28" onSubmit={send}>
+                    <form className="m-auto my-10 mx-28" onSubmit={handleUploadFile}>
                         <div>
                             <InputText
                                 width="21.5rem"
@@ -101,7 +134,7 @@ export default function CategoryForm() {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={createCategory.isLoading}
+                            isLoading={createCategory.isLoading || isLoading}
                             mode={"create"}
                         />
                     </form>

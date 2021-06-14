@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { notify } from "../../component/notification";
-import { initAxiosInterceptors, initInterceptors } from "../../helpers/helper-auth";
+import { initAxiosInterceptors } from "../../helpers/helper-auth";
 
 const globalURL = "http://localhost:8000/api/";
 
@@ -13,7 +13,8 @@ export const createItem = async ({ data, endpoint }) => {
     const { data: item } = await axios.post(url, data);
     return item;
   } catch (error) {
-    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+    notify('error', `Ha ocurrido un error, no se agregó el registro. ${error.response.data.message}`);
+    return error;
   }
 };
 
@@ -25,9 +26,9 @@ export const updateStatusItem = async ({ id, endpoint }) => {
     const { data: item } = await axios.patch(url);
     return item;
   } catch (error) {
-    notify('error', `Ha ocurrido un error, no se actualizó el registro. ${error}`);
+    notify('error', `Ha ocurrido un error, no se actualizó el registro. ${error.response.data.message}`);
+    return error;
   }
-
 };
 
 //General delete item
@@ -38,7 +39,8 @@ export const deleteItem = async ({ id, endpoint }) => {
     const { data: item } = await axios.delete(url);
     return item;
   } catch (error) {
-    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error.response.data.message}`);
+    return error;
   }
 };
 
@@ -50,7 +52,8 @@ export const updateItem = async ({ id, data, endpoint }) => {
     const { data: item } = await axios.patch(url, data);
     return item;
   } catch (error) {
-    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error}`);
+    notify('error', `Ha ocurrido un error, no se eliminó el registro. ${error.response.data.message}`);
+    return error;
   }
 };
 

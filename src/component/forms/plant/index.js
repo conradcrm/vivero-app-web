@@ -5,14 +5,14 @@ import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
 import { useCategories, useProviders } from '../../../hooks/query';
 import { useCreatePLant } from '../../../hooks/mutation/mutation';
-import { handleUpload } from '../../../files';
 import { inputsValidate3 } from '../../validations';
 import { notify } from '../../notification';
+import storage from "../../../firebase.js";
 
 export default function PlantForm() {
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
-    const [, setChangeImage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
 
@@ -59,13 +59,44 @@ export default function PlantForm() {
         setFile(target.files[0]);
     }
 
-    const send = (event) => {
+    function handleUploadFile(event) {
+        setIsLoading(true)
         event.preventDefault();
-        //handleUpload(file);
+        if (previewImage) {
+            try {
+                const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+                uploadTask.on("state_changed", snapshot => {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000);
+                }, error => {
+                    setIsLoading(false)
+                    notify("error", `Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde. ${error}`)
+                },
+                    () => {
+                        storage.ref("images").child(file.name).getDownloadURL()
+                            .then(url => {
+                                setData({ ...data, imagen: url })
+                                sendData()
+                            });
+                    }
+                );
+            } catch (error) {
+                setIsLoading(false)
+                notify("error", "Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde.")
+            }
+        } else {
+            sendData()
+        }
+    };
+
+
+   function sendData() {
         if (messageE.result) {
             if (data.id_categoria !== undefined) {
                 if (data.id_proveedor !== undefined) {
                     createPlant.mutate();
+                    if (!createPlant.isLoading) {
+                        setIsLoading(false)
+                    }
                 }
                 else {
                     notify("info", "Seleccione un proveedor")
@@ -78,6 +109,7 @@ export default function PlantForm() {
         else {
             notify("info", "La información ingresada no es válida.")
         }
+        setIsLoading(false)
     };
 
     const styleSelect = {
@@ -95,17 +127,23 @@ export default function PlantForm() {
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl px-8">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo planta</h3>
                     <ImageInput
-                        value={previewImage}
+                        value={previewImage ? previewImage : data.imagen}
+                        preview={previewImage}
+                        text="Seleccione una imagen"
+                        cancel={() => setPreviewImage(undefined)}
                         onChange={({ target }) => {
-                            handleChange({ target: { name: "imagen", value: target.files[0].name } });
-                            //handleChangeFile(target);
-                            setChangeImage(true);
-                            setPreviewImage(URL.createObjectURL(target.files[0]));
+                            handleChange(
+                                { target: target.name && { name: "imagen", value: target.files[0].name } }
+                            );
+                            handleChangeFile(target)
+                            if (target.files.length !== 0) {
+                                setPreviewImage(URL.createObjectURL(target.files[0]));
+                            }
                         }}
                     />
                 </div>
                 <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32em" }}>
-                    <form className="my-7 mx-24" onSubmit={send}>
+                    <form className="my-7 mx-24" onSubmit={handleUploadFile}>
                         <div>
                             <InputText
                                 width="21.5rem"
@@ -216,7 +254,7 @@ export default function PlantForm() {
                             </div>
                         </div>
                         <SubmitButton
-                            isLoading={createPlant.isLoading}
+                            isLoading={createPlant.isLoading || isLoading}
                             mode={"create"}
                         />
                     </form>

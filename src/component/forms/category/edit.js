@@ -13,9 +13,10 @@ import { notify } from '../../notification';
 
 export default function CategoryEditForm() {
     const { id } = useParams();
-    const [, setChangeImage] = useState(false);
-    const [previewImage, setPreviewImage] = useState();
+    const [isLoading, setIsLoading] = useState(false)
+    const [previewImage, setPreviewImage] = useState(undefined);
     const [file, setFile] = useState();
+
     const [data, setData] = useState(
         {
             descripcion: '',
@@ -23,30 +24,16 @@ export default function CategoryEditForm() {
             imagen: '',
             nombre: '',
         });
+
     const [messageE,] = useState({
         description: "",
         names: "",
         image: "",
         result: false,
     })
-    const query = useItemId(id, 'category', setData);
+
+    const query = useItemId(id, 'category', setData, setPreviewImage);
     const updateCategory = useUpdateCategory(id, data);
-
-    if (!query.isLoading && query.data && !previewImage) {
-        //handleDonwload();
-    }
-
-    function handleDonwload() {
-        let ref = storage.ref(`/images/${query.data.imagen}`);
-        ref.getDownloadURL().then((url) => {
-            setPreviewImage(url);
-        })
-    }
-
-    function handleUpload() {
-        let ref = storage.ref(`/images/${file.name}`);
-        ref.put(file);
-    }
 
     function handleChangeFile(target) {
         setFile(target.files[0]);
@@ -60,16 +47,46 @@ export default function CategoryEditForm() {
         inputsValidate([event.target.name], event.target.value, messageE);
     };
 
-    const send = (event) => {
+
+    function handleUploadFile(event) {
+        setIsLoading(true)
         event.preventDefault();
-        //handleUpload();
+        if (previewImage) {
+            try {
+                const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+                uploadTask.on("state_changed", snapshot => {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000);
+                }, error => {
+                    setIsLoading(false)
+                    notify("error", `Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde. ${error}`)
+                },
+                    () => {
+                        storage.ref("images").child(file.name).getDownloadURL()
+                            .then(url => {
+                                setData({ ...data, imagen: url })
+                                sendData()
+                            });
+                    }
+                );
+            } catch (error) {
+                setIsLoading(false)
+                notify("error", "Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde.")
+            }
+        } else {
+            sendData()
+        }
+    };
+
+    function sendData() {
         if (messageE.result) {
             updateCategory.mutate()
+            setIsLoading(false)
         }
         else {
             notify("info", "La información ingresada no es válida.")
+            setIsLoading(false)
         }
-    };
+    }
 
     return (
         <div className="flex w-full justify-center">
@@ -82,12 +99,18 @@ export default function CategoryEditForm() {
                                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo categoría</h3>
                                     <ImageInput
-                                        value={previewImage}
+                                        value={previewImage ? previewImage : data.imagen}
+                                        preview={previewImage}
+                                        text="Actualice la imagen"
+                                        cancel={() => setPreviewImage(undefined)}
                                         onChange={({ target }) => {
-                                            handleChange({ target: { name: "imagen", value: target.files[0].name } });
-                                            setChangeImage(true);
-                                            handleChangeFile(target)
-                                            setPreviewImage(URL.createObjectURL(target.files[0]));
+                                            if (target.files.length !== 0) {
+                                                handleChange(
+                                                    { target: { name: "imagen", value: target.files[0].name } }
+                                                );
+                                                handleChangeFile(target)
+                                                setPreviewImage(URL.createObjectURL(target.files[0]));
+                                            }
                                         }}
                                     />
                                     <div className="flex justify-end mb-6">
@@ -95,7 +118,7 @@ export default function CategoryEditForm() {
                                     </div>
                                 </div>
                                 <div className="col-span-4 bg-white rounded-r-xl">
-                                    <form className="m-auto my-10 mx-28" onSubmit={send}>
+                                    <form className="m-auto my-10 mx-28" onSubmit={handleUploadFile}>
                                         <div>
                                             <InputText
                                                 width="21.5rem"
@@ -123,7 +146,7 @@ export default function CategoryEditForm() {
                                             </div>
                                         </div>
                                         <SubmitButton
-                                            isLoading={updateCategory.isLoading}
+                                            isLoading={updateCategory.isLoading || isLoading}
                                             mode={"edit"}
                                         />
                                     </form>

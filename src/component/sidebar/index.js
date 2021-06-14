@@ -41,7 +41,7 @@ export default function Sidebar() {
           </span>
         </div>
 
-        <nav className="mt-16 ml-4">
+        <nav className="mt-12 ml-4">
           <Link to="/"
             onClick={() => setSelected("DASHBOARD")}
             className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "DASHBOARD" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
@@ -86,21 +86,21 @@ export default function Sidebar() {
 
         </nav>
 
-        {/* <nav className="mt-14">
-          <Link to="/notifications"
+         <nav className="mt-14">
+         {/* <Link to="/notifications"
             onClick={() => setSelected("NOTIFICATIONS")}
             className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "NOTIFICATIONS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <IoNotifications />
             <span className="mx-4 font-medium ">Notificaciones</span>
-          </Link>
-
+          </Link> */}
+        
           <Link to="/profile"
             onClick={() => setSelected("PROFILE")}
             className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "PROFILE" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
             <ImProfile />
             <span className="mx-4 font-medium ">Perfil</span>
           </Link>
-        </nav> */}
+        </nav> 
       </div>
       <button onClick={closeSession} className="flex items-center mt-7 h-16 py-2 px-8">
         <span className=" text-b_ligth_gray mx-4 font-medium">Cerrar sesión</span>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import LoadingData from '../component/loading/data';
-import { notify } from '../component/notification';
 import { getToken, deleteToken, setToken, initAxiosInterceptors } from '../helpers/helper-auth';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
@@ -44,44 +43,6 @@ export function AuthProvider(props) {
         const { data } = await Axios.post('http://127.0.0.1:8000/api/register', usuario);
         setToken(data.access_token);
         setUser(data.user);
-    }
-
-    async function login1(data) {
-        const response = await fetch("http://127.0.0.1:8000/api/login", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        let resp = await response.json();
-        if (resp.access_token) {
-            setToken(resp.access_token);
-            setUser(resp.user);
-        }
-        else {
-            notify('error', resp.response);
-        }
-    }
-
-    async function signup1(data) {
-        const response = await fetch("http://127.0.0.1:8000/api/register", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        let resp = await response.json();
-        if (resp.access_token) {
-            setToken(resp.access_token);
-            setUser(resp.user);
-        }
-        else {
-            logout()
-        }
     }
 
     function logout() {

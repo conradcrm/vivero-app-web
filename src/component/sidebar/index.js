@@ -139,12 +139,12 @@ export default function Sidebar() {
             style={{ backgroundImage: (photo && `url(${photo})`) || `url(${profile_default})`}}>
           </div>
         </div>
-        <p className="text-center font-semibold text-sm text-name">
+        <p className="text-center font-semibold text-name">
           {user.name}
         </p>
       </div>
 
-      <div className="h-4/5 overflow-y-hidden" style={{ maxHeight: "29.5em" }}>
+      <div className="h-4/5 overflow-y-hidden" style={{ maxHeight: "28.5em" }}>
         <NavModules />
         <Profile />
 

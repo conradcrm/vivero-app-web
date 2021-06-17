@@ -6,7 +6,6 @@ import {
     getToken,
     deleteToken,
     setToken,
-    getUserCurrent,
     deleteUserCurrent,
     setUserCurrent,
     initAxiosInterceptors,
@@ -51,6 +50,13 @@ export function AuthProvider(props) {
         setUserCurrent(JSON.stringify(data.user))
     }
 
+    async function update(credentials) {
+        const { data } = await Axios.patch('http://127.0.0.1:8000/api/update-user', credentials);
+        setUser(data.user);
+        setUserCurrent(JSON.stringify(data.user))
+        logout()
+    }
+
     async function signup(usuario) {
         const { data } = await Axios.post('http://127.0.0.1:8000/api/register', usuario);
         setToken(data.access_token);
@@ -73,7 +79,7 @@ export function AuthProvider(props) {
 
     return (
         <AuthContext.Provider
-            value={{ login, signup, user, logout, getUserCurrent }}
+            value={{ login, signup, user, logout, update }}
             {...props} loadingUser
         />
     );

@@ -8,6 +8,9 @@ import { notify } from '../component/notification';
 import { RiCloseCircleFill, RiCheckboxCircleFill } from 'react-icons/ri'
 import ServerError from '../component/error/server';
 import storage from '../firebase';
+import Modal from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
+import AccountForm from '../component/forms/account';
 
 export default function Profile() {
     const { user, loadingUser } = useAuth();
@@ -15,13 +18,9 @@ export default function Profile() {
     const [previewImage, setPreviewImage] = useState();
     const [photo, setPhoto] = useState(undefined)
     const [file, setFile] = useState();
+    const [open, setOpen] = useState(false)
 
     let inputRef;
-
-    const [data, setData] = useState({
-        name: '',
-        email: ''
-    });
 
     function handleChangeFile(target) {
         setFile(target.files[0]);
@@ -91,14 +90,14 @@ export default function Profile() {
     const InputImage = () => {
         inputRef = useRef();
         return (
-            <div className="absolute -bottom-14 p-2 border-4 border-gray grid items-center justify-center bg-center bg-no-repeat bg-cover rounded-full">
+            <div className="absolute -bottom-12 p-2 border-4 border-gray grid items-center justify-center bg-center bg-no-repeat bg-cover rounded-full">
                 <div className={`rounded-full w-44 h-44 p-3 flex items-center justify-center z-50
                                  bg-center bg-no-repeat bg-cover
                                  ${isLoading ? 'animate-pulse' : ''}
                                  `}
                     style={{ backgroundImage: (previewImage && `url(${previewImage})`) || (photo && `url(${photo})`) }}>
                     {!photo && !previewImage && (
-                        <div className={`w-full h-full rounded-full z-0 ${isLoading ? 'opacity-0 animate-pulse': 'opacity-30'}`}>
+                        <div className={`w-full h-full rounded-full z-0 ${isLoading ? 'opacity-0 animate-pulse' : 'opacity-30'}`}>
                             <div className="bg-white rounded-full w-full h-full flex justify-center items-center">
                                 <img
                                     className="rounded-full"
@@ -127,49 +126,58 @@ export default function Profile() {
         return (
             <div
                 onClick={props.action}
-                className=" h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md cursor-pointer transition duration-150 ease-in-out transform hover:scale-110">
+                className="-mt-5 h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md cursor-pointer transition duration-150 ease-in-out transform hover:scale-110">
                 <div className="flex outline-none border-none focus:outline-none">
                     {props.children}
                 </div>
             </div>
         )
     }
+
     return (
-        <div>
+        <div className="h-full">
             <HeaderBarTitle module="Perfil" />
-            <div className="h-36 mb-16 bg-gray mt-6 rounded-xl grid justify-center">
-                <div className="flex justify-center items-center h-44 w-44 relative z-10">
-                    <InputImage />
-                </div>
+            <div className="bg-white rounded-md" style={{height:"90%"}}>
+                <div className="h-60 mb-7 bg-darkgreen mt-6 rounded-md grid justify-center">
+                    <div className="flex justify-center items-center h-44 w-44 relative z-10">
+                        <InputImage />
+                    </div>
 
-                <div className="w-full h-12 flex justify-between">
-                    {previewImage ?
-                        <>
-                            <Option action={(e) => handleUploadFile(e)}>
-                                <RiCheckboxCircleFill size={28} className="text-b_icon_gray text-darkgreen cursor-pointer" />
+                    <div className="w-full h-12 flex justify-between">
+                        {previewImage ?
+                            <>
+                                <Option action={(e) => handleUploadFile(e)}>
+                                    <RiCheckboxCircleFill size={28} className="text-b_icon_gray text-darkgreen cursor-pointer" />
+                                </Option>
+                                <Option action={() => setPreviewImage(undefined)}>
+                                    <RiCloseCircleFill size={28} className="text-b_icon_gray text-darkred cursor-pointer" />
+                                </Option>
+                            </> :
+                            <Option action={() => inputRef.current.click()}>
+                                <FaEdit size={22} className="text-b_icon_gray text-darkgreen cursor-pointer" />
                             </Option>
-                            <Option action={() => setPreviewImage(undefined)}>
-                                <RiCloseCircleFill size={28} className="text-b_icon_gray text-darkred cursor-pointer" />
-                            </Option>
-                        </> :
-                        <Option action={() => inputRef.current.click()}>
-                            <FaEdit size={22} className="text-b_icon_gray text-darkgreen cursor-pointer" />
-                        </Option>
-                    }
-                </div>
+                        }
+                    </div>
 
+                </div>
+                <p className="text-center font-bold text-2xl opacity-80 select-none">
+                    {user.name}
+                </p>
+                <p className="pt-3 text-center text-name font-bold text-lg opacity-80">
+                    {user.email}
+                </p>
+                <div className="mt-3 flex justify-center py-8">
+                    <button className="shadow-md bg-darkgreen text-white px-4 py-2 rounded-lg focus:outline-none transition duration-150 ease-in-out transform hover:scale-110"
+                        onClick={() => setOpen(true)}
+                    >
+                        Actualizar datos
+                    </button>
+                </div>
+                <p className="pb-5 text-sm text-darkred text-center">Una vez modificados sus datos, tendrá que iniciar sesión nuevamente.</p>
             </div>
-            <p className="pt-5 text-center font-bold text-2xl opacity-80 select-none">
-                {user.name}
-            </p>
-            <p className="pt-3 text-center text-name font-bold text-lg opacity-80">
-                {user.email}
-            </p>
-            <div className="mt-3 flex justify-center py-8">
-                <button className="shadow-md bg-white px-4 py-2 rounded-lg focus:outline-none transition duration-150 ease-in-out transform hover:scale-110">
-                    Modificar datos
-                </button>
-            </div>
+            <Modal open={open} onClose={() => setOpen(false)}>
+                <AccountForm name={user.name} email={user.email}/>
+            </Modal>
         </div>
-    )
+            )
 }

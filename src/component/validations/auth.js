@@ -35,6 +35,9 @@ export function validatePassword(data) {
 export function inputsValidate(name, data) {
   let response;
   switch (name) {
+    case "name":
+      response = validateName(data);
+      break;
     case "email":
       response = validateEmail(data);
       break;
@@ -47,3 +50,15 @@ export function inputsValidate(name, data) {
   return response;
 }
 
+export function validateName(data) {
+  let message = '';
+  let result = false;
+  if (data === "") {
+    message = "El campo es requerido";
+    return { message, result };
+  }
+
+  result = data.length >= 3 && /[a-zA-ZñáéíóúÑÁÉÍÓÚ\s]+/.test(data);
+  message = result ? message : message = "El nombre no es válido";
+  return { message, result };
+}

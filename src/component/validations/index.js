@@ -30,7 +30,7 @@ export function validateName(value) {
         };
     }
     if (value.length > 3) {
-        if (/^[a-zA-Z\s]+$/.test(value)) {
+        if (/^[a-zA-ZñáéíóúÑÁÉÍÓÚ\s]+$/.test(value)) {
             return {
                 field: "name",
                 result: true,
@@ -62,7 +62,7 @@ export function validateDescription(value) {
         };
     }
     if (value.length > 3) {
-        if (/^[a-zA-Z0-9\s]+$/.test(value)) {
+        if (/^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s\s]+$/.test(value)) {
             return {
                 field: "description",
                 result: true,
@@ -138,7 +138,7 @@ export function validateDireccion(value) {
             message: "El campo es requerido",
         };
     }
-    if (value.length > 6 || /^[a-zA-Z0-9\s]+$/.test(value)) {
+    if (value.length > 6 || /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s]+$/.test(value)) {
         return {
             field: "address",
             result: true,

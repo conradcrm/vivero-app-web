@@ -1,18 +1,13 @@
 import React, { useState } from 'react'
-//import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import SubmitButton from '../../buttons/submit';
 import { useCreateProvider } from '../../../hooks/mutation/mutation';
-//import { handleUpload } from '../../../files';
 import providerImg from '../../../resources/provider.svg';
 import { inputsValidate2 } from '../../validations';
 import { notify } from '../../notification';
 
 export default function ProviderForm() {
-    //  const [, setChangeImage] = useState(false);
-    //    const [previewImage, setPreviewImage] = useState();
-    //   const [file, setFile] = useState();
-
+    
     const [messageE,] = useState({
         name: "",
         address: "",
@@ -38,13 +33,8 @@ export default function ProviderForm() {
         inputsValidate2([event.target.name], event.target.value, messageE);
     };
 
-    // function handleChangeFile(target) {
-    //     setFile(target.files[0]);
-    // }
-
     const send = (event) => {
         event.preventDefault();
-        //handleUpload(file);
         if (messageE.result) {
             createProvider.mutate();
         }
@@ -67,15 +57,7 @@ export default function ProviderForm() {
                         />
                         <p className="w-4/5 mt-4 text-sm text-white">Agrega a un proveedor más a tu equipo</p>
                     </div>
-                    {/* <ImageInput
-                        value={previewImage}
-                        onChange={({ target }) => {
-                            handleChange({ target: { name: "imagen", value: target.files[0].name } });
-                            setChangeImage(true);
-                            handleChangeFile(target)
-                            setPreviewImage(URL.createObjectURL(target.files[0]));
-                        }}
-                    /> */}
+                    
                 </div>
                 <div className="col-span-4 bg-white rounded-r-xl">
                     <form className="m-auto my-7 mx-28" onSubmit={send}>

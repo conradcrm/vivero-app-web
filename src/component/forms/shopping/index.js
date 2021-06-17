@@ -6,7 +6,7 @@ import { usePlants, useProviders } from '../../../hooks/query';
 import { useCreateShopping } from '../../../hooks/mutation/mutation';
 import shoppingImg from '../../../resources/stock.svg';
 
-export default function ShoppingForm({ mode }) {
+export default function ShoppingForm() {
     const [data, setData] = useState({ id_proveedor: undefined, inputs: undefined });
     const PlantQuery = usePlants();
     const providerQuery = useProviders();
@@ -93,7 +93,7 @@ export default function ShoppingForm({ mode }) {
                         />
                         <SubmitButton
                             isLoading={registerShopping.isLoading}
-                            mode={mode}
+                            mode={"create"}
                         />
                     </form>
                 </div>

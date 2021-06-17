@@ -173,7 +173,7 @@ export default function Profile() {
                         Actualizar datos
                     </button>
                 </div>
-                <p className="pb-5 text-sm text-darkred text-center">Una vez modificados sus datos, tendrá que iniciar sesión nuevamente.</p>
+                <p className="pb-5 text-base text-b_ligth_gray text-center">Una vez modificados sus datos, tendrá que iniciar sesión nuevamente.</p>
             </div>
             <Modal open={open} onClose={() => setOpen(false)}>
                 <AccountForm name={user.name} email={user.email}/>

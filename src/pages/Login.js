@@ -12,8 +12,8 @@ export default function Login({ history }) {
   const [isLoading, setIsLoading] = useState(false)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({
-    email: 'conrado27@gmail.com',
-    password: 'conrado/01A@',
+    email: '',
+    password: '',
   });
 
   const [validate, setValidate] = useState({

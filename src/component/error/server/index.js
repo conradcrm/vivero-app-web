@@ -6,7 +6,7 @@ export default function ServerError() {
             <img className="h-80 w-80 m-auto flex justify-center items-center" src={warning}
                   alt="Ha ocurrido un error" />
             <p className="text-darkred text-xl font-semibold text-center">
-                Ha ocurrido un error, inténtelo más tarde. 
+                Ha ocurrido un error con el servidor, inténtelo más tarde. 
             </p>
         </div>
     )

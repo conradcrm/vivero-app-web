@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import imageDefault from "../../resources/modules/category.jpg"
+import imageDefault from "../../resources/modules/no_data.svg"
 import ToggleButton from "../buttons/toggle";
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
@@ -10,7 +10,6 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
-  const [previewImage, setPreviewImage] = useState();
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
@@ -18,7 +17,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
                          ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
           <Link
-            className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
+            className="button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
             to={`/category/edit/${id_categoria}`}>
             <HiOutlinePencilAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Editar</span>
@@ -30,7 +29,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
               setSelected();
               onOpenDeleteModal(true);
             }}
-            className="button-action flex cursor-pointer  mb-2 py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
+            className="button-action flex cursor-pointer mb-2 py-2 rounded-lg gap-2 hover:bg-ligthred text-darkred">
             <FaTrashAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm ">Eliminar</span>
           </div>
@@ -49,7 +48,8 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
         <Menu />
       </div>
       <div className="max-h-64 mt-3 mb-4 w-48 rounded-lg">
-        {imagen!==null ? <div className="h-32 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover"
+        {imagen !== null ? 
+        <div className="h-32 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover"
           style={{ backgroundImage: `url(${imagen})` }}>
         </div> :
           <div className="h-32 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover"

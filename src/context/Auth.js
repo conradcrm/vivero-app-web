@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import LoadingData from '../component/loading/data';
-import { getToken, deleteToken, setToken, initAxiosInterceptors } from '../helpers/helper-auth';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
+import {
+    getToken,
+    deleteToken,
+    setToken,
+    getUserCurrent,
+    deleteUserCurrent,
+    setUserCurrent,
+    initAxiosInterceptors,
+} from '../helpers/helper-auth';
+
 
 const AuthContext = React.createContext();
 initAxiosInterceptors();
@@ -20,23 +29,26 @@ export function AuthProvider(props) {
                 setLoadingUser(false);
                 return;
             }
-
             try {
-                const { data } = await Axios.get('http://127.0.0.1:8000/api/userinfo');
+                const { data } = await Axios.get('http://127.0.0.1:8000/api/userinfo')
                 setUser(data);
+                setUserCurrent(data)
                 setLoadingUser(false);
             } catch (error) {
                 history.push("/");
                 setLoadingUser(false);
             }
         }
-        loadUser();
-    }, [loadingUser]);
+        if (!user) {
+            loadUser()
+        }
+    }, [loadingUser, history, user]);
 
     async function login(credentials) {
         const { data } = await Axios.post('http://127.0.0.1:8000/api/login', credentials);
         setToken(data.access_token);
         setUser(data.user);
+        setUserCurrent(JSON.stringify(data.user))
     }
 
     async function signup(usuario) {
@@ -47,6 +59,7 @@ export function AuthProvider(props) {
 
     function logout() {
         deleteToken(null);
+        deleteUserCurrent(null)
         setUser(null);
     }
 
@@ -60,7 +73,7 @@ export function AuthProvider(props) {
 
     return (
         <AuthContext.Provider
-            value={{ login, signup, user, logout, }}
+            value={{ login, signup, user, logout, getUserCurrent }}
             {...props} loadingUser
         />
     );

@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { AiFillShopping } from 'react-icons/ai';
-import { RiDashboardLine } from "react-icons/ri";
-import { BsFillPersonFill } from "react-icons/bs";
-import { RiPlantFill } from "react-icons/ri";
 import { BiColumns } from "react-icons/bi";
-//import { RiTeamFill } from "react-icons/ri";
-import { IoNotifications } from "react-icons/io5"
-import { ImProfile } from "react-icons/im"
-import profile_default from '../../resources/profile/profile-pic.jpg';
+import { MdContacts } from "react-icons/md";
+import {
+  RiDashboardLine,
+  RiHandCoinFill,
+  RiPlantFill,
+  RiFullscreenExitLine
+} from "react-icons/ri";
+
+import profile_default from '../../resources/profile/profile.svg';
 import { useAuth } from "../../context/Auth";
 import { notify } from "../notification";
+import storage from '../../firebase';
 
 export default function Sidebar() {
   let history = useHistory();
@@ -19,7 +22,26 @@ export default function Sidebar() {
   let path = route.length > 0 ? route : "DASHBOARD";
   const [selected, setSelected] = useState(path)
   const { user, logout } = useAuth();
-  
+  const [photo, setPhoto] = useState(undefined)
+
+  async function handleDonwload() {
+    let ref = storage.ref(`/profile/${user.email}`);
+    try {
+      await ref.getDownloadURL().then((url) => {
+        setPhoto(url)
+      })
+    } catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      handleDonwload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [photo, user])
+
   async function closeSession() {
     try {
       await logout();
@@ -28,83 +50,129 @@ export default function Sidebar() {
       notify("error", `Ha ocurrido un error, inténtelo más tarde. ${error}`);
     }
   }
-  
+
+  const NavModules = () => {
+    return (
+      <nav className="mt-6">
+        <hr className="text-gray pb-3" />
+        <Link to="/"
+          onClick={() => setSelected("DASHBOARD")}
+          className={`${selected === "DASHBOARD" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <RiDashboardLine size={20} className="" />
+            </span>
+            <span className="col-span-2  text-left font-medium">Dashboard</span>
+          </p>
+        </Link>
+
+        <Link to="/providers" onClick={() => setSelected("PROVIDERS")}
+          className={`${selected === "PROVIDERS" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <RiHandCoinFill size={20} />
+            </span>
+            <span className="col-span-2  text-left font-medium">Proveedores</span>
+          </p>
+        </Link>
+
+        <Link to="/categories"
+          onClick={() => setSelected("CATEGORIES")}
+          className={`${selected === "CATEGORIES" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <BiColumns size={20} />
+            </span>
+            <span className="col-span-2  text-left font-medium">Categorías</span>
+          </p>
+        </Link>
+
+        <Link to="/plants"
+          onClick={() => setSelected("PLANTS")}
+          className={`${selected === "PLANTS" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <RiPlantFill size={20} />
+            </span>
+            <span className="col-span-2  text-left font-medium">Plantas</span>
+          </p>
+        </Link>
+
+        <Link to="/compras"
+          onClick={() => setSelected("COMPRAS")}
+          className={`${selected === "COMPRAS" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <AiFillShopping size={20} />
+            </span>
+            <span className="col-span-2  text-left font-medium">Compras</span>
+          </p>
+        </Link>
+      </nav>
+
+    )
+  }
+
+  const Profile = () => {
+    return (
+      <nav className="mt-8">
+        <hr className="text-gray pb-3" />
+        <Link to="/profile"
+          onClick={() => setSelected("PROFILE")}
+          className={`${selected === "PROFILE" ? "text-mediumgreen" : "text-gray-20"}`}>
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <MdContacts size={20} />
+            </span>
+            <span className="col-span-2 text-left font-medium">Perfil</span>
+          </p>
+        </Link>
+      </nav>
+    )
+  }
+
   return (
-    <div className="bg-white col-span-1 grid grid-cols-1 place-content-between max-h-full">
-      <div className="">
-        <div className="grid justify-center items-center pt-8">
-          <div className="flex items-center justify-center bg-center bg-no-repeat bg-cover">
-            <img className="rounded-full w-16 h-16" src={profile_default} alt="nombre" />
+    <div className="bg-white col-span-1 max-h-full">
+      <div className="h-1/8">
+        <div className="w-full flex justify-center my-3">
+          <div className="rounded-full w-16 h-16 p-3 flex items-center justify-center z-50 bg-center bg-no-repeat bg-cover"
+            style={{ backgroundImage: (photo && `url(${photo})`) || `url(${profile_default})`}}>
           </div>
-          <span className="pt-6 text font-semibold" style={{ color: "rgb(140,140,140)" }}>
-            {user.name}
-          </span>
         </div>
-
-        <nav className="mt-12 ml-4">
-          <Link to="/"
-            onClick={() => setSelected("DASHBOARD")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "DASHBOARD" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <RiDashboardLine />
-            <span className="mx-4 font-medium ">Dashboard</span>
-          </Link>
-
-          <Link to="/providers" onClick={() => setSelected("PROVIDERS")}
-            className={`flex items-center mt-6 ml-8 border-r-4 border-white  ${selected === "PROVIDERS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <BsFillPersonFill />
-            <span className="mx-4 font-medium">Proveedores</span>
-          </Link>
-
-          <Link to="/categories"
-            onClick={() => setSelected("CATEGORIES")}
-            className={`flex items-center mt-6 py-1 px-8 border-r-4 border-white ${selected === "CATEGORIES" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <BiColumns />
-            <span className="mx-4 font-medium">Categorías</span>
-          </Link>
-
-          <Link to="/plants"
-            onClick={() => setSelected("PLANTS")}
-            className={`flex items-center mt-6 py-1 px-8 border-r-4 border-white ${selected === "PLANTS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <RiPlantFill />
-            <span className="mx-4 font-medium">Plantas</span>
-          </Link>
-
-          <Link to="/compras"
-            onClick={() => setSelected("COMPRAS")}
-            className={`flex items-center mt-6 py-1 px-8 border-r-4 border-white ${selected === "COMPRAS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <AiFillShopping />
-            <span className="mx-4 font-medium">Compras</span>
-          </Link>
-
-          {/* <Link to="/employees"
-            onClick={() => setSelected("EMPLOYEES")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "EMPLOYEES" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <RiTeamFill />
-            <span className="mx-4 font-medium">Empleados</span>
-          </Link> */}
-
-
-        </nav>
-
-         <nav className="mt-14">
-         {/* <Link to="/notifications"
-            onClick={() => setSelected("NOTIFICATIONS")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "NOTIFICATIONS" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <IoNotifications />
-            <span className="mx-4 font-medium ">Notificaciones</span>
-          </Link> */}
-        
-          <Link to="/profile"
-            onClick={() => setSelected("PROFILE")}
-            className={`flex items-center mt-3 py-1 px-8 border-r-4 border-white ${selected === "PROFILE" ? "text-mediumgreen" : "text-b_ligth_gray"}`}>
-            <ImProfile />
-            <span className="mx-4 font-medium ">Perfil</span>
-          </Link>
-        </nav> 
+        <p className="text-center font-semibold text-sm text-name">
+          {user.name}
+        </p>
       </div>
-      <button onClick={closeSession} className="flex items-center mt-7 h-16 py-2 px-8">
-        <span className=" text-b_ligth_gray mx-4 font-medium">Cerrar sesión</span>
-      </button>
+
+      <div className="h-4/5 overflow-y-hidden" style={{ maxHeight: "29.5em" }}>
+        <NavModules />
+        <Profile />
+
+      </div>
+      <div className="grid items-center">
+        <hr className="text-gray" />
+        <button onClick={closeSession} className="">
+          <p className="grid grid-cols-3 gap-4 hover:bg-gray justify-center items-center py-2 text-center">
+            <span className="col-span-1 flex justify-end">
+              <RiFullscreenExitLine size={20} />
+            </span>
+            <span className="col-span-2 text-left text-gray-20 font-semibold">Cerrar sesión</span>
+          </p>
+        </button>
+      </div>
+      <style>
+        {`
+          .text-name{
+            color: rgb(120,120,120);
+          } 
+          .text-gray-20{
+            color: rgba(40, 36, 28, 0.6);
+            font-size: 0.925rem;
+            line-height: 1.55rem;
+            
+          }
+        `}
+      </style>
     </div>
   );
 }

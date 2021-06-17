@@ -1,6 +1,7 @@
 import Axios from 'axios';
 const TOKEN_KEY = 'VIVERO_TOKEN';
-
+const USER_KEY = 'USER';
+const PHOTO = 'PHOTO';
 export function setToken(valor) {
   localStorage.setItem(TOKEN_KEY, valor);
 }
@@ -11,6 +12,26 @@ export function getToken() {
 
 export function deleteToken() {
   localStorage.removeItem(TOKEN_KEY);
+}
+
+export function setUserCurrent(valor) {
+  localStorage.setItem(USER_KEY, valor);
+}
+
+export function getUserCurrent() {
+  return JSON.parse(localStorage.getItem(USER_KEY));
+}
+
+export function deleteUserCurrent() {
+  localStorage.removeItem(USER_KEY);
+}
+
+export function setPhoto(valor) {
+  localStorage.setItem(PHOTO, valor);
+}
+
+export function getPhoto() {
+  return localStorage.getItem(PHOTO);
 }
 
 export function initInterceptors() {

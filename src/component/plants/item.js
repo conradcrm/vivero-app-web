@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import imageDefault from "../../resources/modules/category.jpg"
+import imageDefault from "../../resources/modules/no_data.svg"
 import ToggleButton from "../buttons/toggle";
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';

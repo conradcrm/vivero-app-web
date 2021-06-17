@@ -66,7 +66,7 @@ export default function PlantForm() {
             try {
                 const uploadTask = storage.ref(`/images/${file.name}`).put(file);
                 uploadTask.on("state_changed", snapshot => {
-                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000);
+                    Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000);
                 }, error => {
                     setIsLoading(false)
                     notify("error", `Ha ocurrido un error al intentar subir la imagen, inténtelo más tarde. ${error}`)
@@ -89,7 +89,7 @@ export default function PlantForm() {
     };
 
 
-   function sendData() {
+    function sendData() {
         if (messageE.result) {
             if (data.id_categoria !== undefined) {
                 if (data.id_proveedor !== undefined) {

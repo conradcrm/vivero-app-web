@@ -5,7 +5,6 @@ import Notification from './component/notification';
 import LoadingData from './component/loading/data';
 import "./App.css";
 import "./index.css";
-
 export default function App() {
   const { user, loadingUser } = useAuth();
 

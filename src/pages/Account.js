@@ -116,7 +116,7 @@ export default function Profile() {
             <button
                 disabled={isLoading}
                 onClick={props.action}
-                className={`-mt-5 h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md 
+                className={`-mt-5 h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md focus:outline-none
                            ${isLoading ? 'cursor-wait': 'cursor-pointer transition duration-150 ease-in-out transform hover:scale-110'}  `}>
                 <div className="flex outline-none border-none focus:outline-none">
                     {props.children}

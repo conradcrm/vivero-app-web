@@ -124,12 +124,12 @@ export default function CategoryForm() {
                                     Decripción<span className={`ml-1 text-mediumred`}>*</span>
                                 </label>
                                 <textarea
-                                    className="rounded border-icon_gray py-1 px-4 text-sm bg-gray w-full"
+                                    className="rounded border-icon_gray py-1 px-4 text-sm bg-gray w-full border border-transparent focus:outline-none focus:ring-1 focus:ring-gray focus:border-transparent"
                                     rows="9"
                                     value={data.descripcion}
                                     onChange={handleChange}
                                     name="descripcion"
-                                    placeholder="Las suculentas son plantas perfectas para decorrar por su elegante forma" />
+                                    placeholder="Las suculentas son plantas perfectas para decorar por su elegante forma ..." />
                                 <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
                             </div>
                         </div>

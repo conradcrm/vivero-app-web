@@ -9,7 +9,7 @@ export default function InputText({width, title, name, placeholder, value, onCha
             <input
                 style={{width:width}}
                 className={`noscroll rounded border-icon_gray py-2 px-4 text-sm
-                border border-transparent focus:outline-none focus:ring-1 focus:ring-ligthgreen focus:border-transparent
+                border border-transparent focus:outline-none focus:ring-1 focus:ring-gray focus:border-transparent
                 `}
                 value={value}
                 onChange={onChange}

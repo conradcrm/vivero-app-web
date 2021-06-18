@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { notify } from "../../component/notification";
 import { initAxiosInterceptors } from "../../helpers/helper-auth";
 
-const globalURL = "http://localhost:8000/api/";
+const globalURL = "https://vivero-app.herokuapp.com/api/";
 
 //General create item
 export const createItem = async ({ data, endpoint }) => {

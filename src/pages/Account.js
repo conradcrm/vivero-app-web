@@ -1,27 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import HeaderBarTitle from '../component/headerbar/tittle'
-import { useAuth } from '../context/Auth';
-import LoadingData from '../component/loading/data';
 import profile_default from '../resources/profile/profile.svg';
 import { FaEdit } from "react-icons/fa";
 import { notify } from '../component/notification';
 import { RiCloseCircleFill, RiCheckboxCircleFill } from 'react-icons/ri'
-import ServerError from '../component/error/server';
 import storage from '../firebase';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import AccountForm from '../component/forms/account';
+import { getPhoto, getUserCurrent, setPhotoUser } from '../helpers/helper-auth';
 
 export default function Profile() {
-    const { user, loadingUser } = useAuth();
     const [isLoading, setIsLoading] = useState(false)
-    const [previewImage, setPreviewImage] = useState();
-    const [photo, setPhoto] = useState(undefined)
-    const [file, setFile] = useState();
+    const [previewImage, setPreviewImage] = useState()
+    const [photo, setPhoto] = useState(getPhoto())
+    const [file, setFile] = useState()
     const [open, setOpen] = useState(false)
-
+    let user = getUserCurrent()
     let inputRef;
-
     function handleChangeFile(target) {
         setFile(target.files[0]);
     }
@@ -33,6 +29,7 @@ export default function Profile() {
             await ref.getDownloadURL().then((url) => {
                 setIsLoading(false)
                 setPreviewImage(undefined)
+                setPhotoUser(url)
                 setPhoto(url)
             })
         } catch (error) {
@@ -42,7 +39,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        if (user) {
+        if (getUserCurrent() === undefined) {
             handleDonwload();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,14 +75,6 @@ export default function Profile() {
             notify('info', 'Seleccione una imagen válida.')
         }
     };
-
-    if (loadingUser) {
-        return <LoadingData />
-    }
-
-    if (!loadingUser && !user) {
-        return <ServerError />
-    }
 
     const InputImage = () => {
         inputRef = useRef();
@@ -124,20 +113,22 @@ export default function Profile() {
 
     const Option = (props) => {
         return (
-            <div
+            <button
+                disabled={isLoading}
                 onClick={props.action}
-                className="-mt-5 h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md cursor-pointer transition duration-150 ease-in-out transform hover:scale-110">
+                className={`-mt-5 h-10 w-10 bg-white rounded-full flex justify-center items-center z-30 shadow-md 
+                           ${isLoading ? 'cursor-wait': 'cursor-pointer transition duration-150 ease-in-out transform hover:scale-110'}  `}>
                 <div className="flex outline-none border-none focus:outline-none">
                     {props.children}
                 </div>
-            </div>
+            </button>
         )
     }
 
     return (
         <div className="h-full">
             <HeaderBarTitle module="Perfil" />
-            <div className="bg-white rounded-md" style={{height:"90%"}}>
+            <div className="bg-white rounded-md" style={{ height: "90%" }}>
                 <div className="h-60 mb-7 bg-darkgreen mt-6 rounded-md grid justify-center">
                     <div className="flex justify-center items-center h-44 w-44 relative z-10">
                         <InputImage />
@@ -147,14 +138,20 @@ export default function Profile() {
                         {previewImage ?
                             <>
                                 <Option action={(e) => handleUploadFile(e)}>
-                                    <RiCheckboxCircleFill size={28} className="text-b_icon_gray text-darkgreen cursor-pointer" />
+                                        {isLoading ? 
+                                        <svg class="animate-spin bg-mediumgreen h-5 w-5" viewBox="0 0 24 24">
+                                        </svg>
+                                        :
+                                        <RiCheckboxCircleFill size={28} className="text-b_icon_gray text-darkgreen" />
+
+                                        }
                                 </Option>
                                 <Option action={() => setPreviewImage(undefined)}>
-                                    <RiCloseCircleFill size={28} className="text-b_icon_gray text-darkred cursor-pointer" />
+                                    <RiCloseCircleFill size={28} className="text-b_icon_gray text-darkred " />
                                 </Option>
                             </> :
                             <Option action={() => inputRef.current.click()}>
-                                <FaEdit size={22} className="text-b_icon_gray text-darkgreen cursor-pointer" />
+                                <FaEdit size={22} className="text-b_icon_gray text-darkgreen" />
                             </Option>
                         }
                     </div>
@@ -176,8 +173,8 @@ export default function Profile() {
                 <p className="pb-5 text-base text-b_ligth_gray text-center">Una vez modificados sus datos, tendrá que iniciar sesión nuevamente.</p>
             </div>
             <Modal open={open} onClose={() => setOpen(false)}>
-                <AccountForm name={user.name} email={user.email}/>
+                <AccountForm name={user.name} email={user.email} />
             </Modal>
         </div>
-            )
+    )
 }

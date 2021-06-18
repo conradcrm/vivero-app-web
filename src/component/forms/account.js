@@ -161,7 +161,7 @@ export default function AccountForm({name, email}) {
                         type="submit"
                         disabled={isLoading}
                         className={`bg-darkgreen tracking-wider block text-lg focus:outline-none w-full mt-7 py-3 mb-2 rounded-lg text-white font-medium bg-opacity-90 transition duration-150 ease-in-out transform hover:scale-105
-                                ${isLoading ? "opacity-50 cursor-not-allowed " : " hover:bg-darkgreen hover:opacity-100"}`}>
+                                ${isLoading ? "opacity-50 cursor-wait" : " hover:bg-darkgreen hover:opacity-100"}`}>
                         {isLoading ?
                             <>
                                 <Loading color={"white"} size={25} />

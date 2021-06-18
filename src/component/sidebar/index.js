@@ -14,6 +14,7 @@ import profile_default from '../../resources/profile/profile.svg';
 import { useAuth } from "../../context/Auth";
 import { notify } from "../notification";
 import storage from '../../firebase';
+import { getPhoto, getUserCurrent, setPhotoUser } from "../../helpers/helper-auth";
 
 export default function Sidebar() {
   let history = useHistory();
@@ -21,26 +22,26 @@ export default function Sidebar() {
   let route = location.pathname.split("/")[1].toUpperCase();
   let path = route.length > 0 ? route : "DASHBOARD";
   const [selected, setSelected] = useState(path)
-  const { user, logout } = useAuth();
-  const [photo, setPhoto] = useState(undefined)
-
+  const { logout } = useAuth();
+  const user = getUserCurrent();
+  const photo = getPhoto();
   async function handleDonwload() {
     let ref = storage.ref(`/profile/${user.email}`);
     try {
       await ref.getDownloadURL().then((url) => {
-        setPhoto(url)
+        setPhotoUser(url)
       })
     } catch (error) {
-
+      console.log('No encontrada', error)
     }
   }
 
   useEffect(() => {
-    if (user) {
+    if (user === undefined) {
       handleDonwload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [photo, user])
+  }, [])
 
   async function closeSession() {
     try {
@@ -136,7 +137,7 @@ export default function Sidebar() {
       <div className="h-1/8">
         <div className="w-full flex justify-center my-3">
           <div className="rounded-full w-16 h-16 p-3 flex items-center justify-center z-50 bg-center bg-no-repeat bg-cover"
-            style={{ backgroundImage: (photo && `url(${photo})`) || `url(${profile_default})`}}>
+            style={{ backgroundImage: (photo && `url(${photo})`) || `url(${profile_default})` }}>
           </div>
         </div>
         <p className="text-center font-semibold text-name">

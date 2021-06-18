@@ -24,29 +24,32 @@ export function inputsValidate(input, value, messageE) {
 export function validateName(value) {
     if (value === "") {
         return {
-            field: "name",
             result: false,
             message: "El campo es requerido",
         };
     }
     if (value.length > 3) {
-        if (/^[a-zA-ZñáéíóúÑÁÉÍÓÚ\s]+$/.test(value)) {
+        if (value.length <= 40) {
+            if (/^[a-zA-ZñáéíóúÑÁÉÍÓÚ\-\s]+$/.test(value)) {
+                return {
+                    result: true,
+                    message: "",
+                };
+            }
+            else {
+                return {
+                    result: false,
+                    message: "Sólo se aceptan letras",
+                };
+            }
+        } else {
             return {
-                field: "name",
-                result: true,
-                message: "",
-            };
-        }
-        else {
-            return {
-                field: "name",
                 result: false,
-                message: "Sólo se aceptan letras",
+                message: "El nombre es muy largo",
             };
         }
     } else {
         return {
-            field: "name",
             result: false,
             message: "Debe ingresar como mínimo 4 caracteres",
         };
@@ -56,22 +59,34 @@ export function validateName(value) {
 export function validateDescription(value) {
     if (value === "") {
         return {
-            field: "description",
             result: false,
             message: "El campo es requerido",
         };
     }
     if (value.length > 3) {
-        if (/^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s\s]+$/.test(value)) {
+        if (value.length <= 100) {
+            if (/^[0-9a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s.$%&/()=?!¿]+$/.test(value)) {
+                return {
+                    field: "description",
+                    result: true,
+                    message: "",
+                };
+            }
+            else {
+                return {
+                    result: false,
+                    message: "Los caracteres no son válidos",
+                };
+            }
+        }
+        else {
             return {
-                field: "description",
-                result: true,
-                message: "",
+                result: false,
+                message: "Las descripción es muy larga",
             };
         }
     } else {
         return {
-            field: "description",
             result: false,
             message: "Debe ingresar como mínimo 4 caracteres",
         };
@@ -82,12 +97,14 @@ export function validateImage(value, required = false) {
     if (!required && value === "") {
         return {
             result: true,
+            message: ""
         };
     }
     const result = /\.(gif|svg|jpg|png|jpeg|webp|bmp|tiff?)$/.test(value);
     if (result) {
         return {
             result: true,
+            message: ""
         };
     }
 
@@ -133,22 +150,36 @@ export function inputsValidate2(input, value, messageE) {
 export function validateDireccion(value) {
     if (value === "") {
         return {
-            field: "address",
             result: false,
             message: "El campo es requerido",
         };
     }
-    if (value.length > 6 || /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s]+$/.test(value)) {
-        return {
-            field: "address",
-            result: true,
-            message: "",
-        };
+    if (value.length > 6) {
+        if (value.length > 80) {
+            if (/^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ!#$%&'*+/=?^_\s]+$/.test(value)) {
+                return {
+                    result: true,
+                    message: "",
+                };
+            }
+            else {
+                return {
+                    result: false,
+                    message: "Los caracteres no son válidos",
+                };
+            }
+        } else {
+            return {
+                result: false,
+                message: "La dirección es muy larga",
+            };
+        }
     }
-    return {
-        field: "address",
-        result: false,
-        message: "Debe ingresar como mínimo 4 caracteres",
+    else {
+        return {
+            result: false,
+            message: "Dirección no válida",
+        };
     }
 }
 
@@ -156,7 +187,6 @@ export function validateTelefono(value) {
     if (value === "") {
         return {
             result: false,
-            field: "phone",
             message: "El campo es requerido",
         };
     }
@@ -164,13 +194,11 @@ export function validateTelefono(value) {
     const result = /^[0-9]{10}$/.test(value);
     if (result) {
         return {
-            field: "phone",
             result: true,
             message: "",
         };
     }
     return {
-        field: "phone",
         result: false,
         message: "Sólo se aceptan 10 dígitos",
     };
@@ -179,7 +207,6 @@ export function validateTelefono(value) {
 export function validateEmail(value) {
     if (value === "") {
         return {
-            field: "email",
             result: false,
             message: "El campo es requerido",
         };
@@ -190,13 +217,11 @@ export function validateEmail(value) {
     );
     if (result) {
         return {
-            field: "email",
             result: true,
             message: "",
         };
     }
     return {
-        field: "email",
         result: false,
         message: "Ingresa un correo electrónico válido",
     };
@@ -242,7 +267,6 @@ export function inputsValidate3(input, value, messageE) {
 export function validatePrecio(value, field) {
     if (value === "") {
         return {
-            result: false,
             field: field,
             message: "El campo es requerido",
         };
@@ -251,13 +275,11 @@ export function validatePrecio(value, field) {
     const result = /^([0-9]+)(|.([0-9][0-9])?)$/.test(value);
     if (result) {
         return {
-            field: field,
             result: true,
             message: "",
         };
     }
     return {
-        field: field,
         result: false,
         message: "Número con dos decimales.",
     };

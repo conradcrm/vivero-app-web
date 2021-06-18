@@ -15,7 +15,9 @@ export function deleteToken() {
 }
 
 export function setUserCurrent(valor) {
-  localStorage.setItem(USER_KEY, valor);
+  console.log("set  current")
+  JSON.stringify(localStorage.setItem(USER_KEY, valor));
+  console.log("ok current")
 }
 
 export function getUserCurrent() {
@@ -26,7 +28,7 @@ export function deleteUserCurrent() {
   localStorage.removeItem(USER_KEY);
 }
 
-export function setPhoto(valor) {
+export function setPhotoUser(valor) {
   localStorage.setItem(PHOTO, valor);
 }
 

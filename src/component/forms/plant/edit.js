@@ -21,7 +21,7 @@ export default function PlantEditForm() {
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
 
-    const [messageE,] = useState({
+    const [messageE] = useState({
         name: "",
         description: "",
         p_venta: "",

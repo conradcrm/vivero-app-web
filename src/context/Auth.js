@@ -16,6 +16,7 @@ const AuthContext = React.createContext();
 initAxiosInterceptors();
 
 export function AuthProvider(props) {
+    const globalURL = "https://vivero-app.herokuapp.com/api/";
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
     let history = useHistory();
@@ -29,9 +30,8 @@ export function AuthProvider(props) {
                 return;
             }
             try {
-                const { data } = await Axios.get('http://127.0.0.1:8000/api/userinfo')
+                const { data } = await Axios.get(`${globalURL}${"userinfo"}`)
                 setUser(data);
-                setUserCurrent(data)
                 setLoadingUser(false);
             } catch (error) {
                 history.push("/");
@@ -44,21 +44,21 @@ export function AuthProvider(props) {
     }, [loadingUser, history, user]);
 
     async function login(credentials) {
-        const { data } = await Axios.post('http://127.0.0.1:8000/api/login', credentials);
+        const { data } = await Axios.post(`${globalURL}${"login"}`, credentials);
+        setUserCurrent(JSON.stringify(data.user));
         setToken(data.access_token);
         setUser(data.user);
-        setUserCurrent(JSON.stringify(data.user))
     }
 
     async function update(credentials) {
-        const { data } = await Axios.patch('http://127.0.0.1:8000/api/update-user', credentials);
-        setUser(data.user);
+        const { data } = await Axios.patch(`${globalURL}${"update-user"}`, credentials);
         setUserCurrent(JSON.stringify(data.user))
+        setUser(data.user);
         logout()
     }
 
     async function signup(usuario) {
-        const { data } = await Axios.post('http://127.0.0.1:8000/api/register', usuario);
+        const { data } = await Axios.post(`${globalURL}${"register"}`, usuario);
         setToken(data.access_token);
         setUser(data.user);
     }

@@ -1,4 +1,5 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app'
+import 'firebase/storage'
 const firebaseConfig = {
     apiKey: "AIzaSyBcQ8UwvXXfF-S9BEunFczqwNKaTF7fpAI",
     authDomain: "vivero-a315f.firebaseapp.com",

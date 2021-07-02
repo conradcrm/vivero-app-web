@@ -16,7 +16,8 @@ const AuthContext = React.createContext();
 initAxiosInterceptors();
 
 export function AuthProvider(props) {
-    const globalURL = "https://vivero-app.herokuapp.com/api/";
+    //const globalURL = "https://vivero-app.herokuapp.com/api/";
+    const globalURL = "http://127.0.0.1:8000/api/";
     const [user, setUser] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
     let history = useHistory();

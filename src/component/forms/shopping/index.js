@@ -8,15 +8,15 @@ import shoppingImg from '../../../resources/stock.svg';
 
 export default function ShoppingForm() {
     const [data, setData] = useState({ id_proveedor: undefined, inputs: undefined });
-    const PlantQuery = usePlants();
+    const plantQuery = usePlants();
     const providerQuery = useProviders();
     const registerShopping = useCreateShopping(data);
     let dataPlant = [];
     let dataProv = [];
 
-    if (PlantQuery.data !== undefined) {
+    if (plantQuery.data !== undefined) {
         if (data.id_proveedor) {
-            const plants = PlantQuery.data.data;
+            const plants = plantQuery.data.data;
             dataPlant = plants.filter((plant) => plant.id_proveedor === data.id_proveedor);
         }
     }
@@ -33,7 +33,7 @@ export default function ShoppingForm() {
     const styleSelect = {
         borderRadius: "0.25rem",
         borderWidth: "2px",
-        borderColor: "rgba(194, 207, 224, var(--tw-border-opacity));",
+        borderColor: "rgba(244, 207, 224, var(--tw-border-opacity));",
         padding: "0.5rem 1rem 0.5rem 1rem",
         fontSize: "0.875rem",
         lineHeight: "1.25rem",
@@ -72,7 +72,7 @@ export default function ShoppingForm() {
                                 placeholder="Selecionar Proveedor"
                                 searchable={true}
                                 Style={styleSelect}
-                                color="#000"
+                                color="#00A976"
                                 options={dataProv}
                                 labelField="nombre"
                                 valueField="nombre"
@@ -87,7 +87,7 @@ export default function ShoppingForm() {
                         </div>
                         <DynamicInputs
                             plantas={dataPlant}
-                            isLoading={PlantQuery.isLoading}
+                            isLoading={plantQuery.isLoading}
                             data={data}
                             setData={setData}
                         />

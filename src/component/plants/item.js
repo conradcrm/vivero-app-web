@@ -7,14 +7,15 @@ import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BiDetail } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
 
-export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoría, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, isActivate, setisActivate, onOpenDeleteModal }) {
+export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoria, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, setisActivate, onOpenDeleteModal, page}) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
+  imagen = null;
 
   const Menu = () => {
     return (
-      <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
+      <div className={`bg-white shadow-lg max-h-60 w-48 ml-5 -mt-2
                          rounded-lg border border-icon_gray border-opacity-60
                          ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
@@ -27,7 +28,15 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
           <Link
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"
-            to={`/plant/edit/${id_planta}`}>
+            to={{
+              pathname: `/plant/edit/${id_planta}`,
+              state: {
+                plant: {
+                  id_planta, nombre, descripcion, imagen, precio_compra, precio_venta, cantidad, estado, id_proveedor, id_categoria
+                },
+                page
+              },
+            }}>
             <HiOutlinePencilAlt size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Editar</span>
           </Link>
@@ -49,8 +58,8 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
 
   return (
     <div
-      className="relative shadow bg-white rounded-lg mx-2 grid justify-center cursor-default">
-      <div className="cursor-pointer w-10 h-8 ml-1 absolute"
+      className="relative shadow bg-white rounded-lg mx-1 mt-2 grid justify-center cursor-default">
+      <div className="cursor-pointer w-10 h-8 pt-1 ml-4 absolute"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
       >
@@ -65,34 +74,22 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
             style={{ backgroundImage: `url(${imageDefault})` }}>
           </div>
         }
-        {/* <div className="h-28 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover">
-          <img
-            loading="lazy"
-            className="rounded-lg max-h-32"
-            src={imageDefault}
-            alt={descripcion}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = imageDefault;
-            }}
-          />
-        </div> */}
         <div className="pt-4 max-h-36">
           <p className="font-bold mb-1 truncate">{capNombre}</p>
           <p className="overflow-ellipsis overflow-hidden h-11 text-sm">{descripcion} </p>
           <div className="flex justify-between text-sm">
             <span>compra:</span>
-            <span>{precio_compra.toLocaleString("en-US", {
+            <p>{precio_compra.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}</span>
+            })}</p>
           </div>
           <div className=" flex justify-between text-sm">
             <span>Venta:</span>
-            <span>{precio_venta.toLocaleString("en-US", {
+            <p>{precio_venta.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}</span>
+            })}</p>
           </div>
           {cantidad > 0 && <div className=" flex justify-between text-sm">
             <span>Cantidad:</span>

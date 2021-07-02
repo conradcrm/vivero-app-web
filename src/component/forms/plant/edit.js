@@ -3,24 +3,22 @@ import ImageInput from '../../Input/Image'
 import InputText from '../../Input/InputText';
 import Select from "react-dropdown-select";
 import SubmitButton from '../../buttons/submit';
-import { useCategories, useItemId, useProviders } from '../../../hooks/query';
+import { useCategories, useProviders } from '../../../hooks/query';
 import { useUpdatePlant } from '../../../hooks/mutation/mutation';
 import { useParams } from 'react-router';
-import ServerError from '../../error/server';
-import LoadingData from '../../loading/data';
-
 import { notify } from '../../notification';
 import { inputsValidate3 } from '../../validations';
 import storage from "../../../firebase.js";
 
-export default function PlantEditForm() {
+export default function PlantEditForm(props) {
     const { id } = useParams()
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
     const [isLoading, setIsLoading] = useState(false)
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
-
+    let { plant, page } = props.location.state
+    
     const [messageE] = useState({
         name: "",
         description: "",
@@ -31,17 +29,17 @@ export default function PlantEditForm() {
     })
 
     const [data, setData] = useState({
-        nombre: "",
-        descripcion: "",
-        precio_venta: "",
-        precio_compra: "",
-        imagen: "",
-        id_categoria: undefined,
-        id_proveedor: undefined,
+        nombre: plant.nombre,
+        descripcion: plant.descripcion,
+        precio_venta: plant.precio_venta,
+        precio_compra: plant.precio_compra,
+        imagen: plant.imagen,
+        id_categoria: plant.id_categoria,
+        id_proveedor: plant.id_proveedor,
     });
 
-    const query = useItemId(id, 'plant', setData);
-    const updatePlant = useUpdatePlant(id, data);
+    
+    const updatePlant = useUpdatePlant(id, data, page);
 
     let dataC = []
     let dataP = []
@@ -53,6 +51,15 @@ export default function PlantEditForm() {
     if (providerQuery.data !== undefined) {
         dataP = providerQuery.data.data
     }
+
+    // const updatePlant = useUpdatePlant(id, data, page);
+    // let dataPLA = queryClient.getQueryData(`PLANTS-PAGE/${page}`)
+    // console.log("PLANTS",dataPLA)
+    // let dataC = queryClient.getQueryData("CATEGORIES")
+    // let dataCategories = dataC === undefined ? [] : dataC.data
+
+    // let dataP = queryClient.getQueryData("PROVIDERS")
+    // let dataProviders = dataP === undefined ? [] : dataP.data
 
     function handleChangeFile(target) {
         setFile(target.files[0]);
@@ -130,69 +137,64 @@ export default function PlantEditForm() {
 
     return (
         <div className="flex w-full justify-center">
-            {
-                query.isError ? <ServerError /> :
-                    query.isLoading ? <LoadingData /> :
-                        !query.data ?
-                            <p className="bg-white p-24 rounded-xl text-lg">No se econtró el recurso</p> :
-                            <div className="h-full flex grid-cols-6 shadow-2xl">
-                                <div className=" bg-mediumgreen col-span-2 rounded-l-xl px-8">
-                                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo planta</h3>
-                                    <ImageInput
-                                        value={previewImage ? previewImage : data.imagen}
-                                        preview={previewImage}
-                                        text="Actualice la imagen"
-                                        cancel={() => setPreviewImage(undefined)}
-                                        onChange={({ target }) => {
-                                            handleChange(
-                                                { target: target.name && { name: "imagen", value: target.files[0].name } }
-                                            );
-                                            handleChangeFile(target)
-                                            if (target.files.length !== 0) {
-                                                setPreviewImage(URL.createObjectURL(target.files[0]));
-                                            }
-                                        }}
-                                    />
-                                </div>
-                                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32em" }}>
-                                    <form className="my-7 mx-28" onSubmit={handleUploadFile}>
-                                        <div>
-                                            <InputText
-                                                width="21.5rem"
-                                                title="Nombre"
-                                                required={true}
-                                                name="nombre"
-                                                placeholder="Echeveria elegans"
-                                                value={data.nombre}
-                                                onChange={handleChange}
-                                                type="text"
-                                                message={messageE.name}
-                                            />
-                                            <div className="flex justify-between gap-6" style={{ marginTop: "22px" }}>
-                                                <InputText
-                                                    width="11rem"
-                                                    title="Precio de compra"
-                                                    required={true}
-                                                    name="precio_compra"
-                                                    placeholder="120.00"
-                                                    value={data.precio_compra}
-                                                    onChange={handleChange}
-                                                    type="number"
-                                                    message={messageE.p_compra}
-                                                />
-                                                <InputText
-                                                    width="11rem"
-                                                    title="Precio de venta"
-                                                    required={true}
-                                                    name="precio_venta"
-                                                    placeholder="240.00"
-                                                    value={data.precio_venta}
-                                                    onChange={handleChange}
-                                                    type="number"
-                                                    message={messageE.p_venta}
-                                                />
-                                            </div>
-                                            {/* <InputText
+            <div className="h-full flex grid-cols-6 shadow-2xl">
+                <div className=" bg-mediumgreen col-span-2 rounded-l-xl px-8">
+                    <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo planta</h3>
+                    <ImageInput
+                        value={previewImage ? previewImage : data.imagen}
+                        preview={previewImage}
+                        text="Actualice la imagen"
+                        cancel={() => setPreviewImage(undefined)}
+                        onChange={({ target }) => {
+                            handleChange(
+                                { target: target.name && { name: "imagen", value: target.files[0].name } }
+                            );
+                            handleChangeFile(target)
+                            if (target.files.length !== 0) {
+                                setPreviewImage(URL.createObjectURL(target.files[0]));
+                            }
+                        }}
+                    />
+                </div>
+                <div className="col-span-4  rounded-r-xl bg-white overflow-y-auto" style={{ height: "32em" }}>
+                    <form className="my-7 mx-28" onSubmit={handleUploadFile}>
+                        <div>
+                            <InputText
+                                width="21.5rem"
+                                title="Nombre"
+                                required={true}
+                                name="nombre"
+                                placeholder="Echeveria elegans"
+                                value={data.nombre}
+                                onChange={handleChange}
+                                type="text"
+                                message={messageE.name}
+                            />
+                            <div className="flex justify-between gap-6" style={{ marginTop: "22px" }}>
+                                <InputText
+                                    width="11rem"
+                                    title="Precio de compra"
+                                    required={true}
+                                    name="precio_compra"
+                                    placeholder="120.00"
+                                    value={data.precio_compra}
+                                    onChange={handleChange}
+                                    type="number"
+                                    message={messageE.p_compra}
+                                />
+                                <InputText
+                                    width="11rem"
+                                    title="Precio de venta"
+                                    required={true}
+                                    name="precio_venta"
+                                    placeholder="240.00"
+                                    value={data.precio_venta}
+                                    onChange={handleChange}
+                                    type="number"
+                                    message={messageE.p_venta}
+                                />
+                            </div>
+                            {/* <InputText
                                                 width="21.5rem"
                                                 title="Cantidad"
                                                 marginTop={22}
@@ -204,75 +206,74 @@ export default function PlantEditForm() {
                                                 onChange={handleChange}
                                                 type="number"
                                             /> */}
-                                            <div style={{ marginTop: 22, marginBottom: 22 }}>
-                                                <label className="block mb-2 font-semibold">
-                                                    Categoría<span className={`ml-1 text-mediumred`}>*</span>
-                                                </label>
-                                                <Select
-                                                    name="id_categoria"
-                                                    multi={false}
-                                                    placeholder="Selecionar categoría"
-                                                    searchable={true}
-                                                    color="#000"
-                                                    Style={styleSelect}
-                                                    options={dataC}
-                                                    labelField="nombre"
-                                                    valueField="nombre"
-                                                    disabled={categoryQuery.isLoading}
-                                                    onChange={(value) => {
-                                                        setData({ ...data, id_categoria: value[0].id_categoria });
-                                                    }}
-                                                    values={
-                                                        dataC.filter((opt) => opt.id_categoria === data.id_categoria)
-                                                    }
-                                                />
-                                            </div>
-                                            <div style={{ marginTop: 22, marginBottom: 22 }}>
-                                                <label className="block mb-2 font-semibold">
-                                                    Proveedor<span className={`ml-1 text-mediumred`}>*</span>
-                                                </label>
-                                                <Select
-                                                    name="id_proveedor"
-                                                    multi={false}
-                                                    placeholder="Selecionar Proveedor"
-                                                    searchable={true}
-                                                    Style={styleSelect}
-                                                    color="#000"
-                                                    options={dataP}
-                                                    labelField="nombre"
-                                                    valueField="nombre"
-                                                    disabled={providerQuery.isLoading}
-                                                    onChange={(value) => {
-                                                        setData({ ...data, id_proveedor: value[0].id_proveedor });
-                                                    }}
-                                                    values={
-                                                        dataP.filter((opt) => opt.id_proveedor === data.id_proveedor)
-                                                    }
-                                                />
-
-                                            </div>
-                                            <div style={{ marginTop: 22, marginBottom: 22 }}>
-                                                <label className="block mb-2 font-semibold">
-                                                    Decripción<span className={`ml-1 text-mediumred`}>*</span>
-                                                </label>
-                                                <textarea
-                                                    className="rounded resize-none border-icon_gray py-1 px-4 text-sm bg-gray w-full"
-                                                    rows="4"
-                                                    value={data.descripcion}
-                                                    onChange={handleChange}
-                                                    name="descripcion"
-                                                    placeholder="Es una de las plantas crasas más bonitas y fáciles de cuidar del mundo" />
-                                                <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
-                                            </div>
-                                        </div>
-                                        <SubmitButton
-                                            isLoading={updatePlant.isLoading || isLoading}
-                                            mode={"edit"}
-                                        />
-                                    </form>
-                                </div>
+                            <div style={{ marginTop: 22, marginBottom: 22 }}>
+                                <label className="block mb-2 font-semibold">
+                                    Categoría<span className={`ml-1 text-mediumred`}>*</span>
+                                </label>
+                                <Select
+                                    name="id_categoria"
+                                    multi={false}
+                                    placeholder="Selecionar categoría"
+                                    searchable={true}
+                                    color="#000"
+                                    Style={styleSelect}
+                                    options={dataC}
+                                    labelField="nombre"
+                                    valueField="nombre"
+                                    disabled={categoryQuery.isLoading}
+                                    onChange={(value) => {
+                                        setData({ ...data, id_categoria: value[0].id_categoria });
+                                    }}
+                                    values={
+                                        dataC.filter((opt) => opt.id_categoria === data.id_categoria)
+                                    }
+                                />
                             </div>
-            }
+                            <div style={{ marginTop: 22, marginBottom: 22 }}>
+                                <label className="block mb-2 font-semibold">
+                                    Proveedor<span className={`ml-1 text-mediumred`}>*</span>
+                                </label>
+                                <Select
+                                    name="id_proveedor"
+                                    multi={false}
+                                    placeholder="Selecionar Proveedor"
+                                    searchable={true}
+                                    Style={styleSelect}
+                                    color="#000"
+                                    options={dataP}
+                                    labelField="nombre"
+                                    valueField="nombre"
+                                    disabled={providerQuery.isLoading}
+                                    onChange={(value) => {
+                                        setData({ ...data, id_proveedor: value[0].id_proveedor });
+                                    }}
+                                    values={
+                                        dataP.filter((opt) => opt.id_proveedor === data.id_proveedor)
+                                    }
+                                />
+
+                            </div>
+                            <div style={{ marginTop: 22, marginBottom: 22 }}>
+                                <label className="block mb-2 font-semibold">
+                                    Decripción<span className={`ml-1 text-mediumred`}>*</span>
+                                </label>
+                                <textarea
+                                    className="rounded resize-none border-icon_gray py-1 px-4 text-sm bg-gray w-full"
+                                    rows="4"
+                                    value={data.descripcion}
+                                    onChange={handleChange}
+                                    name="descripcion"
+                                    placeholder="Es una de las plantas crasas más bonitas y fáciles de cuidar del mundo" />
+                                <span className="block text-mediumred text-sm font-medium pt-0.5">{messageE.description}</span>
+                            </div>
+                        </div>
+                        <SubmitButton
+                            isLoading={updatePlant.isLoading || isLoading}
+                            mode={"edit"}
+                        />
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

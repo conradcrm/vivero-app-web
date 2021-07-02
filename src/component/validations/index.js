@@ -155,7 +155,7 @@ export function validateDireccion(value) {
         };
     }
     if (value.length > 6) {
-        if (value.length > 80) {
+        if (value.length < 80) {
             if (/^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ!#$%&'*+/=?^_\s]+$/.test(value)) {
                 return {
                     result: true,

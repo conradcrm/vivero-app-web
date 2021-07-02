@@ -25,6 +25,7 @@ export default function Categories({ data }) {
     title: "¿Está seguro de quieres dar de baja la categoría?",
     description: ""
   }
+
   if (isActivate) {
     message = {
       title: "¿Activar categoría?",
@@ -38,7 +39,7 @@ export default function Categories({ data }) {
   }
 
   return (
-    <div className="w-full bg-white rounded-lg p-8">
+    <div className="w-full rounded-lg py-8">
       <div className="grid grid-cols-4 gap-3">
         {data.length > 0
           ? data.map((category) => (

@@ -9,13 +9,14 @@ import { inputsValidate3 } from '../../validations';
 import { notify } from '../../notification';
 import storage from "../../../firebase.js";
 
-export default function PlantForm() {
+export default function PlantForm(props) {
     const categoryQuery = useCategories();
     const providerQuery = useProviders();
     const [isLoading, setIsLoading] = useState(false)
     const [previewImage, setPreviewImage] = useState();
     const [file, setFile] = useState();
-
+    let { total, current_page } = props.location.state
+    
     const [messageE,] = useState({
         name: "",
         description: "",
@@ -34,8 +35,8 @@ export default function PlantForm() {
         id_categoria: undefined,
         id_proveedor: undefined,
     });
-
-    const createPlant = useCreatePLant(data);
+    
+    const createPlant = useCreatePLant(data,total% 16===0,current_page);
     let dataC = []
     let dataP = []
 

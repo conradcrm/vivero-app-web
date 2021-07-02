@@ -5,6 +5,7 @@ import {FiPlus} from 'react-icons/fi';
 
 export default function DynamicInputs({data,plantas, isLoading, setData}) {
   const [inputList, setInputList] = useState([{ id_planta: "", cantidad: "" }]);
+  
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...inputList];
@@ -44,10 +45,11 @@ export default function DynamicInputs({data,plantas, isLoading, setData}) {
                     multi={false}
                     placeholder="Selecionar Planta"
                     searchable={true}
-                    color= "#000"
+                    color="#00A976"
                     options={plantas}
                     labelField="nombre"
                     valueField="nombre"
+                    disabledLabel={false}
                     disabled={isLoading} 
                     onChange={ value => handleSelectChange(value[0].id_planta, index)}
                     values={

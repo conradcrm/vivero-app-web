@@ -10,6 +10,9 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
+  
+  imagen = null;
+
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
@@ -39,7 +42,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
   }
 
   return (
-    <div className="relative shadow bg-white rounded-lg mx-2 pt-6 grid justify-center cursor-default">
+    <div className="relative shadow bg-white rounded-lg mx-1 mt-2 grid justify-center cursor-default">
       <div className="cursor-pointer w-16 absolute"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
@@ -47,7 +50,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
         <HiOutlineDotsHorizontal size={25} className="w-8 text-lg mx-2 rounded-md" />
         <Menu />
       </div>
-      <div className="max-h-64 mt-3 mb-4 w-48 rounded-lg">
+      <div className="max-h-80 mt-5 pt-3 mb-4 w-48 rounded-lg ">
         {imagen !== null ? 
         <div className="h-32 rounded-lg bg-gray flex items-center justify-center bg-center bg-no-repeat bg-cover"
           style={{ backgroundImage: `url(${imagen})` }}>

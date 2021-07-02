@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from "react-query";
 import { notify } from "../../component/notification";
 import { initAxiosInterceptors } from "../../helpers/helper-auth";
 
-const globalURL = "https://vivero-app.herokuapp.com/api/";
-
+//const globalURL = "https://vivero-app.herokuapp.com/api/";
+const globalURL = "http://127.0.0.1:8000/api/";
 //General create item
 export const createItem = async ({ data, endpoint }) => {
   initAxiosInterceptors();
@@ -156,7 +156,7 @@ export function useMutationStatusCategories(id_categoria, setOpen) {
   return { mutate, isLoading }
 }
 
-export function useDeleteCategories(id_categoria, setOpen) {
+export function useDeleteCategories(id_categoria, setOpen, page) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
@@ -191,7 +191,7 @@ export function useDeleteCategories(id_categoria, setOpen) {
  * PLANT
 **/
 
-export function useCreatePLant(data) {
+export function useCreatePLant(data, isCompletedPage, page) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(createItem, {
     variables: {
@@ -199,15 +199,20 @@ export function useCreatePLant(data) {
       data: data
     },
     onSuccess: (response) => {
-      const noData = queryClient.setQueryData('PLANTS', function (oldData) {
-        if (oldData !== undefined) {
-          const position = oldData.data.length;
-          oldData.data.splice(position, 0, response.data)
-          return oldData;
+      if (isCompletedPage) {
+        queryClient.invalidateQueries(`PLANTS-PAGE/${1}`);
+      }
+      else {
+        const noData = queryClient.setQueryData(`PLANTS-PAGE/${page}`, function (oldData) {
+          if (oldData !== undefined) {
+            const position = oldData.data.data.length;
+            oldData.data.data.splice(position, 0, response.data)
+            return oldData;
+          }
+        });
+        if (noData === undefined) {
+          queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
         }
-      });
-      if (noData === undefined) {
-        queryClient.invalidateQueries('PLANTS');
       }
       notify(response.status, response.message)
     },
@@ -218,7 +223,7 @@ export function useCreatePLant(data) {
   return { mutate, isLoading }
 }
 
-export function useUpdatePlant(id_planta, data) {
+export function useUpdatePlant(id_planta, data, page) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
@@ -228,12 +233,12 @@ export function useUpdatePlant(id_planta, data) {
     },
     onSuccess: (response) => {
       let data = response.data;
-      const noData = queryClient.setQueryData('PLANTS', function (oldData) {
+      const noData = queryClient.setQueryData(`PLANTS-PAGE/${page}`, function (oldData) {
         if (oldData !== undefined) {
-          for (let index = 0; index < oldData.data.length; index++) {
-            if (oldData.data[index].id_planta === data.id_planta) {
-              oldData.data.splice(index, 1)
-              oldData.data.splice(index, 0, response.data)
+          for (let index = 0; index < oldData.data.data.length; index++) {
+            if (oldData.data.data[index].id_planta === data.id_planta) {
+              oldData.data.data.splice(index, 1)
+              oldData.data.data.splice(index, 0, response.data)
               break;
             }
           }
@@ -242,7 +247,7 @@ export function useUpdatePlant(id_planta, data) {
       });
 
       if (noData === undefined) {
-        queryClient.invalidateQueries('PLANTS');
+        queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
       }
       notify(response.status, response.message)
     },
@@ -253,7 +258,7 @@ export function useUpdatePlant(id_planta, data) {
   return { mutate, isLoading }
 }
 
-export function useMutationStatusPlants(id_planta, setOpen) {
+export function useMutationStatusPlants(id_planta, setOpen, page) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateStatusItem, {
     variables: {
@@ -261,11 +266,11 @@ export function useMutationStatusPlants(id_planta, setOpen) {
       endpoint: "status-plant"
     },
     onSuccess: (response) => {
-      queryClient.setQueryData('PLANTS', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_planta === response.data.id_planta) {
-            oldData.data.splice(index, 1)
-            oldData.data.splice(index, 0, response.data)
+      queryClient.setQueryData(`PLANTS-PAGE/${page}`, function (oldData) {
+        for (let index = 0; index < oldData.data.data.length; index++) {
+          if (oldData.data.data[index].id_planta === response.data.id_planta) {
+            oldData.data.data.splice(index, 1)
+            oldData.data.data.splice(index, 0, response.data)
             break;
           }
         }
@@ -282,7 +287,7 @@ export function useMutationStatusPlants(id_planta, setOpen) {
   return { mutate, isLoading }
 }
 
-export function useDeletePlants(id_planta, setOpen) {
+export function useDeletePlants(id_planta, setOpen, pages) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
@@ -291,16 +296,23 @@ export function useDeletePlants(id_planta, setOpen) {
       data: []
     },
     onSuccess: (response) => {
-      let data = response.data;
-      queryClient.setQueryData('PLANTS', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].id_planta === data.id_planta) {
-            oldData.data.splice(index, 1)
-            break;
+      let page = pages.current_page;
+      if (pages.data.length===1) {
+        queryClient.invalidateQueries(`PLANTS-PAGE/${1}`);
+        queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
+      }
+      else {
+        let data = response.data;
+        queryClient.setQueryData(`PLANTS-PAGE/${page}`, function (oldData) {
+          for (let index = 0; index < oldData.data.length; index++) {
+            if (oldData.data[index].id_planta === data.id_planta) {
+              oldData.data.splice(index, 1)
+              break;
+            }
           }
-        }
-        return oldData;
-      });
+          return oldData;
+        });
+      }
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -476,7 +488,7 @@ export function useCreateShopping(data) {
   return { mutate, isLoading }
 }
 
-export function useMutationStatusShopping(folio_compra, data, setOpen) {
+export function useMutationStatusShopping(folio_compra, data, setOpen, page) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
@@ -486,7 +498,7 @@ export function useMutationStatusShopping(folio_compra, data, setOpen) {
     },
     onSuccess: (response) => {
       let data = response.data;
-      const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
+      const noData = queryClient.setQueryData(`SHOPPING-PAGE/${page}`, function (oldData) {
         if (oldData !== undefined) {
           for (let index = 0; index < oldData.data.length; index++) {
             if (oldData.data[index].folio_compra === data.folio_compra) {
@@ -500,7 +512,7 @@ export function useMutationStatusShopping(folio_compra, data, setOpen) {
         }
       });
       if (noData === undefined) {
-        queryClient.invalidateQueries('SHOPPING');
+        queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
       }
       notify(response.status, response.message)
       setOpen(false);

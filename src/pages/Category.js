@@ -17,10 +17,9 @@ export default function Category() {
                         query.data !== undefined &&
                         <>
                             <HeaderBar module="Categorías" name="Agregar categoría" route="/category/create" />
-                            {!query.data.data.length > 0 ? <NoData/> :
-                                <div className="pt-8">
-                                    <Categories data={query.data.data} />
-                                </div>}
+                            {!query.data.data.length > 0 ? <NoData /> :
+                                <Categories data={query.data.data} />
+                            }
                         </>
 
             }

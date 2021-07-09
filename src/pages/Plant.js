@@ -1,4 +1,4 @@
- import React, { useState } from 'react'
+import React, { useState } from 'react'
 import ServerError from '../component/error/server'
 import NoData from '../component/error/nodata'
 import HeaderBar from '../component/headerbar'
@@ -18,7 +18,7 @@ export default function Plant() {
                         data !== undefined && <>
                             <HeaderBar module="Plantas" name="Agregar planta" route="/plant/create" page={data.data} />
                             {!data.data.data.length > 0 ? <NoData /> :
-                                <Plants data={data.data} setPage={setPage} page={page}/>
+                                <Plants data={data.data} setPage={setPage} page={page} />
                             }
                         </>
             }

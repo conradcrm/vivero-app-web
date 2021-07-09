@@ -38,8 +38,8 @@ export default function ProviderList({ data }) {
   }
 
   return (
-    <div className="bg-white flex justify-center">
-      <div className="bg-gray w-full rounded-md">
+    <div className="pb-12 flex justify-center">
+      <div className="bg-gray pb-3 w-full rounded-md">
         <div className="grid grid-cols-11 text-sm font-semibold">
           <div className="col-span-9 grid grid-cols-11 mx-4 text-sm">
             <div className="col-span-7 grid grid-cols-2">

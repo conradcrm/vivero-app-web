@@ -11,8 +11,6 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
   let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
   
-  imagen = null;
-
   const Menu = () => {
     return (
       <div className={`bg-white shadow-lg max-h-60 w-48 ml-4 -mt-2
@@ -43,7 +41,7 @@ export default function CategoryItem({ nombre, imagen, descripcion, id_categoria
 
   return (
     <div className="relative shadow bg-white rounded-lg mx-1 mt-2 grid justify-center cursor-default">
-      <div className="cursor-pointer w-16 absolute"
+      <div className="cursor-pointer w-16 absolute ml-3 pt-1"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
       >

@@ -6,11 +6,14 @@ import { usePlants, useProviders } from '../../../hooks/query';
 import { useCreateShopping } from '../../../hooks/mutation/mutation';
 import shoppingImg from '../../../resources/stock.svg';
 
-export default function ShoppingForm() {
+export default function ShoppingForm(props) {
     const [data, setData] = useState({ id_proveedor: undefined, inputs: undefined });
     const plantQuery = usePlants();
     const providerQuery = useProviders();
-    const registerShopping = useCreateShopping(data);
+    
+    let { total, current_page, last_page } = props.location.state
+    console.log(total, current_page)
+    const registerShopping = useCreateShopping(data, total % 10 === 0, current_page, last_page);
     let dataPlant = [];
     let dataProv = [];
 
@@ -18,6 +21,7 @@ export default function ShoppingForm() {
         if (data.id_proveedor) {
             const plants = plantQuery.data.data;
             dataPlant = plants.filter((plant) => plant.id_proveedor === data.id_proveedor);
+            console.log(dataPlant, " -- plants filter")
         }
     }
 
@@ -44,15 +48,15 @@ export default function ShoppingForm() {
             <div className="h-full flex grid-cols-6 shadow-2xl">
                 <div className=" bg-mediumgreen col-span-2 rounded-l-xl">
                     <h3 className="p-5 px-16 w-full text-center font-semibold text-2xl text-white">Módulo compra</h3>
-                    <div className="my-6 relative w-full h-64" style={{textAlign: "-webkit-center"}}>
-                                        <img
-                                            className=""
-                                            width={200}
-                                            src={shoppingImg}
-                                            alt="Nuevos proveedores"
-                                        />
-                                        <p className="w-60 my-5 text-sm text-white">Antes de selccionar las plantas, primero selecciona el proveedor.</p>
-                                    </div>
+                    <div className="my-6 relative w-full h-64" style={{ textAlign: "-webkit-center" }}>
+                        <img
+                            className=""
+                            width={200}
+                            src={shoppingImg}
+                            alt="Nuevos proveedores"
+                        />
+                        <p className="w-60 my-5 text-sm text-white">Antes de selccionar las plantas, primero selecciona el proveedor.</p>
+                    </div>
                     {/* <div className="w-full text-center flex justify-center">
                         <p className="text-white text-sm font-semibold text-center tracking-wider w-64 mt-4">
                             Antes de selccionar las plantas, primero selecciona el proveedor.

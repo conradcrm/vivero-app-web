@@ -4,14 +4,13 @@ import imageDefault from "../../resources/modules/no_data.svg"
 import ToggleButton from "../buttons/toggle";
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
-import { BiDetail } from 'react-icons/bi';
+// import { BiDetail } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
 
 export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_proveedor, id_categoria, precio_compra, precio_venta, cantidad, estado, onOpenModal, setSelected, setisActivate, onOpenDeleteModal, page}) {
   let capNombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
   let status = estado === undefined || estado === 1;
   const [isShown, setIsShown] = useState(false);
-  imagen = null;
 
   const Menu = () => {
     return (
@@ -20,11 +19,11 @@ export default function PlantItem({ nombre, imagen, descripcion, id_planta, id_p
                          ${isShown ? "block" : "hidden"}`} >
         <div className="mx-3 mt-3 opacity-100">
 
-          <div
+          {/* <div
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2">
             <BiDetail size="20" className="ml-2 opacity-70" />
             <span className="text-sm">Detalles</span>
-          </div>
+          </div> */}
 
           <Link
             className=" button-action flex cursor-pointer hover:bg-gray py-2 rounded-lg gap-2"

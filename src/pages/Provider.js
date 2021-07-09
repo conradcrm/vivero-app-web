@@ -16,7 +16,7 @@ export default function Provider() {
                         query.data !== undefined && query.data.data !== undefined && <>
                             <HeaderBar module="Proveedores" name="Agregar proveedor" route="/provider/create" />
                             {!query.data.data.length > 0 ? <NoData/> :
-                                <div className="max-h-full pt-8">
+                                <div className="max-h-full pt-8 pb-20">
                                     <ProviderList data={query.data.data} />
                                 </div>}
                         </>

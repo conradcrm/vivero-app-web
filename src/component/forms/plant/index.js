@@ -36,7 +36,7 @@ export default function PlantForm(props) {
         id_proveedor: undefined,
     });
     
-    const createPlant = useCreatePLant(data,total% 16===0,current_page);
+    const createPlant = useCreatePLant(data,total% 40===0,current_page);
     let dataC = []
     let dataP = []
 

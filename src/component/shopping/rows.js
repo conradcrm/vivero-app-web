@@ -1,7 +1,5 @@
 import React from "react";
 import { MdDeleteForever } from "react-icons/md";
-//import { Link } from "react-router-dom";
-//import { FaEdit } from "react-icons/fa";
 import Select from "react-dropdown-select";
 import { BiDetail } from 'react-icons/bi';
 export default function ItemShopping({
@@ -16,7 +14,7 @@ export default function ItemShopping({
   onOpenDeleteModal,
   state,
   onOpenView,
-  statusShop }) {
+  statusShop , page}) {
 
   let total;
   if (detalle !== undefined) {

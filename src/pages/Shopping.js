@@ -9,18 +9,18 @@ import { useShoppingPage } from '../hooks/query';
 export default function Shopping() {
     const [page, setPage] = useState(1)
     const { data, isLoading, isError } = useShoppingPage(page);
-
+    console.log(data)
     return (
         <div className="h-full">
             {
                 isError ? <ServerError /> :
                     isLoading ? <LoadingData /> :
                         data !== undefined && <>
-                            <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" />
+                            <HeaderBar module="Compras" name="Registrar compra" route="/compra/create" page={data.data} />
                             {
                                 !data.data.data.length > 0 ? <NoData /> :
-                                    <div className="mt-10">
-                                        <ShoppingList data={data.data} setPage={setPage} />
+                                    <div className="mt-10 overflow-y-hidden">
+                                        <ShoppingList data={data.data} setPage={setPage} page = {page} />
                                     </div>
                             }
                         </>

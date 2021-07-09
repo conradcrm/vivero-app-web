@@ -39,7 +39,7 @@ export function usePlants() {
 }
 
 export function usePlantsPage(page) {
-  const page_size = 16
+  const page_size = 40
   return useQuery(`PLANTS-PAGE/${page}`, async () => {
     const res = await axios.get(`${url}plants-paginate/${page_size}?page=${page}`);
     return res.data;

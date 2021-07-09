@@ -297,16 +297,16 @@ export function useDeletePlants(id_planta, setOpen, pages) {
     },
     onSuccess: (response) => {
       let page = pages.current_page;
-      if (pages.data.length===1) {
+      if (pages.data.length === 1) {
         queryClient.invalidateQueries(`PLANTS-PAGE/${1}`);
         queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
       }
       else {
         let data = response.data;
         queryClient.setQueryData(`PLANTS-PAGE/${page}`, function (oldData) {
-          for (let index = 0; index < oldData.data.length; index++) {
-            if (oldData.data[index].id_planta === data.id_planta) {
-              oldData.data.splice(index, 1)
+          for (let index = 0; index < oldData.data.data.length; index++) {
+            if (oldData.data.data[index].id_planta === data.id_planta) {
+              oldData.data.data.splice(index, 1)
               break;
             }
           }
@@ -461,7 +461,8 @@ export function useDeleteProvider(id_proveedor, setOpen) {
  * SHOPPING
 **/
 
-export function useCreateShopping(data) {
+export function useCreateShopping(data, isCompletedPage, page, last) {
+  console.log(isCompletedPage, data, page)
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(createItem, {
     variables: {
@@ -469,15 +470,22 @@ export function useCreateShopping(data) {
       data: data
     },
     onSuccess: (response) => {
-      const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
-        if (oldData !== undefined) {
-          const position = oldData.data.length;
-          oldData.data.splice(position, 0, response.data);
-          return oldData;
+      if (isCompletedPage) {
+        console.log("fffbh")
+        queryClient.invalidateQueries(`SHOPPING-PAGE/${last}`);
+        queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
+      }
+      else {
+        const noData = queryClient.setQueryData(`SHOPPING-PAGE/${last}`, function (oldData) {
+          if (oldData !== undefined) {
+            const position = oldData.data.data.length;
+            oldData.data.data.splice(position, 0, response.data)
+            return oldData;
+          }
+        });
+        if (noData === undefined) {
+          queryClient.invalidateQueries(`SHOPPING-PAGE/${last}`);
         }
-      });
-      if (noData === undefined) {
-        queryClient.invalidateQueries('SHOPPING');
       }
       notify(response.status, response.message)
     },
@@ -497,23 +505,16 @@ export function useMutationStatusShopping(folio_compra, data, setOpen, page) {
       endpoint: "status-shopping",
     },
     onSuccess: (response) => {
-      let data = response.data;
-      const noData = queryClient.setQueryData(`SHOPPING-PAGE/${page}`, function (oldData) {
-        if (oldData !== undefined) {
-          for (let index = 0; index < oldData.data.length; index++) {
-            if (oldData.data[index].folio_compra === data.folio_compra) {
-              oldData.data[index].estado = response.data.estado;
-              // oldData.data.splice(index, 1)
-              // oldData.data.splice(index, 0, response.data)
-              break;
-            }
+      queryClient.setQueryData(`SHOPPING-PAGE/${page}`, function (oldData) {
+        for (let index = 0; index < oldData.data.data.length; index++) {
+          if (oldData.data.data[index].folio_compra === response.data.folio_compra) {
+            oldData.data.data[index].estado = response.data.estado;
+            break;
           }
-          return oldData;
         }
+        return oldData;
       });
-      if (noData === undefined) {
-        queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
-      }
+
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -526,7 +527,7 @@ export function useMutationStatusShopping(folio_compra, data, setOpen, page) {
 }
 
 
-export function useDeleteShoppin(folio_compra, setOpen) {
+export function useDeleteShoppin(folio_compra, setOpen, pages) {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(updateItem, {
     variables: {
@@ -535,21 +536,27 @@ export function useDeleteShoppin(folio_compra, setOpen) {
       data: []
     },
     onSuccess: (response) => {
-      let data = response.data;
-      const noData = queryClient.setQueryData('SHOPPING', function (oldData) {
-        for (let index = 0; index < oldData.data.length; index++) {
-          if (oldData.data[index].folio_compra === data.folio_compra) {
-            oldData.data.splice(index, 1)
-            break;
-          }
-        }
-        return oldData;
-      });
-
-      if (noData === undefined) {
-        queryClient.invalidateQueries('SHOPPING');
+      let page = pages.current_page;
+      if (pages.data.length === 1) {
+        queryClient.invalidateQueries(`SHOPPING-PAGE/${1}`);
+        queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
       }
+      else {
+        let data = response.data;
+        const noData = queryClient.setQueryData(`SHOPPING-PAGE/${page}`, function (oldData) {
+          for (let index = 0; index < oldData.data.data.length; index++) {
+            if (oldData.data.data[index].folio_compra === data.folio_compra) {
+              oldData.data.data.splice(index, 1)
+              break;
+            }
+          }
+          return oldData;
+        });
 
+        if (noData === undefined) {
+          queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
+        }
+      }
       notify(response.status, response.message)
       setOpen(false);
     },

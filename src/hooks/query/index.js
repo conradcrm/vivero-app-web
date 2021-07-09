@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { initAxiosInterceptors } from '../../helpers/helper-auth';
 
-//const url = "https://vivero-app.herokuapp.com/api/";
-const url = "http://127.0.0.1:8000/api/";
+const url = "https://vivero-app.herokuapp.com/api/";
+// const url = "http://127.0.0.1:8000/api/";
 async function getDataModule(module) {
   initAxiosInterceptors();
   const query = url + module;

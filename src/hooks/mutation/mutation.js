@@ -9,6 +9,7 @@ const globalURL = "https://vivero-app.herokuapp.com/api/";
 export const createItem = async ({ data, endpoint }) => {
   initAxiosInterceptors();
   const url = `${globalURL}${endpoint}`;
+
   try {
     const { data: item } = await axios.post(url, data);
     return item;
@@ -81,6 +82,7 @@ export function useCreateCategory(data) {
           queryClient.invalidateQueries('CATEGORIES');
         }
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -116,6 +118,7 @@ export function useUpdateCategory(id_categoria, data) {
       if (noData === undefined) {
         queryClient.invalidateQueries('CATEGORIES');
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -145,6 +148,7 @@ export function useMutationStatusCategories(id_categoria, setOpen) {
         }
         return oldData;
       });
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -175,6 +179,7 @@ export function useDeleteCategories(id_categoria, setOpen, page) {
         }
         return oldData;
       });
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -214,6 +219,7 @@ export function useCreatePLant(data, isCompletedPage, page) {
           queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
         }
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -249,6 +255,7 @@ export function useUpdatePlant(id_planta, data, page) {
       if (noData === undefined) {
         queryClient.invalidateQueries(`PLANTS-PAGE/${page}`);
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -313,6 +320,7 @@ export function useDeletePlants(id_planta, setOpen, pages) {
           return oldData;
         });
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -348,6 +356,7 @@ export function useCreateProvider(data) {
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -383,6 +392,7 @@ export function useUpdateProvier(id, data) {
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -415,6 +425,7 @@ export function useMutationStatusProvider(id_proveedor, setOpen) {
       if (noData === undefined) {
         queryClient.invalidateQueries('PROVIDERS');
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -445,6 +456,7 @@ export function useDeleteProvider(id_proveedor, setOpen) {
         }
         return oldData;
       });
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -462,7 +474,7 @@ export function useDeleteProvider(id_proveedor, setOpen) {
 **/
 
 export function useCreateShopping(data, isCompletedPage, page, last) {
-  console.log(isCompletedPage, data, page)
+  
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(createItem, {
     variables: {
@@ -471,7 +483,6 @@ export function useCreateShopping(data, isCompletedPage, page, last) {
     },
     onSuccess: (response) => {
       if (isCompletedPage) {
-        console.log("fffbh")
         queryClient.invalidateQueries(`SHOPPING-PAGE/${last}`);
         queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
       }
@@ -487,6 +498,7 @@ export function useCreateShopping(data, isCompletedPage, page, last) {
           queryClient.invalidateQueries(`SHOPPING-PAGE/${last}`);
         }
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
     },
     onerror: (response) => {
@@ -514,7 +526,7 @@ export function useMutationStatusShopping(folio_compra, data, setOpen, page) {
         }
         return oldData;
       });
-
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },
@@ -557,6 +569,7 @@ export function useDeleteShoppin(folio_compra, setOpen, pages) {
           queryClient.invalidateQueries(`SHOPPING-PAGE/${page}`);
         }
       }
+      queryClient.invalidateQueries('STATISTICS');
       notify(response.status, response.message)
       setOpen(false);
     },

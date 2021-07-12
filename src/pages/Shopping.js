@@ -9,7 +9,7 @@ import { useShoppingPage } from '../hooks/query';
 export default function Shopping() {
     const [page, setPage] = useState(1)
     const { data, isLoading, isError } = useShoppingPage(page);
-    console.log(data)
+    
     return (
         <div className="h-full">
             {

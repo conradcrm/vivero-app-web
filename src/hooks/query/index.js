@@ -20,7 +20,7 @@ export const getDataModuleId = async (module, id, setData) => {
 }
 
 
-export function useItemId(id, module, setData, setPreviewImage) {
+export function useItemId(id, module, setData) {
   return useQuery(`${module}${"/"}${id}`, () => getDataModuleId(module, id, setData));
 }
 
@@ -77,6 +77,13 @@ export function useShoppingPage(page) {
     const res = await axios.get(`${url}shopping-paginate/${page_size}?page=${page}`);
     return res.data;
   }, {
+    staleTime: Infinity,
+    notifyOnChangePropsExclusions: ['isStale'],
+  });
+}
+
+export function useStatistics() {
+  return useQuery('STATISTICS', () => getDataModule('statistics'), {
     staleTime: Infinity,
     notifyOnChangePropsExclusions: ['isStale'],
   });
